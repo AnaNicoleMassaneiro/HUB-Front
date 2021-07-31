@@ -15,4 +15,4 @@ git clone https://github.com/AnaNicoleMassaneiro/HUB-Front.git
 Flutter
 
 ### Desenvolvido por:
-Ana Nicole Massaneiro, Dandi Teoa e Matheus Augusto Morais
+Ana Nicole Massaneiro, Dandi Teoa e Matheus Augusto de Moraes Ribeiro
