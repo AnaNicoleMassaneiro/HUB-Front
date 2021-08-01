@@ -26,7 +26,7 @@ class _SignUpPageState extends State<SignUpPage> {
               padding: EdgeInsets.only(left: 0, top: 10, bottom: 10),
               child: Icon(Icons.keyboard_arrow_left, color: Colors.black),
             ),
-            Text('Back',
+            Text('Voltar',
                 style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500))
           ],
         ),
@@ -97,7 +97,7 @@ class _SignUpPageState extends State<SignUpPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              'Already have an account ?',
+              'Já tem uma conta?',
               style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
             ),
             SizedBox(
@@ -161,7 +161,7 @@ class _SignUpPageState extends State<SignUpPage> {
             Positioned(
               top: -MediaQuery.of(context).size.height * .15,
               right: -MediaQuery.of(context).size.width * .4,
-              child: BezierContainer(),
+            //  child: BezierContainer(),
             ),
             Container(
               padding: EdgeInsets.symmetric(horizontal: 20),

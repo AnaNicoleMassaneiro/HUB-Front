@@ -95,23 +95,14 @@ class _WelcomePageState extends State<WelcomePage> {
     return RichText(
       textAlign: TextAlign.center,
       text: TextSpan(
-          text: 'd',
+          text: 'HUB',
           style: GoogleFonts.portLligatSans(
             textStyle: Theme.of(context).textTheme.display1,
             fontSize: 30,
             fontWeight: FontWeight.w700,
             color: Colors.white,
           ),
-          children: [
-            TextSpan(
-              text: 'ev',
-              style: TextStyle(color: Colors.black, fontSize: 30),
-            ),
-            TextSpan(
-              text: 'rnz',
-              style: TextStyle(color: Colors.white, fontSize: 30),
-            ),
-          ]),
+          ),
     );
   }
 

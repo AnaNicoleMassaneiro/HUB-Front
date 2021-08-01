@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_login_signup/src/signup.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'Api/apiLogin.dart';
 import 'Widget/bezierContainer.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key, this.title}) : super(key: key);
-
   final String title;
 
   @override
@@ -14,6 +14,9 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final TextEditingController user = TextEditingController();
+  final TextEditingController senha = TextEditingController();
+
   Widget _backButton() {
     return InkWell(
       onTap: () {
@@ -35,7 +38,8 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _entryField(String title, {bool isPassword = false}) {
+  Widget _entryField(String title, TextEditingController controllertxt,
+      {bool isPassword = false}) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 10),
       child: Column(
@@ -49,6 +53,7 @@ class _LoginPageState extends State<LoginPage> {
             height: 10,
           ),
           TextField(
+              controller: controllertxt,
               obscureText: isPassword,
               decoration: InputDecoration(
                   border: InputBorder.none,
@@ -60,26 +65,31 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget _submitButton() {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      padding: EdgeInsets.symmetric(vertical: 15),
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(5)),
-          boxShadow: <BoxShadow>[
-            BoxShadow(
-                color: Colors.grey.shade200,
-                offset: Offset(2, 4),
-                blurRadius: 5,
-                spreadRadius: 2)
-          ],
-          gradient: LinearGradient(
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-              colors: [Color(0xfffbb448), Color(0xfff7892b)])),
-      child: Text(
-        'Login',
-        style: TextStyle(fontSize: 20, color: Colors.white),
+    return GestureDetector(
+      onTap: () {
+        _chamaApi(user.text, senha.text);
+      },
+      child: new Container(
+        width: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.symmetric(vertical: 15),
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(5)),
+            boxShadow: <BoxShadow>[
+              BoxShadow(
+                  color: Colors.grey.shade200,
+                  offset: Offset(2, 4),
+                  blurRadius: 5,
+                  spreadRadius: 2)
+            ],
+            gradient: LinearGradient(
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
+                colors: [Color(0xfffbb448), Color(0xfff7892b)])),
+        child: Text(
+          'Login',
+          style: TextStyle(fontSize: 20, color: Colors.white),
+        ),
       ),
     );
   }
@@ -200,33 +210,23 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _title() {
     return RichText(
-      textAlign: TextAlign.center,
-      text: TextSpan(
-          text: 'd',
+        textAlign: TextAlign.center,
+        text: TextSpan(
+          text: 'HUB',
           style: GoogleFonts.portLligatSans(
             textStyle: Theme.of(context).textTheme.display1,
             fontSize: 30,
             fontWeight: FontWeight.w700,
             color: Color(0xffe46b10),
           ),
-          children: [
-            TextSpan(
-              text: 'ev',
-              style: TextStyle(color: Colors.black, fontSize: 30),
-            ),
-            TextSpan(
-              text: 'rnz',
-              style: TextStyle(color: Color(0xffe46b10), fontSize: 30),
-            ),
-          ]),
-    );
+        ));
   }
 
-  Widget _emailPasswordWidget() {
+  Widget _userPasswordWidget() {
     return Column(
       children: <Widget>[
-        _entryField("Email"),
-        _entryField("Senha", isPassword: true),
+        _entryField("Email", user),
+        _entryField("Senha", senha, isPassword: true),
       ],
     );
   }
@@ -253,7 +253,7 @@ class _LoginPageState extends State<LoginPage> {
                   SizedBox(height: height * .2),
                   _title(),
                   SizedBox(height: 50),
-                  _emailPasswordWidget(),
+                  _userPasswordWidget(),
                   SizedBox(height: 20),
                   _submitButton(),
                   Container(
@@ -275,5 +275,19 @@ class _LoginPageState extends State<LoginPage> {
         ],
       ),
     ));
+  }
+
+  void _chamaApi(user, senha) {
+    var api = new apiLogin();
+    api.login(user, senha).then((weather) {
+      setState(() {
+        print('chegamos no sucesso');
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => SignUpPage()));
+      });
+    }, onError: (error) async {
+      print(error);
+      setState(() {});
+    });
   }
 }
