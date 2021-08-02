@@ -118,34 +118,25 @@ class _SignUpPageState extends State<SignUpPage> {
 
   Widget _title() {
     return RichText(
-      textAlign: TextAlign.center,
-      text: TextSpan(
-          text: 'd',
+        textAlign: TextAlign.center,
+        text: TextSpan(
+          text: 'HUB UFPR',
           style: GoogleFonts.portLligatSans(
             textStyle: Theme.of(context).textTheme.display1,
             fontSize: 30,
             fontWeight: FontWeight.w700,
             color: Color(0xffe46b10),
           ),
-          children: [
-            TextSpan(
-              text: 'ev',
-              style: TextStyle(color: Colors.black, fontSize: 30),
-            ),
-            TextSpan(
-              text: 'rnz',
-              style: TextStyle(color: Color(0xffe46b10), fontSize: 30),
-            ),
-          ]),
-    );
+        ));
   }
 
   Widget _emailPasswordWidget() {
     return Column(
       children: <Widget>[
-        _entryField("Username"),
-        _entryField("Email id"),
-        _entryField("Password", isPassword: true),
+        _entryField("GRR"),
+        _entryField("Email"),
+        _entryField("Senha", isPassword: true),
+        _entryField("Conformação de senha", isPassword: true),
       ],
     );
   }
@@ -161,7 +152,7 @@ class _SignUpPageState extends State<SignUpPage> {
             Positioned(
               top: -MediaQuery.of(context).size.height * .15,
               right: -MediaQuery.of(context).size.width * .4,
-            //  child: BezierContainer(),
+              child: BezierContainer(),
             ),
             Container(
               padding: EdgeInsets.symmetric(horizontal: 20),

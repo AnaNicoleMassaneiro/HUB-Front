@@ -225,7 +225,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget _userPasswordWidget() {
     return Column(
       children: <Widget>[
-        _entryField("Email", user),
+        _entryField("Email ou GRR", user),
         _entryField("Senha", senha, isPassword: true),
       ],
     );
