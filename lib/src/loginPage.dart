@@ -200,11 +200,11 @@ class _LoginPageState extends State<LoginPage> {
       setState(() {
         print('chegamos no sucesso');
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => SignUpPage()));
+            context, MaterialPageRoute(builder: (context) => LoginPage()));
       });
     }, onError: (error) async {
-      print(error);
-      setState(() {});
+        print(error);
+        setState(() {});
     });
   }
 }
