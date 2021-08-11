@@ -1,11 +1,13 @@
 import 'dart:convert';
 
+import 'package:flutter_login_signup/src/util/endpoints.dart';
 import 'package:http/http.dart' as http;
 
 class apiRegister {
-  Future<http.Response> create(String name, String user, String senha, String confirmSenha, String grr, String email) async {
+  Future<http.Response> create(String name, String user, String senha,
+      String confirmSenha, String grr, String email) async {
     return http.post(
-      Uri.parse('http://192.168.100.62:5000/api/User/create'),
+      Uri.parse(Endpoints.create),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
