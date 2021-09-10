@@ -208,7 +208,7 @@ class _SignUpPageState extends State<SignUpPage> {
   void _registerUser(nome, user, senha, confirmaSenha, grr, email) async {
     var api = new apiRegister();
     var ret = await api.create(nome, user, senha, confirmaSenha, grr, email);
-    
+
     if (ret.statusCode == 200) {
       setState(() {
         print("Usuário criado!");
