@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "/Users/an20184783/Documents/HUB-Front/build/app/intermediates/incremental/mergeDebugResources/merged.dir/values-mk/values-mk.xml",
+            "outputFile": "/Users/an20184783/Documents/tcc/HUB-Front/build/app/intermediates/incremental/mergeDebugResources/merged.dir/values-mk/values-mk.xml",
             "map": [
                 {
                     "source": "/Users/an20184783/.gradle/caches/transforms-2/files-2.1/6b399c2363bb098ebde1725d903cbda0/core-1.1.0/res/values-mk/values-mk.xml",

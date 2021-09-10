@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "/Users/an20184783/Documents/HUB-Front/build/app/intermediates/incremental/mergeDebugResources/merged.dir/values/values.xml",
+            "outputFile": "/Users/an20184783/Documents/tcc/HUB-Front/build/app/intermediates/incremental/mergeDebugResources/merged.dir/values/values.xml",
             "map": [
                 {
-                    "source": "/Users/an20184783/Documents/HUB-Front/android/app/src/main/res/values/styles.xml",
+                    "source": "/Users/an20184783/Documents/tcc/HUB-Front/android/app/src/main/res/values/styles.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

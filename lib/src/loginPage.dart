@@ -3,6 +3,7 @@ import 'package:flutter_login_signup/src/signup.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'Api/apiLogin.dart';
+import 'ListaScreen.dart';
 import 'Widget/bezierContainer.dart';
 
 class LoginPage extends StatefulWidget {
@@ -196,15 +197,18 @@ class _LoginPageState extends State<LoginPage> {
 
   void _chamaApi(user, senha) {
     var api = new apiLogin();
-    api.login(user, senha).then((weather) {
+     api.login(user, senha).then((response) {
       setState(() {
-        print('chegamos no sucesso');
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => LoginPage()));
+          if (response.statusCode == 200) {
+            Navigator.push(context, MaterialPageRoute(builder: (context) => ListaScreen()));
+          } else {
+            throw Exception('Failed to load album');
+          }
+
+        });
+      }, onError: (error) async {
+          print(error);
+          setState(() {});
       });
-    }, onError: (error) async {
-        print(error);
-        setState(() {});
-    });
   }
 }
