@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 
 import 'Api/apiRegister.dart';
+import 'ListaScreen.dart';
 import 'Widget/bezierContainer.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -207,12 +208,12 @@ class _SignUpPageState extends State<SignUpPage> {
   void _registerUser(nome, user, senha, confirmaSenha, grr, email) async {
     var api = new apiRegister();
     var ret = await api.create(nome, user, senha, confirmaSenha, grr, email);
-
-    if (ret.body == "Usuário criado com sucesso! :)") {
+    
+    if (ret.statusCode == 200) {
       setState(() {
         print("Usuário criado!");
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => LoginPage()));
+            context, MaterialPageRoute(builder: (context) => ListaScreen()));
       });
     }
     else {
