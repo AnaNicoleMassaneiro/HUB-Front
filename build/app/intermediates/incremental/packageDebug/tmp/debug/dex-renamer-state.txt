@@ -1,4 +1,4 @@
-#Fri Sep 10 14:12:49 BRT 2021
+#Fri Sep 10 14:54:08 BRT 2021
 base.0=/Users/an20184783/Documents/tcc/HUB-Front/build/app/intermediates/dex/debug/mergeDexDebug/out/classes.dex
 renamed.0=classes.dex
 path.0=classes.dex

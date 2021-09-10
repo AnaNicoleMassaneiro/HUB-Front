@@ -1,0 +1,26 @@
+[
+    {
+        "merged": "/Users/an20184783/Documents/tcc/HUB-Front/build/google_maps_flutter/intermediates/res/merged/debug/layout/notification_template_part_time.xml",
+        "source": "/Users/an20184783/.gradle/caches/transforms-2/files-2.1/6b399c2363bb098ebde1725d903cbda0/core-1.1.0/res/layout/notification_template_part_time.xml"
+    },
+    {
+        "merged": "/Users/an20184783/Documents/tcc/HUB-Front/build/google_maps_flutter/intermediates/res/merged/debug/layout/notification_template_icon_group.xml",
+        "source": "/Users/an20184783/.gradle/caches/transforms-2/files-2.1/6b399c2363bb098ebde1725d903cbda0/core-1.1.0/res/layout/notification_template_icon_group.xml"
+    },
+    {
+        "merged": "/Users/an20184783/Documents/tcc/HUB-Front/build/google_maps_flutter/intermediates/res/merged/debug/layout/custom_dialog.xml",
+        "source": "/Users/an20184783/.gradle/caches/transforms-2/files-2.1/6b399c2363bb098ebde1725d903cbda0/core-1.1.0/res/layout/custom_dialog.xml"
+    },
+    {
+        "merged": "/Users/an20184783/Documents/tcc/HUB-Front/build/google_maps_flutter/intermediates/res/merged/debug/layout/notification_action_tombstone.xml",
+        "source": "/Users/an20184783/.gradle/caches/transforms-2/files-2.1/6b399c2363bb098ebde1725d903cbda0/core-1.1.0/res/layout/notification_action_tombstone.xml"
+    },
+    {
+        "merged": "/Users/an20184783/Documents/tcc/HUB-Front/build/google_maps_flutter/intermediates/res/merged/debug/layout/notification_template_part_chronometer.xml",
+        "source": "/Users/an20184783/.gradle/caches/transforms-2/files-2.1/6b399c2363bb098ebde1725d903cbda0/core-1.1.0/res/layout/notification_template_part_chronometer.xml"
+    },
+    {
+        "merged": "/Users/an20184783/Documents/tcc/HUB-Front/build/google_maps_flutter/intermediates/res/merged/debug/layout/notification_action.xml",
+        "source": "/Users/an20184783/.gradle/caches/transforms-2/files-2.1/6b399c2363bb098ebde1725d903cbda0/core-1.1.0/res/layout/notification_action.xml"
+    }
+]

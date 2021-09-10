@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../Widget/bezierContainer.dart';
@@ -15,6 +16,7 @@ class _ListaScreenState extends State<ListaScreen> {
   final TextEditingController user = TextEditingController();
   final TextEditingController senha = TextEditingController();
   int _indiceAtual = 0;
+  Position _currentPosition;
 
   Widget _backButton() {
     return InkWell(
@@ -55,18 +57,20 @@ class _ListaScreenState extends State<ListaScreen> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('titulo')
-      ),
-        body: Container(
-          height: height,
-          child: Stack(
+        appBar: AppBar(title: const Text('titulo')),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Positioned(
-                  top: -height * .15,
-                  right: -MediaQuery.of(context).size.width * .4,
-                  child: BezierContainer()),
-              Positioned(top: 40, left: 0, child: _backButton()),
+              if (_currentPosition != null)
+                Text(
+                    "LAT: ${_currentPosition.latitude}, LNG: ${_currentPosition.longitude}"),
+              FlatButton(
+                child: Text("clique aqui"),
+                onPressed: () {
+                  _getCurrentLocation();
+                },
+              ),
             ],
           ),
         ),
@@ -87,6 +91,20 @@ class _ListaScreenState extends State<ListaScreen> {
   void onTabTapped(int index) {
     setState(() {
       _indiceAtual = index;
+    });
+  }
+
+  _getCurrentLocation() {
+    Geolocator.getCurrentPosition(
+            desiredAccuracy: LocationAccuracy.best,
+            forceAndroidLocationManager: true)
+        .then((Position position) {
+      setState(() {
+        print(position);
+        _currentPosition = position;
+      });
+    }).catchError((e) {
+      print(e);
     });
   }
 }
