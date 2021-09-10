@@ -1,7 +1,3 @@
-flutter_login_signup
-2.1
-file:///Users/an20184783/Documents/HUB-Front/
-file:///Users/an20184783/Documents/HUB-Front/lib/
 async
 2.12
 file:///Users/an20184783/Documents/flutter/.pub-cache/hosted/pub.dartlang.org/async-2.6.1/
@@ -114,4 +110,8 @@ flutter_test
 2.12
 file:///Users/an20184783/Documents/flutter/packages/flutter_test/
 file:///Users/an20184783/Documents/flutter/packages/flutter_test/lib/
+flutter_login_signup
+2.1
+file:///Users/an20184783/Documents/tcc/HUB-Front/
+file:///Users/an20184783/Documents/tcc/HUB-Front/lib/
 2
