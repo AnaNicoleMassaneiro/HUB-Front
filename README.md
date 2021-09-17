@@ -1,5 +1,17 @@
-# HUB - FrontEnd
+<div align="center">
+<h1>HUB UFPR - MOBILE</h1>
 
+<a href="https://www.emojione.com/emoji/1f410">
+  <img
+    height="80"
+    width="180"
+    alt="goat"
+    src="https://servicos.nc.ufpr.br/PortalNC/painel/assets/img/logos/logo_ufpr.jpg"
+  />
+</a>
+  <br />
+ </div>
+ 
 ## Instalação / Configuração:
 
 1) Clone o repositório 
