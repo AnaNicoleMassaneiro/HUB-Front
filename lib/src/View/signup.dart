@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_login_signup/src/View/VendedorPage.dart';
 import 'package:flutter_login_signup/src/Widget/bezierContainer.dart';
 import 'package:flutter_login_signup/src/View/loginPage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
-
 import '../Api/apiRegister.dart';
-import 'ListaScreen.dart';
 import '../Widget/bezierContainer.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -24,6 +23,7 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController email = TextEditingController();
   final TextEditingController grr = TextEditingController();
   final TextEditingController confirmaSenha = TextEditingController();
+  bool isChecked = false;
 
   Widget _backButton() {
     return InkWell(
@@ -46,7 +46,7 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
-  Widget _entryField(String title, TextEditingController controllertxt, {bool isPassword = false}) {
+  Widget _entryField(String title, TextEditingController controllertxt, {String placeholder = null, bool isPassword = false}) {
     return Container(
       margin: EdgeInsets.symmetric(vertical: 10),
       child: Column(
@@ -65,6 +65,7 @@ class _SignUpPageState extends State<SignUpPage> {
               decoration: InputDecoration(
                   border: InputBorder.none,
                   fillColor: Color(0xfff3f3f4),
+                  labelText: placeholder,
                   filled: true))
         ],
       ),
@@ -75,7 +76,7 @@ class _SignUpPageState extends State<SignUpPage> {
     return GestureDetector(
       onTap: () {
         _registerUser(
-          nome.text, user.text, senha.text, confirmaSenha.text, grr.text, email.text);
+          nome.text, isChecked, senha.text, confirmaSenha.text, grr.text, email.text);
       },
       child: new Container(
         width: MediaQuery.of(context).size.width,
@@ -153,11 +154,20 @@ class _SignUpPageState extends State<SignUpPage> {
     return Column(
       children: <Widget>[
         _entryField("Nome", nome),
-        _entryField("Nome de usuário", user),
-        _entryField("GRR", grr),
-        _entryField("Email", email),
+        _entryField("GRR", grr, placeholder: "GRRXXXXXXX  "),
+        _entryField("Email", email, placeholder: "email@ufpr.br"),
         _entryField("Senha", senha, isPassword: true),
-        _entryField("Conformação de senha", confirmaSenha, isPassword: true),
+        _entryField("Confirmação de senha", confirmaSenha, isPassword: true),
+        CheckboxListTile(
+          title: Text("Eu sou um Vendedor"),
+          value: isChecked,
+          onChanged: (newValue) {
+            setState(() {
+              isChecked = newValue;
+            });
+          },
+          controlAffinity: ListTileControlAffinity.leading,  //  <-- leading Checkbox
+        ),
       ],
     );
   }
@@ -205,19 +215,41 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
-  void _registerUser(nome, user, senha, confirmaSenha, grr, email) async {
+  void _registerUser(nome, isChecked, senha, confirmaSenha, grr, email) async {
     var api = new apiRegister();
-    var ret = await api.create(nome, user, senha, confirmaSenha, grr, email);
+    var ret = await api.create(nome, isChecked, senha, confirmaSenha, grr, email);
+
+    print(ret.body);
 
     if (ret.statusCode == 200) {
       setState(() {
-        print("Usuário criado!");
+
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => ListaScreen()));
+            context, MaterialPageRoute(builder: (context) => VendedorPage()));
       });
     }
     else {
-      print(ret.body);
+      _showDialog(ret.body);
     }
+  }
+
+  void _showDialog(msg) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: new Text("Falha ao cadastrar usuário"),
+          content: new Text(msg),
+          actions: <Widget>[
+            new FlatButton(
+              child: new Text("Fechar"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }

@@ -1,10 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_login_signup/src/View/ClientePage.dart';
 import 'package:flutter_login_signup/src/View/signup.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../Api/apiLogin.dart';
 import '../Widget/bezierContainer.dart';
-import 'ListaScreen.dart';
+import 'VendedorPage.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key, this.title}) : super(key: key);
@@ -200,8 +203,15 @@ class _LoginPageState extends State<LoginPage> {
     api.login(user, senha).then((response) {
       setState(() {
         if (response.statusCode == 200) {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => ListaScreen()));
+          final trataDados = jsonDecode(response.body).cast<String, dynamic>();
+
+          if (trataDados["user"]["isVendedor"]) {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => VendedorPage()));
+          } else {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => ClientePage()));
+          }
         } else {
           _showDialog();
           throw Exception('Failed to load album');
