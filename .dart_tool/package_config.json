@@ -299,10 +299,10 @@
       "name": "flutter_login_signup",
       "rootUri": "../",
       "packageUri": "lib/",
-      "languageVersion": "2.1"
+      "languageVersion": "2.2"
     }
   ],
-  "generated": "2021-09-10T17:51:57.405076Z",
+  "generated": "2021-09-17T16:02:27.620098Z",
   "generator": "pub",
   "generatorVersion": "2.13.4"
 }

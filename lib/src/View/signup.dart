@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import '../Api/apiRegister.dart';
 import '../Widget/bezierContainer.dart';
+import 'Components/showDialog.dart';
 
 class SignUpPage extends StatefulWidget {
   SignUpPage({Key key, this.title}) : super(key: key);
@@ -229,27 +230,9 @@ class _SignUpPageState extends State<SignUpPage> {
       });
     }
     else {
-      _showDialog(ret.body);
+      DialogWidget({"ret.body"});
     }
   }
 
-  void _showDialog(msg) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: new Text("Falha ao cadastrar usuário"),
-          content: new Text(msg),
-          actions: <Widget>[
-            new FlatButton(
-              child: new Text("Fechar"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
+
 }
