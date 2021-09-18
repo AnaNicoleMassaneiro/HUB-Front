@@ -2,11 +2,12 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_login_signup/src/View/ClientePage.dart';
-import 'package:flutter_login_signup/src/View/signup.dart';
+import 'package:flutter_login_signup/src/View/signupPage.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../Api/apiLogin.dart';
 import '../Widget/bezierContainer.dart';
+import 'Components/showDialog.dart';
 import 'VendedorPage.dart';
 
 class LoginPage extends StatefulWidget {
@@ -213,7 +214,7 @@ class _LoginPageState extends State<LoginPage> {
                 MaterialPageRoute(builder: (context) => ClientePage()));
           }
         } else {
-          _showDialog();
+          loginErrorModal(this.context);
           throw Exception('Failed to load album');
         }
       });
@@ -221,25 +222,5 @@ class _LoginPageState extends State<LoginPage> {
       print(error);
       setState(() {});
     });
-  }
-
-  void _showDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: new Text("Falha ao autenticar"),
-          content: new Text("Usuario ou senhas incorretos"),
-          actions: <Widget>[
-            new FlatButton(
-              child: new Text("Fechar"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
   }
 }

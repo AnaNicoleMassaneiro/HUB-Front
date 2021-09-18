@@ -1,4 +1,5 @@
 class Endpoints {
-  static var create = "http://192.168.0.102:5000/api/User/create";
-  static var autenticate = "http://192.168.0.102:5000/api/User/authenticate";
+  static final host = "https://hubufpr.herokuapp.com/";
+  static var create = host + "api/User/create";
+  static var autenticate = host + "api/User/authenticate";
 }

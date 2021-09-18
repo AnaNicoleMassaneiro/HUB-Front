@@ -1,30 +1,41 @@
 import 'package:flutter/material.dart';
 
-class DialogWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final Map<String, Object> dados = ModalRoute.of(context).settings.arguments;
+void customMessageModal(BuildContext context, final msg) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: new Text("Falha ao cadastrar usuário: "),
+        content: new Text(msg),
+        actions: <Widget>[
+          new TextButton(
+            child: new Text("Fechar"),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
 
-    Future.delayed(Duration.zero, () => ({modal(context, dados["msg"])}));
-  }
-
-  Future<dynamic> modal(BuildContext context, final msg) {
-    return showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: new Text("Falha ao cadastrar usuário"),
-          content: new Text(msg),
-          actions: <Widget>[
-            new FlatButton(
-              child: new Text("Fechar"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
+void loginErrorModal(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: new Text("Falha ao autenticar"),
+        content: new Text("Usuário e/ou senha incorretos. Por favor, tente novamente."),
+        actions: <Widget>[
+          new TextButton(
+            child: new Text("Fechar"),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
 }
