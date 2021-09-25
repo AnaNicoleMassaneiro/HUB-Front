@@ -1,4 +1,0 @@
-#Fri Sep 17 12:25:11 BRT 2021
-base.0=/Users/an20184783/Documents/tcc/HUB-Front/build/app/intermediates/dex/debug/mergeDexDebug/out/classes.dex
-renamed.0=classes.dex
-path.0=classes.dex
