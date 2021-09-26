@@ -9,7 +9,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import '../Api/apiRegister.dart';
 import '../Widget/bezierContainer.dart';
-import 'Components/showDialog.dart';
+
+import 'Components/modalMessages.dart';
+import 'Components/buttons.dart';
+import 'Components/entryFields.dart';
+import 'Components/labelsTexts.dart';
 
 class SignUpPage extends StatefulWidget {
   SignUpPage({Key key, this.title}) : super(key: key);
@@ -29,59 +33,12 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController confirmaSenha = TextEditingController();
   bool isChecked = false;
 
-  Widget _backButton() {
-    return InkWell(
-      onTap: () {
-        Navigator.pop(context);
-      },
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 10),
-        child: Row(
-          children: <Widget>[
-            Container(
-              padding: EdgeInsets.only(left: 0, top: 10, bottom: 10),
-              child: Icon(Icons.keyboard_arrow_left, color: Colors.black),
-            ),
-            Text('Voltar',
-                style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500))
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _entryField(String title, TextEditingController controllertxt, {String placeholder = null, bool isPassword = false}) {
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            title,
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          TextField(
-              controller: controllertxt,
-              obscureText: isPassword,
-              decoration: InputDecoration(
-                  border: InputBorder.none,
-                  fillColor: Color(0xfff3f3f4),
-                  labelText: placeholder,
-                  filled: true))
-        ],
-      ),
-    );
-  }
-
   Widget _submitButton() {
     return GestureDetector(
       onTap: () {
         _registerUser(
-          nome.text, isChecked, senha.text, confirmaSenha.text, grr.text, email.text);
-      },
+        nome.text, isChecked, senha.text, confirmaSenha.text, grr.text, email.text);
+  },
       child: new Container(
         width: MediaQuery.of(context).size.width,
         padding: EdgeInsets.symmetric(vertical: 15),
@@ -107,61 +64,14 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
-  Widget _loginAccountLabel() {
-    return InkWell(
-      onTap: () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => LoginPage()));
-      },
-      child: Container(
-        margin: EdgeInsets.symmetric(vertical: 20),
-        padding: EdgeInsets.all(15),
-        alignment: Alignment.bottomCenter,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'Já tem uma conta?',
-              style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
-            ),
-            SizedBox(
-              width: 10,
-            ),
-            Text(
-              'Login',
-              style: TextStyle(
-                  color: Color(0xfff79c4f),
-                  fontSize: 13,
-                  fontWeight: FontWeight.w600),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _title() {
-    return RichText(
-        textAlign: TextAlign.center,
-        text: TextSpan(
-          text: 'HUB UFPR',
-          style: GoogleFonts.portLligatSans(
-            textStyle: Theme.of(context).textTheme.display1,
-            fontSize: 30,
-            fontWeight: FontWeight.w700,
-            color: Color(0xffe46b10),
-          ),
-        ));
-  }
-
   Widget _emailPasswordWidget() {
     return Column(
       children: <Widget>[
-        _entryField("Nome", nome),
-        _entryField("GRR (Somente números)", grr, placeholder: ""),
-        _entryField("Email", email, placeholder: "email@ufpr.br"),
-        _entryField("Senha", senha, isPassword: true),
-        _entryField("Confirmação de senha", confirmaSenha, isPassword: true),
+        simpleEntryField("Nome", nome),
+        simpleEntryField("GRR (Somente números)", grr),
+        simpleEntryField("Email", email, placeholder: "email@ufpr.br"),
+        simpleEntryField("Senha", senha, isPassword: true),
+        simpleEntryField("Confirmação de senha", confirmaSenha, isPassword: true),
         CheckboxListTile(
           title: Text("Eu sou um Vendedor"),
           value: isChecked,
@@ -197,7 +107,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     SizedBox(height: height * .2),
-                    _title(),
+                    defaultTitle(this.context, "HUB UFPR"),
                     SizedBox(
                       height: 50,
                     ),
@@ -207,12 +117,17 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                     _submitButton(),
                     SizedBox(height: height * .14),
-                    _loginAccountLabel(),
+                    linkedLabel(
+                        this.context,
+                        'Já tem uma conta?',
+                        'Login',
+                        LoginPage()
+                    ),
                   ],
                 ),
               ),
             ),
-            Positioned(top: 40, left: 0, child: _backButton()),
+            Positioned(top: 40, left: 0, child: defaultBackButton(this.context)),
           ],
         ),
       ),
@@ -239,7 +154,12 @@ class _SignUpPageState extends State<SignUpPage> {
       }
     }
     else {
-      customMessageModal(this.context, jsonDecode(ret.body)["msg"]);
+      customMessageModal(
+        this.context,
+        "Falha ao cadastrar usuário: ",
+        jsonDecode(ret.body)["msg"],
+        "Fechar"
+      );
     }
   }
 }

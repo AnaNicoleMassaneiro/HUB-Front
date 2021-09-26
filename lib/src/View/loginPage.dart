@@ -1,14 +1,19 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_login_signup/src/View/ClientePage.dart';
-import 'package:flutter_login_signup/src/View/signupPage.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../Api/apiLogin.dart';
 import '../Widget/bezierContainer.dart';
-import 'Components/showDialog.dart';
+
 import 'VendedorPage.dart';
+import 'ClientePage.dart';
+import 'signupPage.dart';
+
+import 'Components/modalMessages.dart';
+import 'Components/buttons.dart';
+import 'Components/entryFields.dart';
+import 'Components/labelsTexts.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key, this.title}) : super(key: key);
@@ -22,57 +27,10 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController user = TextEditingController();
   final TextEditingController senha = TextEditingController();
 
-  Widget _backButton() {
-    return InkWell(
-      onTap: () {
-        Navigator.pop(context);
-      },
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 10),
-        child: Row(
-          children: <Widget>[
-            Container(
-              padding: EdgeInsets.only(left: 0, top: 10, bottom: 10),
-              child: Icon(Icons.keyboard_arrow_left, color: Colors.black),
-            ),
-            Text('Voltar',
-                style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500))
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _entryField(String title, TextEditingController controllertxt,
-      {bool isPassword = false}) {
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            title,
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          TextField(
-              controller: controllertxt,
-              obscureText: isPassword,
-              decoration: InputDecoration(
-                  border: InputBorder.none,
-                  fillColor: Color(0xfff3f3f4),
-                  filled: true))
-        ],
-      ),
-    );
-  }
-
   Widget _submitButton() {
     return GestureDetector(
       onTap: () {
-        _chamaApi(user.text, senha.text);
+        _authenticate(user.text, senha.text);
       },
       child: new Container(
         width: MediaQuery.of(context).size.width,
@@ -99,58 +57,11 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _createAccountLabel() {
-    return InkWell(
-      onTap: () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => SignUpPage()));
-      },
-      child: Container(
-        margin: EdgeInsets.symmetric(vertical: 20),
-        padding: EdgeInsets.all(15),
-        alignment: Alignment.bottomCenter,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'Não tem uma conta ?',
-              style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
-            ),
-            SizedBox(
-              width: 10,
-            ),
-            Text(
-              'Registrar',
-              style: TextStyle(
-                  color: Color(0xfff79c4f),
-                  fontSize: 13,
-                  fontWeight: FontWeight.w600),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _title() {
-    return RichText(
-        textAlign: TextAlign.center,
-        text: TextSpan(
-          text: 'HUB UFPR',
-          style: GoogleFonts.portLligatSans(
-            textStyle: Theme.of(context).textTheme.display1,
-            fontSize: 30,
-            fontWeight: FontWeight.w700,
-            color: Color(0xffe46b10),
-          ),
-        ));
-  }
-
   Widget _userPasswordWidget() {
     return Column(
       children: <Widget>[
-        _entryField("Email ou GRR", user),
-        _entryField("Senha", senha, isPassword: true),
+        simpleEntryField("Email ou GRR", user),
+        simpleEntryField("Senha", senha, isPassword: true),
       ],
     );
   }
@@ -175,7 +86,7 @@ class _LoginPageState extends State<LoginPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   SizedBox(height: height * .2),
-                  _title(),
+                  defaultTitle(this.context, "HUB UFPR"),
                   SizedBox(height: 50),
                   _userPasswordWidget(),
                   SizedBox(height: 20),
@@ -188,18 +99,23 @@ class _LoginPageState extends State<LoginPage> {
                             fontSize: 14, fontWeight: FontWeight.w500)),
                   ),
                   SizedBox(height: height * .055),
-                  _createAccountLabel(),
+                  linkedLabel(
+                    this.context,
+                    "Não tem uma conta?",
+                    "Registrar",
+                    SignUpPage()
+                  ),
                 ],
               ),
             ),
           ),
-          Positioned(top: 40, left: 0, child: _backButton()),
+          Positioned(top: 40, left: 0, child: defaultBackButton(this.context)),
         ],
       ),
     ));
   }
 
-  void _chamaApi(user, senha) {
+  void _authenticate(user, senha) {
     var api = new apiLogin();
     api.login(user, senha).then((response) {
       setState(() {
@@ -214,7 +130,12 @@ class _LoginPageState extends State<LoginPage> {
                 MaterialPageRoute(builder: (context) => ClientePage()));
           }
         } else {
-          loginErrorModal(this.context);
+          customMessageModal(
+            this.context,
+            "Falha ao autenticar: ",
+            "Usuário e/ou senha incorretos. Por favor, tente novamente.",
+            "Fechar"
+          );
           throw Exception('Failed to load album');
         }
       });
