@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 Widget simpleEntryField(String title, TextEditingController controllertxt,
-    {String placeholder = null, bool isPassword = false}) {
+    {String placeholder = null, bool isPassword = false, TextInputType keyboard = TextInputType.text}) {
   return Container(
     margin: EdgeInsets.symmetric(vertical: 10),
     child: Column(
@@ -21,7 +22,10 @@ Widget simpleEntryField(String title, TextEditingController controllertxt,
                 border: InputBorder.none,
                 fillColor: Color(0xfff3f3f4),
                 labelText: placeholder,
-                filled: true))
+                filled: true
+            ),
+            keyboardType: keyboard,
+        )
       ],
     ),
   );

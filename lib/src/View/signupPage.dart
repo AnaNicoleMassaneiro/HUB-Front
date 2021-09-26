@@ -1,12 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_login_signup/src/View/VendedorPage.dart';
-import 'package:flutter_login_signup/src/View/ClientePage.dart';
+
 import 'package:flutter_login_signup/src/Widget/bezierContainer.dart';
 import 'package:flutter_login_signup/src/View/loginPage.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:http/http.dart' as http;
+
 import '../Api/apiRegister.dart';
 import '../Widget/bezierContainer.dart';
 
@@ -68,7 +66,7 @@ class _SignUpPageState extends State<SignUpPage> {
     return Column(
       children: <Widget>[
         simpleEntryField("Nome", nome),
-        simpleEntryField("GRR (Somente números)", grr),
+        simpleEntryField("GRR", grr, keyboard: TextInputType.number),
         simpleEntryField("Email", email, placeholder: "email@ufpr.br"),
         simpleEntryField("Senha", senha, isPassword: true),
         simpleEntryField("Confirmação de senha", confirmaSenha, isPassword: true),
@@ -140,18 +138,16 @@ class _SignUpPageState extends State<SignUpPage> {
         nome, isChecked, senha, confirmaSenha, grr, email);
 
     if (ret.statusCode == 200) {
-      if (isChecked) {
-        setState(() {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => VendedorPage()));
-        });
-      }
-      else {
-        setState(() {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => ClientePage()));
-        });
-      }
+      Navigator.push(
+        context, MaterialPageRoute(builder: (context) => LoginPage())
+      );
+
+      customMessageModal(
+          this.context,
+          "Sucesso!",
+          "Seu cadastro foi realizado com sucesso. Agora você já pode efetuar seu login.",
+          "OK"
+      );
     }
     else {
       customMessageModal(
