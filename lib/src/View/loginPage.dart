@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import '../Api/apiLogin.dart';
 import '../Widget/bezierContainer.dart';
@@ -14,6 +13,7 @@ import 'Components/modalMessages.dart';
 import 'Components/buttons.dart';
 import 'Components/entryFields.dart';
 import 'Components/labelsTexts.dart';
+import '../Validations/formFieldValidations.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key key, this.title}) : super(key: key);
@@ -27,10 +27,13 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController user = TextEditingController();
   final TextEditingController senha = TextEditingController();
 
+  final _loginFormKey = GlobalKey<FormState>();
+
   Widget _submitButton() {
-    return GestureDetector(
-      onTap: () {
-        _authenticate(user.text, senha.text);
+    return ElevatedButton(
+      onPressed: () {
+        if (_loginFormKey.currentState.validate())
+          _authenticate(user.text, senha.text);
       },
       child: new Container(
         width: MediaQuery.of(context).size.width,
@@ -60,8 +63,8 @@ class _LoginPageState extends State<LoginPage> {
   Widget _userPasswordWidget() {
     return Column(
       children: <Widget>[
-        simpleEntryField("Email ou GRR", user),
-        simpleEntryField("Senha", senha, isPassword: true),
+        entryFieldValidation("Email ou GRR", user, validateUsername),
+        entryFieldValidation("Senha", senha, validatePassword, isPassword: true),
       ],
     );
   }
@@ -88,9 +91,14 @@ class _LoginPageState extends State<LoginPage> {
                   SizedBox(height: height * .2),
                   defaultTitle(this.context, "HUB UFPR"),
                   SizedBox(height: 50),
-                  _userPasswordWidget(),
-                  SizedBox(height: 20),
+                  Form(
+                    key: _loginFormKey,
+                    child: (
+                        _userPasswordWidget()
+                    )
+                  ),
                   _submitButton(),
+                  SizedBox(height: 20),
                   Container(
                     padding: EdgeInsets.symmetric(vertical: 10),
                     alignment: Alignment.centerRight,
