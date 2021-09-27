@@ -12,6 +12,7 @@ import 'Components/modalMessages.dart';
 import 'Components/buttons.dart';
 import 'Components/entryFields.dart';
 import 'Components/labelsTexts.dart';
+import '../Validations/formFieldValidations.dart';
 
 class SignUpPage extends StatefulWidget {
   SignUpPage({Key key, this.title}) : super(key: key);
@@ -31,45 +32,93 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController confirmaSenha = TextEditingController();
   bool isChecked = false;
 
+  final _formKey = GlobalKey<FormState>();
+
+  Widget passwordField() {
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            "Senha",
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          TextFormField(
+            validator: (value) {
+              var ret = validatePassword(value);
+              if (ret != null)
+                return ret;
+              else {
+                if (confirmaSenha.text == null || confirmaSenha.text.isEmpty)
+                  return null;
+                if (value.compareTo(confirmaSenha.text) == 0)
+                  return null;
+                else return "Senhas não coincidem!";
+              }
+            },
+            controller: senha,
+            obscureText: true,
+            decoration: InputDecoration(
+                border: InputBorder.none,
+                fillColor: Color(0xfff3f3f4),
+                filled: true
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
   Widget _submitButton() {
-    return GestureDetector(
-      onTap: () {
-        _registerUser(
-        nome.text, isChecked, senha.text, confirmaSenha.text, grr.text, email.text);
-  },
-      child: new Container(
-        width: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.symmetric(vertical: 15),
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(5)),
-            boxShadow: <BoxShadow>[
-              BoxShadow(
-                  color: Colors.grey.shade200,
-                  offset: Offset(2, 4),
-                  blurRadius: 5,
-                  spreadRadius: 2)
-            ],
-            gradient: LinearGradient(
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
-                colors: [Color(0xfffbb448), Color(0xfff7892b)])),
-        child: Text(
-          'Registrar',
-          style: TextStyle(fontSize: 20, color: Colors.white),
-        ),
-      )
+    return ElevatedButton(
+        onPressed: () {
+          if (_formKey.currentState.validate()) {
+            _registerUser(
+                nome.text,
+                isChecked,
+                senha.text,
+                confirmaSenha.text,
+                grr.text,
+                email.text);
+          }
+        },
+        child: new Container(
+          width: MediaQuery.of(context).size.width,
+          padding: EdgeInsets.symmetric(vertical: 15),
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(5)),
+              boxShadow: <BoxShadow>[
+                BoxShadow(
+                    color: Colors.grey.shade200,
+                    offset: Offset(2, 4),
+                    blurRadius: 5,
+                    spreadRadius: 2)
+              ],
+              gradient: LinearGradient(
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                  colors: [Color(0xfffbb448), Color(0xfff7892b)])),
+          child: Text(
+            'Registrar',
+            style: TextStyle(fontSize: 20, color: Colors.white),
+          ),
+        )
     );
   }
 
   Widget _emailPasswordWidget() {
     return Column(
       children: <Widget>[
-        simpleEntryField("Nome", nome),
-        simpleEntryField("GRR", grr, keyboard: TextInputType.number),
-        simpleEntryField("Email", email, placeholder: "email@ufpr.br"),
-        simpleEntryField("Senha", senha, isPassword: true),
-        simpleEntryField("Confirmação de senha", confirmaSenha, isPassword: true),
+        entryFieldValidation("Nome", nome, validateName),
+        entryFieldValidation("GRR", grr, validateGRR, keyboard: TextInputType.number),
+        entryFieldValidation("Email", email, validateEmail, placeholder: "email@ufpr.br"),
+        passwordField(),
+        entryFieldValidation("Confirmação de senha", confirmaSenha, validatePassword, isPassword: true),
         CheckboxListTile(
           title: Text("Eu sou um Vendedor"),
           value: isChecked,
@@ -109,7 +158,10 @@ class _SignUpPageState extends State<SignUpPage> {
                     SizedBox(
                       height: 50,
                     ),
-                    _emailPasswordWidget(),
+                    Form(
+                      key: _formKey,
+                      child: _emailPasswordWidget(),
+                    ),
                     SizedBox(
                       height: 20,
                     ),
@@ -139,7 +191,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
     if (ret.statusCode == 200) {
       Navigator.push(
-        context, MaterialPageRoute(builder: (context) => LoginPage())
+          context, MaterialPageRoute(builder: (context) => LoginPage())
       );
 
       customMessageModal(
@@ -151,10 +203,10 @@ class _SignUpPageState extends State<SignUpPage> {
     }
     else {
       customMessageModal(
-        this.context,
-        "Falha ao cadastrar usuário: ",
-        jsonDecode(ret.body)["msg"],
-        "Fechar"
+          this.context,
+          "Falha ao cadastrar usuário: ",
+          jsonDecode(ret.body)["msg"],
+          "Fechar"
       );
     }
   }
