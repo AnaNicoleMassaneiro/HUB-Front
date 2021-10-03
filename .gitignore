@@ -71,3 +71,16 @@
 
 # OTHER FILES
 .flutter-plugins-dependencies
+
+# GRADLE FILES
+gradlew*
+local.properties
+**/gc.properties
+cache.properties
+executionHistory*
+last-build*
+fileHashes*
+buildOutputCleanup*
+outputFiles.bin
+checksums.lock
+gradle-wrapper*
