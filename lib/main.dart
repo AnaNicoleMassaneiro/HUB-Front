@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'src/View/welcomePage.dart';
+import 'src/View/welcome_page.dart';
 
 void main() => runApp(MyApp());
 
@@ -13,13 +13,15 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-         primarySwatch: Colors.blue,
-         textTheme:GoogleFonts.latoTextTheme(textTheme).copyWith(
-           bodyText1: GoogleFonts.montserrat(textStyle: textTheme.bodyText1),
-         ),
+        primarySwatch: Colors.blue,
+        textTheme: GoogleFonts.latoTextTheme(textTheme).copyWith(
+          bodyText1: GoogleFonts.montserrat(textStyle: textTheme.bodyText1),
+        ),
       ),
       debugShowCheckedModeBanner: false,
-      home: WelcomePage(),
+      home: WelcomePage(
+        title: '',
+      ),
     );
   }
 }
