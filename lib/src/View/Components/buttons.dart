@@ -10,10 +10,10 @@ Widget defaultBackButton(BuildContext context) {
       child: Row(
         children: <Widget>[
           Container(
-            padding: EdgeInsets.only(left: 0, top: 10, bottom: 10),
+            padding: const EdgeInsets.only(left: 0, top: 10, bottom: 10),
             child: Icon(Icons.keyboard_arrow_left, color: Colors.black),
           ),
-          Text('Voltar',
+          const Text('Voltar',
               style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500))
         ],
       ),
@@ -29,7 +29,7 @@ Widget submitButtonWhite(BuildContext context, String text, Widget target) {
     },
     child: Container(
       width: MediaQuery.of(context).size.width,
-      padding: EdgeInsets.symmetric(vertical: 13),
+      padding: const EdgeInsets.symmetric(vertical: 13),
       alignment: Alignment.center,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(5)),
