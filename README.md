@@ -1,16 +1,30 @@
-# hub
+<div align="center">
+<h1>HUB UFPR - MOBILE</h1>
 
-A new Flutter project.
+<a href="https://www.emojione.com/emoji/1f410">
+  <img
+    height="80"
+    width="180"
+    alt="goat"
+    src="https://servicos.nc.ufpr.br/PortalNC/painel/assets/img/logos/logo_ufpr.jpg"
+  />
+</a>
+  <br />
+ </div>
 
-## Getting Started
+## Instalação / Configuração:
 
-This project is a starting point for a Flutter application.
+1) Clone o repositório
+   git clone https://github.com/AnaNicoleMassaneiro/HUB-Front.git
 
-A few resources to get you started if this is your first Flutter project:
+2) Abra o arquivo do projeto (vscode ou android studio)
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+3) instale as dependências do flutter no vscode (https://flutter.dev/docs/get-started/install)
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+4) rode o projeto
+
+### Técnologias utilizadas
+Flutter
+
+### Desenvolvido por:
+Ana Nicole Massaneiro, Dandi Teoa e Matheus Augusto de Moraes Ribeiro

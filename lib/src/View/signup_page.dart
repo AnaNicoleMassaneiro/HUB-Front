@@ -81,25 +81,25 @@ class _SignUpPageState extends State<SignUpPage> {
                 grr.text, email.text);
           }
         },
-        child: new Container(
+        child: Container(
           width: MediaQuery.of(context).size.width,
-          padding: EdgeInsets.symmetric(vertical: 15),
+          padding: const EdgeInsets.symmetric(vertical: 15),
           alignment: Alignment.center,
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(5)),
+              borderRadius: const BorderRadius.all(Radius.circular(5)),
               boxShadow: <BoxShadow>[
                 BoxShadow(
                     color: Colors.grey.shade200,
-                    offset: Offset(2, 4),
+                    offset: const Offset(2, 4),
                     blurRadius: 5,
                     spreadRadius: 2)
               ],
-              gradient: LinearGradient(
+              gradient: const LinearGradient(
                   begin: Alignment.centerLeft,
                   end: Alignment.centerRight,
                   colors: [Color(0xfffbb448), Color(0xfff7892b)])),
-          child: Text(
-            'Registrar',
+          child: const Text(
+            "Registrar",
             style: TextStyle(fontSize: 20, color: Colors.white),
           ),
         ));
@@ -181,11 +181,12 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   void _registerUser(nome, isChecked, senha, confirmaSenha, grr, email) async {
-    var api = new apiRegister();
+    var api = apiRegister();
     var ret =
         await api.create(nome, isChecked, senha, confirmaSenha, grr, email);
 
     if (ret.statusCode == 200) {
+
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => LoginPage(title: '',)));
 
