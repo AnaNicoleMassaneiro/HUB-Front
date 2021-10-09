@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:flutter_login_signup/src/util/endpoints.dart';
+import 'package:hub/src/util/endpoints.dart';
 import 'package:http/http.dart' as http;
 
 class apiRegister {

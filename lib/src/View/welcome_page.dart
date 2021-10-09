@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_login_signup/src/View/loginPage.dart';
-import 'package:flutter_login_signup/src/View/signupPage.dart';
+import 'package:hub/src/View/login_page.dart';
+import 'package:hub/src/View/signup_page.dart';
 
-import 'Components/labelsTexts.dart';
+import 'Components/labels_text.dart';
 import 'Components/buttons.dart';
 
 class WelcomePage extends StatefulWidget {
-  WelcomePage({Key key, this.title}) : super(key: key);
+  WelcomePage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
@@ -43,11 +43,21 @@ class _WelcomePageState extends State<WelcomePage> {
               SizedBox(
                 height: 80,
               ),
-              submitButtonWhite(this.context, "Login", LoginPage()),
+              submitButtonWhite(
+                  this.context,
+                  "Login",
+                  LoginPage(
+                    title: '',
+                  )),
               SizedBox(
                 height: 20,
               ),
-              submitButtonBorder(this.context, "Registrar", SignUpPage()),
+              submitButtonBorder(
+                  this.context,
+                  "Registrar",
+                  SignUpPage(
+                    title: '',
+                  )),
               SizedBox(
                 height: 20,
               ),

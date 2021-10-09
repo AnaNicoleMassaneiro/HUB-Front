@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 Widget simpleEntryField(String title, TextEditingController controllertxt,
-    {String placeholder, bool isPassword = false, TextInputType keyboard = TextInputType.text}) {
+    {String? placeholder, bool isPassword = false, TextInputType keyboard = TextInputType.text}) {
   return Container(
     margin: EdgeInsets.symmetric(vertical: 10),
     child: Column(
@@ -32,7 +32,7 @@ Widget simpleEntryField(String title, TextEditingController controllertxt,
 }
 
 Widget entryFieldValidation(String title, TextEditingController controllerTxt, Function validation,
-    {String placeholder, bool isPassword = false, TextInputType keyboard = TextInputType.text,
+    {required String placeholder, bool isPassword = false, TextInputType keyboard = TextInputType.text,
     }) {
   return Container(
     margin: EdgeInsets.symmetric(vertical: 10),

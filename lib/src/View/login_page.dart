@@ -3,20 +3,20 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 import '../Api/apiLogin.dart';
-import '../Widget/bezierContainer.dart';
+import '../Widget/bezier_container.dart';
 
-import 'VendedorPage.dart';
-import 'ClientePage.dart';
-import 'signupPage.dart';
+import 'vendedor_page.dart';
+import 'cliente_page.dart';
+import 'signup_page.dart';
 
-import 'Components/modalMessages.dart';
+import 'Components/modal_message.dart';
 import 'Components/buttons.dart';
-import 'Components/entryFields.dart';
-import 'Components/labelsTexts.dart';
-import '../Validations/formFieldValidations.dart';
+import 'Components/entry_fields.dart';
+import 'Components/labels_text.dart';
+import '../Validations/form_field_validations.dart';
 
 class LoginPage extends StatefulWidget {
-  LoginPage({Key key, this.title}) : super(key: key);
+  LoginPage({Key? key, required this.title}) : super(key: key);
   final String title;
 
   @override
@@ -32,7 +32,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget _submitButton() {
     return ElevatedButton(
       onPressed: () {
-        if (_loginFormKey.currentState.validate())
+        if (_loginFormKey.currentState!.validate())
           _authenticate(user.text, senha.text);
       },
       child: new Container(
@@ -63,8 +63,9 @@ class _LoginPageState extends State<LoginPage> {
   Widget _userPasswordWidget() {
     return Column(
       children: <Widget>[
-        entryFieldValidation("Email ou GRR", user, validateUsername),
-        entryFieldValidation("Senha", senha, validatePassword, isPassword: true),
+        entryFieldValidation("Email ou GRR", user, validateUsername, placeholder: ''),
+        entryFieldValidation("Senha", senha, validatePassword,
+            isPassword: true, placeholder: ''),
       ],
     );
   }
@@ -91,12 +92,7 @@ class _LoginPageState extends State<LoginPage> {
                   SizedBox(height: height * .2),
                   defaultTitle(this.context, "HUB UFPR"),
                   SizedBox(height: 50),
-                  Form(
-                    key: _loginFormKey,
-                    child: (
-                        _userPasswordWidget()
-                    )
-                  ),
+                  Form(key: _loginFormKey, child: (_userPasswordWidget())),
                   _submitButton(),
                   SizedBox(height: 20),
                   Container(
@@ -108,11 +104,12 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   SizedBox(height: height * .055),
                   linkedLabel(
-                    this.context,
-                    "Não tem uma conta?",
-                    "Registrar",
-                    SignUpPage()
-                  ),
+                      this.context,
+                      "Não tem uma conta?",
+                      "Registrar",
+                      SignUpPage(
+                        title: '',
+                      )),
                 ],
               ),
             ),
@@ -131,19 +128,26 @@ class _LoginPageState extends State<LoginPage> {
           final trataDados = jsonDecode(response.body).cast<String, dynamic>();
 
           if (trataDados["user"]["isVendedor"]) {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => VendedorPage()));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => VendedorPage(
+                          title: '',
+                        )));
           } else {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => ClientePage()));
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => ClientePage(
+                          title: '',
+                        )));
           }
         } else {
           customMessageModal(
-            this.context,
-            "Falha ao autenticar: ",
-            "Usuário e/ou senha incorretos. Por favor, tente novamente.",
-            "Fechar"
-          );
+              this.context,
+              "Falha ao autenticar: ",
+              "Usuário e/ou senha incorretos. Por favor, tente novamente.",
+              "Fechar");
           throw Exception('Failed to load album');
         }
       });

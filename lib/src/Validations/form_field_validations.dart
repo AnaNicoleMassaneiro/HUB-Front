@@ -1,4 +1,4 @@
-String validateGRR(String grr){
+String? validateGRR(String grr){
   RegExp regex = new RegExp(r"^[0-9]{8}$");
   if (grr == null || grr.isEmpty)
     return "Preencha seu GRR.!";
@@ -7,7 +7,7 @@ String validateGRR(String grr){
   else return null;
 }
 
-String validateEmail(String email){
+String? validateEmail(String email){
   RegExp regex = new RegExp(
       r"^[\w!#$%&'*+\-/=?^_`{|}~]+(\.[\w!#$%&'*+\-/=?^_`{|}~]+)*@ufpr\.br$");
   RegExp regexDomain = new RegExp(r".*@ufpr.br");
@@ -21,13 +21,13 @@ String validateEmail(String email){
   else return null;
 }
 
-String validateName(String name){
+String? validateName(String name){
   if (name == null || name.isEmpty)
     return "Preencha seu nome.";
   else return null;
 }
 
-String validatePassword(String pwd){
+String? validatePassword(String pwd){
   if (pwd == null || pwd.isEmpty)
     return "Preencha a sua senha.";
   else if (pwd.length < 6)
@@ -35,7 +35,7 @@ String validatePassword(String pwd){
   else return null;
 }
 
-String validateUsername(String username){
+String? validateUsername(String username){
   if (validateEmail(username) == null || validateGRR(username) == null)
     return null;
   else return "Preencha usando seu GRR ou e-mail @ufpr.br.";

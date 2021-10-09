@@ -1,25 +1,25 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-class ClientePage extends StatefulWidget {
-  ClientePage({Key key, this.title}) : super(key: key);
+import '../Widget/bezier_container.dart';
+
+class VendedorPage extends StatefulWidget {
+  VendedorPage({Key? key, required this.title}) : super(key: key);
   final String title;
 
   @override
-  _ClientePageState createState() => _ClientePageState();
+  _VendedorPageState createState() => _VendedorPageState();
 }
 
-class _ClientePageState extends State<ClientePage> {
+class _VendedorPageState extends State<VendedorPage> {
   final TextEditingController user = TextEditingController();
   final TextEditingController senha = TextEditingController();
   int _indiceAtual = 0;
   Completer<GoogleMapController> _controller = Completer();
   static const LatLng _center = const LatLng(45.521563, -122.677433);
-
-  Position _currentPosition;
 
   void _onMapCreated(GoogleMapController controller) {
     _controller.complete(controller);
@@ -30,7 +30,7 @@ class _ClientePageState extends State<ClientePage> {
     final height = MediaQuery.of(context).size.height;
 
     return Scaffold(
-        appBar: AppBar(title: const Text('ENTRAMOS NO CIENTE')),
+        appBar: AppBar(title: const Text('ENTRAMOS NO VENDEDOR')),
         body: GoogleMap(
           onMapCreated: _onMapCreated,
           initialCameraPosition: CameraPosition(
@@ -43,11 +43,11 @@ class _ClientePageState extends State<ClientePage> {
           onTap: onTabTapped,
           items: [
             BottomNavigationBarItem(
-                icon: Icon(Icons.person), label: "localizacao"),
+                icon: Icon(Icons.person), title: Text("localizacao")),
             BottomNavigationBarItem(
-                icon: Icon(Icons.shopping_basket), label: "Meus pedidos"),
+                icon: Icon(Icons.shopping_basket), title: Text("Meus pedidos")),
             BottomNavigationBarItem(
-                icon: Icon(Icons.favorite), label: "Favoritos"),
+                icon: Icon(Icons.favorite), title: Text("Favoritos")),
           ],
         ));
   }
@@ -58,4 +58,3 @@ class _ClientePageState extends State<ClientePage> {
     });
   }
 }
-

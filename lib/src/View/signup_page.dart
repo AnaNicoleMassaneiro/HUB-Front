@@ -2,20 +2,20 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
-import 'package:flutter_login_signup/src/Widget/bezierContainer.dart';
-import 'package:flutter_login_signup/src/View/loginPage.dart';
+import 'package:hub/src/Widget/bezier_container.dart';
+import 'package:hub/src/View/login_page.dart';
 
 import '../Api/apiRegister.dart';
-import '../Widget/bezierContainer.dart';
+import '../Widget/bezier_container.dart';
 
-import 'Components/modalMessages.dart';
+import 'Components/modal_message.dart';
 import 'Components/buttons.dart';
-import 'Components/entryFields.dart';
-import 'Components/labelsTexts.dart';
-import '../Validations/formFieldValidations.dart';
+import 'Components/entry_fields.dart';
+import 'Components/labels_text.dart';
+import '../Validations/form_field_validations.dart';
 
 class SignUpPage extends StatefulWidget {
-  SignUpPage({Key key, this.title}) : super(key: key);
+  SignUpPage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
@@ -49,7 +49,7 @@ class _SignUpPageState extends State<SignUpPage> {
           ),
           TextFormField(
             validator: (value) {
-              var ret = validatePassword(value);
+              var ret = validatePassword(value!);
               if (ret != null)
                 return ret;
               else {
@@ -57,7 +57,8 @@ class _SignUpPageState extends State<SignUpPage> {
                   return null;
                 if (value.compareTo(confirmaSenha.text) == 0)
                   return null;
-                else return "Senhas não coincidem!";
+                else
+                  return "Senhas não coincidem!";
               }
             },
             controller: senha,
@@ -65,8 +66,7 @@ class _SignUpPageState extends State<SignUpPage> {
             decoration: InputDecoration(
                 border: InputBorder.none,
                 fillColor: Color(0xfff3f3f4),
-                filled: true
-            ),
+                filled: true),
           )
         ],
       ),
@@ -76,58 +76,57 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget _submitButton() {
     return ElevatedButton(
         onPressed: () {
-          if (_formKey.currentState.validate()) {
-            _registerUser(
-                nome.text,
-                isChecked,
-                senha.text,
-                confirmaSenha.text,
-                grr.text,
-                email.text);
+          if (_formKey.currentState!.validate()) {
+            _registerUser(nome.text, isChecked, senha.text, confirmaSenha.text,
+                grr.text, email.text);
           }
         },
-        child: new Container(
+        child: Container(
           width: MediaQuery.of(context).size.width,
-          padding: EdgeInsets.symmetric(vertical: 15),
+          padding: const EdgeInsets.symmetric(vertical: 15),
           alignment: Alignment.center,
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(5)),
+              borderRadius: const BorderRadius.all(Radius.circular(5)),
               boxShadow: <BoxShadow>[
                 BoxShadow(
                     color: Colors.grey.shade200,
-                    offset: Offset(2, 4),
+                    offset: const Offset(2, 4),
                     blurRadius: 5,
                     spreadRadius: 2)
               ],
-              gradient: LinearGradient(
+              gradient: const LinearGradient(
                   begin: Alignment.centerLeft,
                   end: Alignment.centerRight,
                   colors: [Color(0xfffbb448), Color(0xfff7892b)])),
-          child: Text(
-            'Registrar',
+          child: const Text(
+            "Registrar",
             style: TextStyle(fontSize: 20, color: Colors.white),
           ),
-        )
-    );
+        ));
   }
 
   Widget _emailPasswordWidget() {
     return Column(
       children: <Widget>[
-        entryFieldValidation("Nome", nome, validateName),
-        entryFieldValidation("GRR", grr, validateGRR, keyboard: TextInputType.number),
-        entryFieldValidation("Email", email, validateEmail, placeholder: "email@ufpr.br"),
+        entryFieldValidation("Nome", nome, validateName, placeholder: ''),
+        entryFieldValidation("GRR", grr, validateGRR,
+            keyboard: TextInputType.number, placeholder: ''),
+        entryFieldValidation("Email", email, validateEmail,
+            placeholder: "email@ufpr.br"),
         passwordField(),
-        entryFieldValidation("Confirmação de senha", confirmaSenha, validatePassword, isPassword: true),
+        entryFieldValidation(
+            "Confirmação de senha", confirmaSenha, validatePassword,
+            isPassword: true, placeholder: ''),
         CheckboxListTile(
           title: Text("Eu sou um Vendedor"),
           value: isChecked,
           onChanged: (newValue) {
             setState(() {
-              isChecked = newValue;
+              isChecked = newValue!;
             });
           },
-          controlAffinity: ListTileControlAffinity.leading,  //  <-- leading Checkbox
+          controlAffinity:
+              ListTileControlAffinity.leading, //  <-- leading Checkbox
         ),
       ],
     );
@@ -167,17 +166,14 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                     _submitButton(),
                     SizedBox(height: height * .14),
-                    linkedLabel(
-                        this.context,
-                        'Já tem uma conta?',
-                        'Login',
-                        LoginPage()
-                    ),
+                    linkedLabel(this.context, 'Já tem uma conta?', 'Login',
+                        LoginPage(title: '',)),
                   ],
                 ),
               ),
             ),
-            Positioned(top: 40, left: 0, child: defaultBackButton(this.context)),
+            Positioned(
+                top: 40, left: 0, child: defaultBackButton(this.context)),
           ],
         ),
       ),
@@ -185,29 +181,23 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   void _registerUser(nome, isChecked, senha, confirmaSenha, grr, email) async {
-    var api = new apiRegister();
-    var ret = await api.create(
-        nome, isChecked, senha, confirmaSenha, grr, email);
+    var api = apiRegister();
+    var ret =
+        await api.create(nome, isChecked, senha, confirmaSenha, grr, email);
 
     if (ret.statusCode == 200) {
+
       Navigator.push(
-          context, MaterialPageRoute(builder: (context) => LoginPage())
-      );
+          context, MaterialPageRoute(builder: (context) => LoginPage(title: '',)));
 
       customMessageModal(
           this.context,
           "Sucesso!",
           "Seu cadastro foi realizado com sucesso. Agora você já pode efetuar seu login.",
-          "OK"
-      );
-    }
-    else {
-      customMessageModal(
-          this.context,
-          "Falha ao cadastrar usuário: ",
-          jsonDecode(ret.body)["msg"],
-          "Fechar"
-      );
+          "OK");
+    } else {
+      customMessageModal(this.context, "Falha ao cadastrar usuário: ",
+          jsonDecode(ret.body)["msg"], "Fechar");
     }
   }
 }
