@@ -118,7 +118,7 @@ class _SignUpPageState extends State<SignUpPage> {
             "Confirmação de senha", confirmaSenha, validatePassword,
             isPassword: true, placeholder: ''),
         CheckboxListTile(
-          title: Text("Eu sou um Vendedor"),
+          title: const Text("Eu sou um Vendedor"),
           value: isChecked,
           onChanged: (newValue) {
             setState(() {
@@ -136,7 +136,7 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
-      body: Container(
+      body: SizedBox(
         height: height,
         child: Stack(
           children: <Widget>[
@@ -154,20 +154,25 @@ class _SignUpPageState extends State<SignUpPage> {
                   children: <Widget>[
                     SizedBox(height: height * .2),
                     defaultTitle(this.context, "HUB UFPR"),
-                    SizedBox(
+                    const SizedBox(
                       height: 50,
                     ),
                     Form(
                       key: _formKey,
                       child: _emailPasswordWidget(),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     _submitButton(),
                     SizedBox(height: height * .14),
-                    linkedLabel(this.context, 'Já tem uma conta?', 'Login',
-                        LoginPage(title: '',)),
+                    linkedLabel(
+                        this.context,
+                        'Já tem uma conta?',
+                        'Login',
+                        LoginPage(
+                          title: '',
+                        )),
                   ],
                 ),
               ),
@@ -186,17 +191,20 @@ class _SignUpPageState extends State<SignUpPage> {
         await api.create(nome, isChecked, senha, confirmaSenha, grr, email);
 
     if (ret.statusCode == 200) {
-
       Navigator.push(
-          context, MaterialPageRoute(builder: (context) => LoginPage(title: '',)));
+          context,
+          MaterialPageRoute(
+              builder: (context) => LoginPage(
+                    title: '',
+                  )));
 
       customMessageModal(
-          this.context,
+          context,
           "Sucesso!",
           "Seu cadastro foi realizado com sucesso. Agora você já pode efetuar seu login.",
           "OK");
     } else {
-      customMessageModal(this.context, "Falha ao cadastrar usuário: ",
+      customMessageModal(context, "Falha ao cadastrar usuário: ",
           jsonDecode(ret.body)["msg"], "Fechar");
     }
   }
