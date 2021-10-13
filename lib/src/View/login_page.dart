@@ -35,12 +35,12 @@ class _LoginPageState extends State<LoginPage> {
         if (_loginFormKey.currentState!.validate())
           _authenticate(user.text, senha.text);
       },
-      child: new Container(
+      child: Container(
         width: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.symmetric(vertical: 15),
+        padding: const EdgeInsets.symmetric(vertical: 15),
         alignment: Alignment.center,
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(5)),
+            borderRadius: const BorderRadius.all(Radius.circular(5)),
             boxShadow: <BoxShadow>[
               BoxShadow(
                   color: Colors.grey.shade200,
@@ -48,11 +48,11 @@ class _LoginPageState extends State<LoginPage> {
                   blurRadius: 5,
                   spreadRadius: 2)
             ],
-            gradient: LinearGradient(
+            gradient: const LinearGradient(
                 begin: Alignment.centerLeft,
                 end: Alignment.centerRight,
                 colors: [Color(0xfffbb448), Color(0xfff7892b)])),
-        child: Text(
+        child: const Text(
           'Login',
           style: TextStyle(fontSize: 20, color: Colors.white),
         ),
@@ -63,7 +63,8 @@ class _LoginPageState extends State<LoginPage> {
   Widget _userPasswordWidget() {
     return Column(
       children: <Widget>[
-        entryFieldValidation("Email ou GRR", user, validateUsername, placeholder: ''),
+        entryFieldValidation("Email ou GRR", user, validateUsername,
+            placeholder: ''),
         entryFieldValidation("Senha", senha, validatePassword,
             isPassword: true, placeholder: ''),
       ],
@@ -74,16 +75,16 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
-        body: Container(
+        body: SizedBox(
       height: height,
       child: Stack(
         children: <Widget>[
           Positioned(
               top: -height * .15,
               right: -MediaQuery.of(context).size.width * .4,
-              child: BezierContainer()),
+              child: const BezierContainer()),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -94,11 +95,11 @@ class _LoginPageState extends State<LoginPage> {
                   SizedBox(height: 50),
                   Form(key: _loginFormKey, child: (_userPasswordWidget())),
                   _submitButton(),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   Container(
-                    padding: EdgeInsets.symmetric(vertical: 10),
+                    padding: const EdgeInsets.symmetric(vertical: 10),
                     alignment: Alignment.centerRight,
-                    child: Text('Esqueceu a senha?',
+                    child: const Text('Esqueceu a senha?',
                         style: TextStyle(
                             fontSize: 14, fontWeight: FontWeight.w500)),
                   ),
@@ -131,20 +132,20 @@ class _LoginPageState extends State<LoginPage> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => VendedorPage(
+                    builder: (context) => const VendedorPage(
                           title: '',
                         )));
           } else {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => ClientePage(
+                    builder: (context) => const ClientePage(
                           title: '',
                         )));
           }
         } else {
           customMessageModal(
-              this.context,
+              context,
               "Falha ao autenticar: ",
               "Usuário e/ou senha incorretos. Por favor, tente novamente.",
               "Fechar");
