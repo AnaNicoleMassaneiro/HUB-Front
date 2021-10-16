@@ -13,16 +13,26 @@ class MeusProdutosPage extends StatefulWidget {
 
 class _MeusProdutosPageState extends State<MeusProdutosPage> {
   late final String texto;
-  final List<MeusProdutos> listaProdutos = [];
+  List<MeusProdutos> listaProdutos = [];
   TextEditingController controller = TextEditingController();
 
   void buscaProdutos() {
     var api = api_search_produto();
-    api.search(1, 6, "aaaaaa").then((response) {
-      print(response);
-      
-      
-     // listaProdutos.add(response);
+    api.search(1, 100, "bunda").then((response) {
+      for (var produto in response) {
+        print(produto);
+        listaProdutos.add(
+            MeusProdutos(
+              id: produto["id"],
+              nome: produto["nome"],
+              descricao: produto["descricao"],
+              isAtivo: produto["isAtivo"],
+              preco: double.parse(produto["preco"].toString()),
+              quantidadeDisponivel: produto["quantidadeDisponivel"]
+            )
+        );
+        print("added");
+      }
     }, onError: (error) async {
       setState(() {});
     });

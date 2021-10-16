@@ -1,8 +1,8 @@
 class MeusProdutos {
-  late String? id;
+  late int? id;
   late String nome;
   late bool? isAtivo;
-  late int? preco;
+  late double? preco;
   late String? descricao;
   late int? quantidadeDisponivel;
 
