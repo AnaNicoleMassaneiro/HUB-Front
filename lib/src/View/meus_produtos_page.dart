@@ -19,20 +19,10 @@ class _MeusProdutosPageState extends State<MeusProdutosPage> {
   void buscaProdutos() {
     var api = api_search_produto();
     api.search(1, 6, "aaaaaa").then((response) {
-      setState(() {
-        if (response.statusCode == 200) {
-          final trataDados = json.decode(response.body);
-
-          print('------------');
-          setState(() {
-            for (Map user in trataDados) {
-              // ignore: avoid_print
-              print(user.values);
-              // listaProdutos.add(user.values);
-            }
-          });
-        }
-      });
+      print(response);
+      
+      
+     // listaProdutos.add(response);
     }, onError: (error) async {
       setState(() {});
     });
