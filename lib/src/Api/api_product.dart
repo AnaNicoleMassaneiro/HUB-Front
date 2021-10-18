@@ -65,16 +65,12 @@ class api_product {
 
   Future<http.Response> delete(id) async {
     final http.Response response = await http.delete(
-      Uri.parse('http://192.168.0.148:5000/api/produto/deletar/$id'),
+      Uri.parse(Endpoints.deleteProduct + id.toString()),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
     );
 
     return response;
-
-    /*  return await http.delete(
-        Uri.parse(
-            'http://192.168.0.148:5000/api/produto/deletar' + id.toString()) */
   }
 }

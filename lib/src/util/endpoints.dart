@@ -5,7 +5,5 @@ class Endpoints {
   static var searchProduto = host + "api/produto/buscar";
   static var registerProduct = host + "api/produto/cadastro";
   static var updateProduct = host + "api/produto/update";
-  static var deleteProduct = host + "api/produto/deletar/$id";
-
-  static get id => null;
+  static var deleteProduct = host + "api/produto/deletar/";
 }
