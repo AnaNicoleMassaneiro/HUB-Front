@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:hub/src/util/endpoints.dart';
 import 'package:http/http.dart' as http;
 
@@ -60,5 +61,20 @@ class api_product {
         "idVendedor": idVendedor
       }),
     );
+  }
+
+  Future<http.Response> delete(id) async {
+    final http.Response response = await http.delete(
+      Uri.parse('http://192.168.0.148:5000/api/produto/deletar/$id'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+
+    return response;
+
+    /*  return await http.delete(
+        Uri.parse(
+            'http://192.168.0.148:5000/api/produto/deletar' + id.toString()) */
   }
 }

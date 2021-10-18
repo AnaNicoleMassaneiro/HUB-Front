@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hub/src/Api/api_product.dart';
+import 'package:hub/src/View/Components/modal_message.dart';
 import '../Class/meus_produtos.dart';
 import 'cadastrar_produto_page.dart';
 import 'editar_produto_page.dart';
@@ -79,25 +82,35 @@ class _MeusProdutosPageState extends State<MeusProdutosPage> {
                   itemBuilder: (context, i) {
                     return Card(
                       child: ListTile(
-                        //leading:  CircleAvatar(backgroundImage:  NetworkImage(_searchResult[i].profileUrl,),),
                         title: Text(_searchResult[i].nome),
-                        trailing: IconButton(
-                          icon: const Icon(Icons.edit),
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => EditarProdutoPage(
-                                        title: '',
-                                        idVendedor: widget.idVendedor,
-                                        idUser: widget.idUser,
-                                        nome: listaProdutos[i].nome,
-                                        qtdDisponivel: listaProdutos[i]
-                                            .quantidadeDisponivel,
-                                        preco: listaProdutos[i].preco,
-                                        descricao:
-                                            listaProdutos[i].descricao)));
-                          },
+                        trailing: Wrap(
+                          spacing: 12,
+                          children: [
+                            IconButton(
+                              icon: const Icon(Icons.edit),
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => EditarProdutoPage(
+                                            title: '',
+                                            idVendedor: widget.idVendedor,
+                                            idUser: widget.idUser,
+                                            nome: listaProdutos[i].nome,
+                                            qtdDisponivel: listaProdutos[i]
+                                                .quantidadeDisponivel,
+                                            preco: listaProdutos[i].preco,
+                                            descricao:
+                                                listaProdutos[i].descricao)));
+                              },
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.delete),
+                              onPressed: () {
+                                verificaDeletarProduto(listaProdutos[i].id);
+                              },
+                            ),
+                          ],
                         ),
                       ),
                       margin: const EdgeInsets.all(0.0),
@@ -111,23 +124,34 @@ class _MeusProdutosPageState extends State<MeusProdutosPage> {
                       child: ListTile(
                         // leading:  CircleAvatar(backgroundImage:  NetworkImage(listaProdutos[index].profileUrl,),),
                         title: Text(listaProdutos[i].nome),
-                        trailing: IconButton(
-                          icon: const Icon(Icons.edit),
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => EditarProdutoPage(
-                                        title: '',
-                                        idVendedor: widget.idVendedor,
-                                        idUser: widget.idUser,
-                                        nome: listaProdutos[i].nome,
-                                        qtdDisponivel: listaProdutos[i]
-                                            .quantidadeDisponivel,
-                                        preco: listaProdutos[i].preco,
-                                        descricao:
-                                            listaProdutos[i].descricao)));
-                          },
+                        trailing: Wrap(
+                          spacing: 12,
+                          children: [
+                            IconButton(
+                              icon: const Icon(Icons.edit),
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => EditarProdutoPage(
+                                            title: '',
+                                            idVendedor: widget.idVendedor,
+                                            idUser: widget.idUser,
+                                            nome: listaProdutos[i].nome,
+                                            qtdDisponivel: listaProdutos[i]
+                                                .quantidadeDisponivel,
+                                            preco: listaProdutos[i].preco,
+                                            descricao:
+                                                listaProdutos[i].descricao)));
+                              },
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.delete),
+                              onPressed: () {
+                                verificaDeletarProduto(listaProdutos[i].id);
+                              },
+                            ),
+                          ],
                         ),
                       ),
                       margin: const EdgeInsets.all(0.0),
@@ -151,5 +175,50 @@ class _MeusProdutosPageState extends State<MeusProdutosPage> {
     });
 
     setState(() {});
+  }
+
+  verificaDeletarProduto(int? id) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Excluir Produto"),
+          content: const Text("Tem certeza que deseja excluir este produto?"),
+          actions: <Widget>[
+            TextButton(
+              child: const Text("Sim"),
+              onPressed: () {
+                deletarProduto(id);
+                setState(() {});
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text("Cancelar"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void deletarProduto(id) async {
+    var api = api_product();
+    var ret = await api.delete(id);
+
+    if (ret.statusCode == 200) {
+      setState(() {
+        listaProdutos.clear();
+        buscaProdutos();
+      });
+      customMessageModal(
+          context, "Sucesso!", "Produto excluido com sucesso", "OK");
+    } else {
+      customMessageModal(context, "Falha ao cadastrar produto: ",
+          jsonDecode(ret.body)["msg"], "Fechar");
+    }
   }
 }
