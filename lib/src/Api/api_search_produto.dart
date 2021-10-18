@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:hub/src/View/Class/meus_produtos.dart';
 import 'package:hub/src/util/endpoints.dart';
 import 'package:http/http.dart' as http;
 

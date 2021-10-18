@@ -1,11 +1,12 @@
-import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hub/src/Api/api_search_produto.dart';
-import 'Class/meus_produtos.dart';
+import '../Class/meus_produtos.dart';
 
 class MeusProdutosPage extends StatefulWidget {
-  const MeusProdutosPage({Key? key}) : super(key: key);
+  const MeusProdutosPage({Key? key, required this.idVendedor})
+      : super(key: key);
+  final int idVendedor;
 
   @override
   _MeusProdutosPageState createState() => _MeusProdutosPageState();
@@ -18,20 +19,17 @@ class _MeusProdutosPageState extends State<MeusProdutosPage> {
 
   void buscaProdutos() {
     var api = api_search_produto();
-    api.search(1, 100, "bunda").then((response) {
+    api.search(widget.idVendedor, 0, null).then((response) {
       for (var produto in response) {
-        print(produto);
-        listaProdutos.add(
-            MeusProdutos(
+        setState(() {
+          listaProdutos.add(MeusProdutos(
               id: produto["id"],
               nome: produto["nome"],
               descricao: produto["descricao"],
               isAtivo: produto["isAtivo"],
               preco: double.parse(produto["preco"].toString()),
-              quantidadeDisponivel: produto["quantidadeDisponivel"]
-            )
-        );
-        print("added");
+              quantidadeDisponivel: produto["quantidadeDisponivel"]));
+        });
       }
     }, onError: (error) async {
       setState(() {});
@@ -49,26 +47,23 @@ class _MeusProdutosPageState extends State<MeusProdutosPage> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        Container(
-          color: Theme.of(context).primaryColor,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Card(
-              child: ListTile(
-                leading: const Icon(Icons.search),
-                title: TextField(
-                  controller: controller,
-                  decoration: const InputDecoration(
-                      hintText: 'Buscar Produtos', border: InputBorder.none),
-                  onChanged: onSearchTextChanged,
-                ),
-                trailing: IconButton(
-                  icon: const Icon(Icons.cancel),
-                  onPressed: () {
-                    controller.clear();
-                    onSearchTextChanged('');
-                  },
-                ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Card(
+            child: ListTile(
+              leading: const Icon(Icons.search),
+              title: TextField(
+                controller: controller,
+                decoration: const InputDecoration(
+                    hintText: 'Buscar Produtos', border: InputBorder.none),
+                onChanged: onSearchTextChanged,
+              ),
+              trailing: IconButton(
+                icon: const Icon(Icons.cancel),
+                onPressed: () {
+                  controller.clear();
+                  onSearchTextChanged('');
+                },
               ),
             ),
           ),
