@@ -5,11 +5,12 @@ import 'package:hub/src/Api/api_product.dart';
 import 'package:hub/src/Validations/form_field_validations.dart';
 import 'package:hub/src/View/Components/entry_fields.dart';
 import 'package:hub/src/View/Components/modal_message.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../vendedor_page.dart';
 
 class CadastrarProdutoPage extends StatefulWidget {
-  CadastrarProdutoPage(
+  const CadastrarProdutoPage(
       {Key? key, required this.title, required this.idVendedor, this.idUser})
       : super(key: key);
 
@@ -86,6 +87,18 @@ class _CadastrarProdutoPageState extends State<CadastrarProdutoPage> {
                       key: _formKey,
                       child: _cadastroForm(),
                     ),
+                    ElevatedButton(
+                        onPressed: _pickedImage,
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          padding: const EdgeInsets.symmetric(vertical: 15),
+                          alignment: Alignment.center,
+                          color: Colors.orange,
+                          child: const Text(
+                            "Adicionar imagem",
+                            style: TextStyle(fontSize: 20, color: Colors.white),
+                          ),
+                        )),
                     const SizedBox(
                       height: 20,
                     ),
@@ -98,6 +111,31 @@ class _CadastrarProdutoPageState extends State<CadastrarProdutoPage> {
         ),
       ),
     );
+  }
+
+  void _pickedImage() {
+    showDialog<ImageSource>(
+      context: context,
+      builder: (context) => AlertDialog(
+          content: const Text("Escolha da onde pegar a imagem"),
+          actions: [
+            TextButton(
+              child: const Text("Câmera"),
+              onPressed: () => Navigator.pop(context, ImageSource.camera),
+            ),
+            TextButton(
+              child: const Text("Galeria"),
+              onPressed: () => Navigator.pop(context, ImageSource.gallery),
+            ),
+          ]),
+    ).then((source) async {
+      if (source != null) {
+        // ignore: deprecated_member_use
+        final pickedFile = await ImagePicker().getImage(source: source);
+
+        print(pickedFile);
+      }
+    });
   }
 
   void _registerProduct(preco, nome, descricao, qtdDisponivel) async {

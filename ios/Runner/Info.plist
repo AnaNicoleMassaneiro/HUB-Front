@@ -47,6 +47,7 @@
 		<string>Pega sua localizaçao em segundo plano</string>
 		<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 		<string>Always and in usage permissions</string>
+		
 		<false />
 	</dict>
 </plist>
