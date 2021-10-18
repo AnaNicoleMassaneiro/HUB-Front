@@ -19,6 +19,7 @@ class _MeusProdutosPageState extends State<MeusProdutosPage> {
   late final String texto;
   List<MeusProdutos> listaProdutos = [];
   TextEditingController controller = TextEditingController();
+  List<MeusProdutos> _searchResult = [];
 
   void buscaProdutos() {
     var api = api_product();
@@ -72,37 +73,83 @@ class _MeusProdutosPageState extends State<MeusProdutosPage> {
           ),
         ),
         Expanded(
-            child: ListView.builder(
-          itemCount: listaProdutos.length,
-          itemBuilder: (context, i) {
-            return Card(
-              child: ListTile(
-                title: Text(listaProdutos[i].nome),
-                trailing: IconButton(
-                  icon: const Icon(Icons.edit),
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => EditarProdutoPage(
-                                title: '',
-                                idVendedor: widget.idVendedor,
-                                idUser: widget.idUser,
-                                nome: listaProdutos[i].nome,
-                                qtdDisponivel:
-                                    listaProdutos[i].quantidadeDisponivel,
-                                preco: listaProdutos[i].preco,
-                                descricao: listaProdutos[i].descricao)));
+          child: _searchResult.isNotEmpty || controller.text.isNotEmpty
+              ? ListView.builder(
+                  itemCount: _searchResult.length,
+                  itemBuilder: (context, i) {
+                    return Card(
+                      child: ListTile(
+                        //leading:  CircleAvatar(backgroundImage:  NetworkImage(_searchResult[i].profileUrl,),),
+                        title: Text(_searchResult[i].nome),
+                        trailing: IconButton(
+                          icon: const Icon(Icons.edit),
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => EditarProdutoPage(
+                                        title: '',
+                                        idVendedor: widget.idVendedor,
+                                        idUser: widget.idUser,
+                                        nome: listaProdutos[i].nome,
+                                        qtdDisponivel: listaProdutos[i]
+                                            .quantidadeDisponivel,
+                                        preco: listaProdutos[i].preco,
+                                        descricao:
+                                            listaProdutos[i].descricao)));
+                          },
+                        ),
+                      ),
+                      margin: const EdgeInsets.all(0.0),
+                    );
+                  },
+                )
+              : ListView.builder(
+                  itemCount: listaProdutos.length,
+                  itemBuilder: (context, i) {
+                    return Card(
+                      child: ListTile(
+                        // leading:  CircleAvatar(backgroundImage:  NetworkImage(listaProdutos[index].profileUrl,),),
+                        title: Text(listaProdutos[i].nome),
+                        trailing: IconButton(
+                          icon: const Icon(Icons.edit),
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => EditarProdutoPage(
+                                        title: '',
+                                        idVendedor: widget.idVendedor,
+                                        idUser: widget.idUser,
+                                        nome: listaProdutos[i].nome,
+                                        qtdDisponivel: listaProdutos[i]
+                                            .quantidadeDisponivel,
+                                        preco: listaProdutos[i].preco,
+                                        descricao:
+                                            listaProdutos[i].descricao)));
+                          },
+                        ),
+                      ),
+                      margin: const EdgeInsets.all(0.0),
+                    );
                   },
                 ),
-              ),
-              margin: const EdgeInsets.all(0.0),
-            );
-          },
-        )),
+        ),
       ],
     );
   }
 
-  onSearchTextChanged(String text) async {}
+  onSearchTextChanged(String text) async {
+    _searchResult.clear();
+    if (text.isEmpty) {
+      setState(() {});
+      return;
+    }
+
+    listaProdutos.forEach((userDetail) {
+      if (userDetail.nome.contains(text)) _searchResult.add(userDetail);
+    });
+
+    setState(() {});
+  }
 }

@@ -35,7 +35,8 @@ class _VendedorPageState extends State<VendedorPage> {
 
     return Scaffold(
         appBar: AppBar(
-            title: const Text('Bem Vindo'), backgroundColor: Colors.orange),
+            title: const Text('Área do vendedor'),
+            backgroundColor: Colors.orange),
         body: _telas[_indiceAtual],
         floatingActionButton: FloatingActionButton(
           onPressed: () {
@@ -66,7 +67,6 @@ class _VendedorPageState extends State<VendedorPage> {
   }
 
   void onTabTapped(int index) {
-    print(index);
     setState(() {
       _indiceAtual = index;
     });
