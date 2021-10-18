@@ -2,17 +2,17 @@ class MeusProdutos {
   late int? id;
   late String nome;
   late bool? isAtivo;
-  late double? preco;
-  late String? descricao;
-  late int? quantidadeDisponivel;
+  late double preco;
+  late String descricao;
+  late int quantidadeDisponivel;
 
   MeusProdutos(
       {this.id,
       required this.nome,
       this.isAtivo,
-      this.preco,
-      this.descricao,
-      this.quantidadeDisponivel});
+      required this.preco,
+      required this.descricao,
+      required this.quantidadeDisponivel});
 
   factory MeusProdutos.fromJson(Map<String, dynamic> json) {
     return MeusProdutos(

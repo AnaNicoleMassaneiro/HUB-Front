@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hub/src/Api/api_product.dart';
 import '../Class/meus_produtos.dart';
 import 'cadastrar_produto_page.dart';
+import 'editar_produto_page.dart';
 
 class MeusProdutosPage extends StatefulWidget {
   const MeusProdutosPage({Key? key, required this.idVendedor, this.idUser})
@@ -83,10 +84,15 @@ class _MeusProdutosPageState extends State<MeusProdutosPage> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => CadastrarProdutoPage(
+                            builder: (context) => EditarProdutoPage(
                                 title: '',
                                 idVendedor: widget.idVendedor,
-                                idUser: widget.idUser)));
+                                idUser: widget.idUser,
+                                nome: listaProdutos[i].nome,
+                                qtdDisponivel:
+                                    listaProdutos[i].quantidadeDisponivel,
+                                preco: listaProdutos[i].preco,
+                                descricao: listaProdutos[i].descricao)));
                   },
                 ),
               ),

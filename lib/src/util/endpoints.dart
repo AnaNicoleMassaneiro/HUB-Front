@@ -4,4 +4,5 @@ class Endpoints {
   static var autenticate = host + "api/User/authenticate";
   static var searchProduto = host + "api/produto/buscar";
   static var registerProduct = host + "api/produto/cadastro";
+  static var updateProduct = host + "api/produto/update";
 }

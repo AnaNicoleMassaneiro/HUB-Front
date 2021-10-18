@@ -43,4 +43,22 @@ class api_product {
       }),
     );
   }
+
+  Future<http.Response> update(int? idVendedor, double? preco, String? nome,
+      String descricao, int qtdDisponivel) async {
+    return await http.post(
+      Uri.parse(Endpoints.updateProduct),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, dynamic>{
+        "nome": nome,
+        "status": true,
+        "preco": preco,
+        "descricao": descricao,
+        "quantidadeDisponivel": qtdDisponivel,
+        "idVendedor": idVendedor
+      }),
+    );
+  }
 }
