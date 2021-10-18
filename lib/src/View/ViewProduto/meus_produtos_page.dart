@@ -189,7 +189,6 @@ class _MeusProdutosPageState extends State<MeusProdutosPage> {
               child: const Text("Sim"),
               onPressed: () {
                 deletarProduto(id);
-                setState(() {});
                 Navigator.of(context).pop();
               },
             ),

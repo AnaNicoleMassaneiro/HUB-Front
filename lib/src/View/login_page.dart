@@ -6,7 +6,7 @@ import '../Api/api_login.dart';
 import '../Widget/bezier_container.dart';
 
 import 'vendedor_page.dart';
-import 'cliente_page.dart';
+import 'ViewCliente/cliente_page.dart';
 import 'signup_page.dart';
 
 import 'Components/modal_message.dart';
