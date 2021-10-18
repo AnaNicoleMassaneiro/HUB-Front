@@ -4,10 +4,12 @@ import 'ViewProduto/cadastrar_produto_page.dart';
 import 'ViewProduto/meus_produtos_page.dart';
 
 class VendedorPage extends StatefulWidget {
-  const VendedorPage({Key? key, required this.title, required this.idVendedor})
+  const VendedorPage(
+      {Key? key, required this.title, required this.idVendedor, this.idUser})
       : super(key: key);
   final String title;
   final int idVendedor;
+  final int? idUser;
 
   @override
   _VendedorPageState createState() => _VendedorPageState();
@@ -41,8 +43,9 @@ class _VendedorPageState extends State<VendedorPage> {
                 context,
                 MaterialPageRoute(
                     builder: (context) => CadastrarProdutoPage(
-                          title: '',
-                        )));
+                        title: '',
+                        idVendedor: widget.idVendedor,
+                        idUser: widget.idUser)));
           },
           child: const Icon(Icons.plus_one),
           backgroundColor: Colors.blue,

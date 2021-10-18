@@ -40,3 +40,9 @@ String? validateUsername(String username){
     return null;
   else return "Preencha usando seu GRR ou e-mail @ufpr.br.";
 }
+
+String? validateNumber(String name){
+  if (name == null || name.isEmpty)
+    return "Preencha o valor do produto.";
+  else return null;
+}

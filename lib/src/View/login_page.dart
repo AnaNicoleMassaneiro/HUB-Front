@@ -131,15 +131,14 @@ class _LoginPageState extends State<LoginPage> {
 
           if (trataDados["user"]["isVendedor"]) {
             var idVendedor = trataDados["user"]["id"];
+            var idUser = trataDados["user"]["idVendedor"];
 
             Navigator.push(
                 context,
                 MaterialPageRoute(
                     // ignore: prefer_const_constructors
                     builder: (context) => VendedorPage(
-                          title: '',
-                          idVendedor: idVendedor,
-                        )));
+                        title: '', idVendedor: idVendedor, idUser: idUser)));
           } else {
             Navigator.push(
                 context,

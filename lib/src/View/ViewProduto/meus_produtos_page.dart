@@ -1,12 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hub/src/Api/api_search_produto.dart';
+import 'package:hub/src/Api/api_product.dart';
 import '../Class/meus_produtos.dart';
+import 'cadastrar_produto_page.dart';
 
 class MeusProdutosPage extends StatefulWidget {
-  const MeusProdutosPage({Key? key, required this.idVendedor})
+  const MeusProdutosPage({Key? key, required this.idVendedor, this.idUser})
       : super(key: key);
   final int idVendedor;
+  final int? idUser;
 
   @override
   _MeusProdutosPageState createState() => _MeusProdutosPageState();
@@ -18,7 +20,7 @@ class _MeusProdutosPageState extends State<MeusProdutosPage> {
   TextEditingController controller = TextEditingController();
 
   void buscaProdutos() {
-    var api = api_search_produto();
+    var api = api_product();
     api.search(widget.idVendedor, 0, null).then((response) {
       for (var produto in response) {
         setState(() {
@@ -75,6 +77,18 @@ class _MeusProdutosPageState extends State<MeusProdutosPage> {
             return Card(
               child: ListTile(
                 title: Text(listaProdutos[i].nome),
+                trailing: IconButton(
+                  icon: const Icon(Icons.edit),
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => CadastrarProdutoPage(
+                                title: '',
+                                idVendedor: widget.idVendedor,
+                                idUser: widget.idUser)));
+                  },
+                ),
               ),
               margin: const EdgeInsets.all(0.0),
             );

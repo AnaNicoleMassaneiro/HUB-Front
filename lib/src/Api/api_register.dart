@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:hub/src/util/endpoints.dart';
 import 'package:http/http.dart' as http;
 
+// ignore: camel_case_types
 class apiRegister {
   Future<http.Response> create(String name, bool isChecked, String senha,
       String confirmSenha, String grr, String email) async {

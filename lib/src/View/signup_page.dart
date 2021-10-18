@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:hub/src/Widget/bezier_container.dart';
 import 'package:hub/src/View/login_page.dart';
 
-import '../Api/apiRegister.dart';
+import '../Api/api_register.dart';
 import '../Widget/bezier_container.dart';
 
 import 'Components/modal_message.dart';

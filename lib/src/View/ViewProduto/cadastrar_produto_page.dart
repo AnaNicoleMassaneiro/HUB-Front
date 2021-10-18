@@ -1,32 +1,32 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:hub/src/Api/apiRegister.dart';
+import 'package:hub/src/Api/api_product.dart';
 import 'package:hub/src/Validations/form_field_validations.dart';
-import 'package:hub/src/View/Components/buttons.dart';
 import 'package:hub/src/View/Components/entry_fields.dart';
-import 'package:hub/src/View/Components/labels_text.dart';
 import 'package:hub/src/View/Components/modal_message.dart';
 
-import 'package:hub/src/Widget/bezier_container.dart';
-import 'package:hub/src/View/login_page.dart';
+import '../vendedor_page.dart';
 
 class CadastrarProdutoPage extends StatefulWidget {
-  CadastrarProdutoPage({Key? key, required this.title}) : super(key: key);
+  CadastrarProdutoPage(
+      {Key? key, required this.title, required this.idVendedor, this.idUser})
+      : super(key: key);
 
   final String title;
+  final int idVendedor;
+  final int? idUser;
 
   @override
   _CadastrarProdutoPageState createState() => _CadastrarProdutoPageState();
 }
 
 class _CadastrarProdutoPageState extends State<CadastrarProdutoPage> {
-  final TextEditingController user = TextEditingController();
-  final TextEditingController senha = TextEditingController();
+  final TextEditingController preco = TextEditingController();
   final TextEditingController nome = TextEditingController();
-  final TextEditingController email = TextEditingController();
-  final TextEditingController grr = TextEditingController();
-  final TextEditingController confirmaSenha = TextEditingController();
+  final TextEditingController descricao = TextEditingController();
+  final TextEditingController qtdDisponivel = TextEditingController();
+
   bool isChecked = false;
 
   final _formKey = GlobalKey<FormState>();
@@ -35,8 +35,8 @@ class _CadastrarProdutoPageState extends State<CadastrarProdutoPage> {
     return ElevatedButton(
         onPressed: () {
           if (_formKey.currentState!.validate()) {
-            _registerUser(nome.text, isChecked, senha.text, confirmaSenha.text,
-                grr.text, email.text);
+            _registerProduct(double.parse(preco.text), nome.text,
+                descricao.text, int.parse(qtdDisponivel.text));
           }
         },
         child: Container(
@@ -54,10 +54,13 @@ class _CadastrarProdutoPageState extends State<CadastrarProdutoPage> {
     return Column(
       children: <Widget>[
         entryFieldValidation("Nome", nome, validateName, placeholder: ''),
-        entryFieldValidation("Preço", nome, validateName, placeholder: ''),
-        entryFieldValidation("Descrição", nome, validateName, placeholder: ''),
-        entryFieldValidation("Quantidade Disponível", nome, validateName,
+        entryFieldValidation("Preço", preco, validateNumber,
+            placeholder: '', keyboard: TextInputType.number),
+        entryFieldValidation("Descrição", descricao, validateName,
             placeholder: ''),
+        entryFieldValidation(
+            "Quantidade Disponível", qtdDisponivel, validateName,
+            placeholder: '', keyboard: TextInputType.number),
       ],
     );
   }
@@ -97,26 +100,26 @@ class _CadastrarProdutoPageState extends State<CadastrarProdutoPage> {
     );
   }
 
-  void _registerUser(nome, isChecked, senha, confirmaSenha, grr, email) async {
-    var api = apiRegister();
-    var ret =
-        await api.create(nome, isChecked, senha, confirmaSenha, grr, email);
+  void _registerProduct(preco, nome, descricao, qtdDisponivel) async {
+    var api = api_product();
+    var ret = await api.register(
+        widget.idVendedor, preco, nome, descricao, qtdDisponivel);
 
     if (ret.statusCode == 200) {
       Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => LoginPage(
-                    title: '',
-                  )));
-
+        context,
+        MaterialPageRoute(
+            // ignore: prefer_const_constructors
+            builder: (context) => VendedorPage(
+                  title: '',
+                  idVendedor: widget.idVendedor,
+                  idUser: widget.idUser,
+                )),
+      );
       customMessageModal(
-          context,
-          "Sucesso!",
-          "Seu cadastro foi realizado com sucesso. Agora você já pode efetuar seu login.",
-          "OK");
+          context, "Sucesso!", "Produto cadastrado com sucesso", "OK");
     } else {
-      customMessageModal(context, "Falha ao cadastrar usuário: ",
+      customMessageModal(context, "Falha ao cadastrar produto: ",
           jsonDecode(ret.body)["msg"], "Fechar");
     }
   }
