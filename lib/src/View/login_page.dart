@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
-import '../Api/apiLogin.dart';
+import '../Api/api_login.dart';
 import '../Widget/bezier_container.dart';
 
 import 'vendedor_page.dart';
@@ -32,8 +32,9 @@ class _LoginPageState extends State<LoginPage> {
   Widget _submitButton() {
     return ElevatedButton(
       onPressed: () {
-        if (_loginFormKey.currentState!.validate())
+        if (_loginFormKey.currentState!.validate()) {
           _authenticate(user.text, senha.text);
+        }
       },
       child: Container(
         width: MediaQuery.of(context).size.width,
@@ -122,18 +123,22 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void _authenticate(user, senha) {
-    var api = new apiLogin();
+    var api = apiLogin();
     api.login(user, senha).then((response) {
       setState(() {
         if (response.statusCode == 200) {
           final trataDados = jsonDecode(response.body).cast<String, dynamic>();
 
           if (trataDados["user"]["isVendedor"]) {
+            var idVendedor = trataDados["user"]["id"];
+
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => const VendedorPage(
+                    // ignore: prefer_const_constructors
+                    builder: (context) => VendedorPage(
                           title: '',
+                          idVendedor: idVendedor,
                         )));
           } else {
             Navigator.push(
@@ -153,7 +158,6 @@ class _LoginPageState extends State<LoginPage> {
         }
       });
     }, onError: (error) async {
-      print(error);
       setState(() {});
     });
   }

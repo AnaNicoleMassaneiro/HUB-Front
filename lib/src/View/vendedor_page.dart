@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'Components/mapa.dart';
-import 'meus_produtos_page.dart';
+import 'ViewProduto/cadastrar_produto_page.dart';
+import 'ViewProduto/meus_produtos_page.dart';
 
 class VendedorPage extends StatefulWidget {
-  const VendedorPage({Key? key, required this.title}) : super(key: key);
+  const VendedorPage({Key? key, required this.title, required this.idVendedor})
+      : super(key: key);
   final String title;
+  final int idVendedor;
 
   @override
   _VendedorPageState createState() => _VendedorPageState();
@@ -20,13 +23,30 @@ class _VendedorPageState extends State<VendedorPage> {
   Widget build(BuildContext context) {
     final List<Widget> _telas = [
       mapaComponent(this.context),
-      MeusProdutosPage(),
-      MeusProdutosPage(),
+      MeusProdutosPage(
+        idVendedor: widget.idVendedor,
+      ),
+      MeusProdutosPage(
+        idVendedor: widget.idVendedor,
+      ),
     ];
 
     return Scaffold(
-        appBar: AppBar(title: const Text('Bem Vindo')),
+        appBar: AppBar(
+            title: const Text('Bem Vindo'), backgroundColor: Colors.orange),
         body: _telas[_indiceAtual],
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => CadastrarProdutoPage(
+                          title: '',
+                        )));
+          },
+          child: const Icon(Icons.plus_one),
+          backgroundColor: Colors.blue,
+        ),
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: _indiceAtual,
           onTap: onTabTapped,
