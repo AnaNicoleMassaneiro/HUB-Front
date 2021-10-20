@@ -7,6 +7,8 @@ import 'package:hub/src/Api/api_vendores.dart';
 import 'package:hub/src/View/Class/vendedores.dart';
 import 'package:hub/src/View/Components/modal_message.dart';
 
+import 'package:hub/src/util/contains_case_insensitive.dart';
+
 class ListaVendedoresPage extends StatefulWidget {
   const ListaVendedoresPage({Key? key}) : super(key: key);
 
@@ -21,15 +23,14 @@ class _ListaVendedoresPageState extends State<ListaVendedoresPage> {
   final List<Vendedores> _searchResult = [];
 
   void buscavendedores() {
-    var api = api_Vendedores();
+    var api = ApiVendedores();
     Map<String, dynamic> indexedData = {};
 
     api.searchAll().then((response) {
       for (var vendedores in response) {
-      //  listaVendedores.add(response);
-
-        print(listaVendedores);
+        listaVendedores.add(Vendedores.fromJson(vendedores));
       }
+      setState(() {});
     }, onError: (error) async {
       setState(() {});
     });
@@ -120,7 +121,7 @@ class _ListaVendedoresPageState extends State<ListaVendedoresPage> {
     }
 
     listaVendedores.forEach((userDetail) {
-      if (userDetail.name.contains(text)) _searchResult.add(userDetail);
+      if (containsCaseInsensitive(userDetail.name, text)) _searchResult.add(userDetail);
     });
 
     setState(() {});
