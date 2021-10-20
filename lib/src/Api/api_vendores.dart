@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:hub/src/util/endpoints.dart';
 import 'package:http/http.dart' as http;
 
-class api_Vendedores {
+class ApiVendedores {
   Future<List<Map<String, dynamic>>> searchAll() async {
     final response = await http.get(Uri.parse(Endpoints.buscarTodosVendedores));
 
