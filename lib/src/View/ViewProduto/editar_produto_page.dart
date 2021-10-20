@@ -191,27 +191,3 @@ class _EditarProdutoPageState extends State<EditarProdutoPage> {
     }
   }
 }
-
- /*  void _registerProduct(preco, nome, descricao, qtdDisponivel) async {
-    var api = api_product();
-    var ret = await api.update(
-        widget.idVendedor, preco, nome, descricao, qtdDisponivel);
-
-    if (ret.statusCode == 200) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-            // ignore: prefer_const_constructors
-            builder: (context) => VendedorPage(
-                  title: '',
-                  idVendedor: widget.idVendedor,
-                  idUser: widget.idUser,
-                )),
-      );
-      customMessageModal(
-          context, "Sucesso!", "Produto cadastrado com sucesso", "OK");
-    } else {
-      customMessageModal(context, "Falha ao cadastrar produto: ",
-          jsonDecode(ret.body)["msg"], "Fechar");
-    }
-  } */

@@ -6,4 +6,5 @@ class Endpoints {
   static var registerProduct = host + "api/produto/cadastro";
   static var updateProduct = host + "api/produto/update/";
   static var deleteProduct = host + "api/produto/deletar/";
+  static var searchProductAll = host + "buscarTodos";
 }

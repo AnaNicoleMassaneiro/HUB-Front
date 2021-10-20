@@ -5,6 +5,17 @@ import 'package:http/http.dart' as http;
 
 // ignore: camel_case_types
 class api_product {
+  Future<List<Map<String, dynamic>>> searchAll() async {
+    final response = await http.get(Uri.parse(Endpoints.searchProductAll));
+  
+    if (response.statusCode == 200) {
+      return List<Map<String, dynamic>>.from(
+          json.decode(response.body)["produtos"]);
+    } else {
+      throw Exception('Failed to create MeusProdutos.');
+    }
+  }
+
   Future<List<Map<String, dynamic>>> search(int? idVendedor) async {
     final response = await http.post(
       Uri.parse(Endpoints.searchProdutoPorVendedor),

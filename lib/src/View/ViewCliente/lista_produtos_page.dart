@@ -21,7 +21,7 @@ class _ListaProdutosPageState extends State<ListaProdutosPage> {
 
   void buscaProdutos() {
     var api = api_product();
-    /*  api.search(widget.idVendedor, 0, null).then((response) {
+    api.searchAll().then((response) {
       for (var produto in response) {
         setState(() {
           listaProdutos.add(MeusProdutos(
@@ -35,7 +35,7 @@ class _ListaProdutosPageState extends State<ListaProdutosPage> {
       }
     }, onError: (error) async {
       setState(() {});
-    }); */
+    });
   }
 
   @override
@@ -47,31 +47,72 @@ class _ListaProdutosPageState extends State<ListaProdutosPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Card(
-            child: ListTile(
-              leading: const Icon(Icons.search),
-              title: TextField(
-                controller: controller,
-                decoration: const InputDecoration(
-                    hintText: 'Buscar Produtos', border: InputBorder.none),
-                onChanged: onSearchTextChanged,
+    return Scaffold(
+        appBar: AppBar(
+            title: const Text('Buscar Produto'),
+            backgroundColor: Colors.orange),
+        body: SizedBox(
+          child: Stack(
+            children: <Widget>[
+              Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Card(
+                      child: ListTile(
+                        leading: const Icon(Icons.search),
+                        title: TextField(
+                          controller: controller,
+                          decoration: const InputDecoration(
+                              hintText: 'Buscar Produtos',
+                              border: InputBorder.none),
+                          onChanged: onSearchTextChanged,
+                        ),
+                        trailing: IconButton(
+                          icon: const Icon(Icons.cancel),
+                          onPressed: () {
+                            controller.clear();
+                            onSearchTextChanged('');
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child:
+                        _searchResult.isNotEmpty || controller.text.isNotEmpty
+                            ? ListView.builder(
+                                itemCount: _searchResult.length,
+                                itemBuilder: (context, i) {
+                                  return Card(
+                                    child: ListTile(
+                                      title: Text(_searchResult[i].nome),
+                                    ),
+                                    margin: const EdgeInsets.all(0.0),
+                                  );
+                                },
+                              )
+                            : ListView.builder(
+                                itemCount: listaProdutos.length,
+                                itemBuilder: (context, i) {
+                                  return Card(
+                                    child: ListTile(
+                                      // leading:  CircleAvatar(backgroundImage:  NetworkImage(listaProdutos[index].profileUrl,),),
+                                      title: Text(listaProdutos[i].nome),
+                                      trailing: Wrap(
+                                        spacing: 12,
+                                      ),
+                                    ),
+                                    margin: const EdgeInsets.all(0.0),
+                                  );
+                                },
+                              ),
+                  ),
+                ],
               ),
-              trailing: IconButton(
-                icon: const Icon(Icons.cancel),
-                onPressed: () {
-                  controller.clear();
-                  onSearchTextChanged('');
-                },
-              ),
-            ),
+            ],
           ),
-        ),
-      ],
-    );
+        ));
   }
 
   onSearchTextChanged(String text) async {
