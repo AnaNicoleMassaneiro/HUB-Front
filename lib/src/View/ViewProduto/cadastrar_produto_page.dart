@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:hub/src/Api/api_product.dart';
@@ -27,6 +28,7 @@ class _CadastrarProdutoPageState extends State<CadastrarProdutoPage> {
   final TextEditingController nome = TextEditingController();
   final TextEditingController descricao = TextEditingController();
   final TextEditingController qtdDisponivel = TextEditingController();
+  PickedFile? selectedImage;
 
   bool isChecked = false;
 
@@ -37,7 +39,7 @@ class _CadastrarProdutoPageState extends State<CadastrarProdutoPage> {
         onPressed: () {
           if (_formKey.currentState!.validate()) {
             _registerProduct(double.parse(preco.text), nome.text,
-                descricao.text, int.parse(qtdDisponivel.text));
+                descricao.text, int.parse(qtdDisponivel.text), selectedImage);
           }
         },
         child: Container(
@@ -117,29 +119,33 @@ class _CadastrarProdutoPageState extends State<CadastrarProdutoPage> {
     showDialog<ImageSource>(
       context: context,
       builder: (context) => AlertDialog(
-          content: const Text("Escolha da onde pegar a imagem"),
+          content: const Text("Como quer enviar a imagem?"),
           actions: [
             TextButton(
-              child: const Text("Câmera"),
+              child: const Text("Tirar Foto"),
               onPressed: () => Navigator.pop(context, ImageSource.camera),
             ),
             TextButton(
-              child: const Text("Galeria"),
+              child: const Text("Abrir Galeria"),
               onPressed: () => Navigator.pop(context, ImageSource.gallery),
             ),
           ]),
     ).then((source) async {
       if (source != null) {
         // ignore: deprecated_member_use
-        final pickedFile = await ImagePicker().getImage(source: source);
+        selectedImage = await ImagePicker().getImage(source: source);
       }
     });
   }
 
-  void _registerProduct(preco, nome, descricao, qtdDisponivel) async {
+  void _registerProduct(preco, nome, descricao, qtdDisponivel, PickedFile? image) async {
     var api = api_product();
+
+    var upload;
+    image != null ? upload = File.fromUri(Uri.parse(image.path)) : upload = null;
+
     var ret = await api.register(
-        widget.idVendedor, preco, nome, descricao, qtdDisponivel);
+        widget.idVendedor, preco, nome, descricao, qtdDisponivel, upload);
 
     if (ret.statusCode == 200) {
       Navigator.push(
@@ -156,7 +162,7 @@ class _CadastrarProdutoPageState extends State<CadastrarProdutoPage> {
           context, "Sucesso!", "Produto cadastrado com sucesso", "OK");
     } else {
       customMessageModal(context, "Falha ao cadastrar produto: ",
-          jsonDecode(ret.body)["msg"], "Fechar");
+          jsonDecode(await ret.stream.bytesToString())["msg"], "Fechar");
     }
   }
 }
