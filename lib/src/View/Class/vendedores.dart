@@ -4,48 +4,57 @@
 class Vendedores {
   int id;
   late String name;
-  String password;
-  String latitude;
-  String longitude;
-  String noteApp;
+  String? password;
+  double? latitude;
+  double? longitude;
+  double? noteApp;
   String email;
   String grr;
   String lastLogon;
   String createdOn;
-  String activation_code;
-  String token;
-  bool is_vendedor;
+  String? activation_code;
+  String? token;
+  bool isVendedor;
+  bool isAtivo;
+  bool isOpen;
 
   Vendedores(
-      {required this.name,
-      required this.id,
-      required this.password,
-      required this.lastLogon,
-      required this.activation_code,
-      required this.createdOn,
-      required this.email,
-      required this.grr,
-      required this.is_vendedor,
-      required this.latitude,
-      required this.longitude,
-      required this.noteApp,
-      required this.token});
+      {
+        required this.name,
+        required this.id,
+        required this.password,
+        required this.lastLogon,
+        required this.activation_code,
+        required this.createdOn,
+        required this.email,
+        required this.grr,
+        required this.isVendedor,
+        required this.latitude,
+        required this.longitude,
+        required this.noteApp,
+        required this.token,
+        required this.isAtivo,
+        required this.isOpen
+      }
+    );
 
   factory Vendedores.fromJson(Map<String, dynamic> json) {
     return Vendedores(
-      name: json['name'],
-      id: json['id'],
-      password: json['password'],
-      lastLogon: json['lastLogon'],
-      activation_code: json['activationCode'],
-      createdOn: json['createdOn'],
-      email: json['email'],
-      grr: json['grr'],
-      is_vendedor: json['isVendedor'],
-      latitude: json['latitude'],
-      longitude: json['longitude'],
-      noteApp: json['noteApp'],
-      token: json['token'],
+      name: json['user']['name'],
+      id: json['idVendedor'],
+      password: json['user']['password'],
+      lastLogon: json['user']['lastLogon'],
+      activation_code: json['user']['activationCode'],
+      createdOn: json['user']['createdOn'],
+      email: json['user']['email'],
+      grr: json['user']['grr'],
+      isVendedor: json['user']['isVendedor'],
+      latitude: double.parse(json['user']['latitude'].toString()),
+      longitude: double.parse(json['user']['longitude'].toString()),
+      noteApp: double.parse(json['user']['noteApp'].toString()),
+      token: json['user']['token'],
+      isAtivo: json['isAtivo'],
+      isOpen: json['isOpen']
     );
   }
 }
