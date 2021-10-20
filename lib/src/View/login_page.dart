@@ -130,7 +130,7 @@ class _LoginPageState extends State<LoginPage> {
           final trataDados = jsonDecode(response.body).cast<String, dynamic>();
 
           if (trataDados["user"]["isVendedor"]) {
-            var idVendedor = trataDados["user"]["id"];
+            var idVendedor = trataDados["idVendedor"];
             var idUser = trataDados["user"]["idVendedor"];
 
             Navigator.push(
