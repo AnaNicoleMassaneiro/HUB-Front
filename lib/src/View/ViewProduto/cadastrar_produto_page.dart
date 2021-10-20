@@ -70,7 +70,6 @@ class _CadastrarProdutoPageState extends State<CadastrarProdutoPage> {
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
           title: const Text('Cadastar Produto'),
@@ -138,10 +137,10 @@ class _CadastrarProdutoPageState extends State<CadastrarProdutoPage> {
     });
   }
 
-  void _registerProduct(preco, nome, descricao, qtdDisponivel, PickedFile? image) async {
+  void _registerProduct(preco, nome, descricao, qtdDisponivel, PickedFile? image) async { 
     var api = api_product();
 
-    var upload;
+    File? upload;
     image != null ? upload = File.fromUri(Uri.parse(image.path)) : upload = null;
 
     var ret = await api.register(

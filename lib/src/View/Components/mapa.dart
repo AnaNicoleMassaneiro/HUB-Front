@@ -5,7 +5,7 @@ import 'package:location/location.dart';
 Widget mapaComponent(BuildContext context) {
   late GoogleMapController _controller;
   final Location _location = Location();
-  const LatLng _initialcameraposition = LatLng(-25.4340196, -49.2588484);
+  const LatLng _initialcameraposition = const LatLng(-25.4340196, -49.2588484);
   var location = Location();
   late LocationData minhaLocalizacao;
 
@@ -35,7 +35,7 @@ Widget mapaComponent(BuildContext context) {
     child: Stack(
       children: [
         GoogleMap(
-          initialCameraPosition: const CameraPosition(target: _initialcameraposition),
+          initialCameraPosition: CameraPosition(target: _initialcameraposition),
           mapType: MapType.normal,
           onMapCreated: _onMapCreated,
           myLocationEnabled: true,

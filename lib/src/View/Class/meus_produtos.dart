@@ -1,5 +1,5 @@
 class MeusProdutos {
-  late int? id;
+  late int id;
   late String nome;
   late bool? isAtivo;
   late double preco;
@@ -7,7 +7,7 @@ class MeusProdutos {
   late int quantidadeDisponivel;
 
   MeusProdutos(
-      {this.id,
+      {required this.id,
       required this.nome,
       this.isAtivo,
       required this.preco,
