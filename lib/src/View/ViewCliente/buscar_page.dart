@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import 'lista_produtos_page.dart';
 import 'lista_vendedores_page.dart';
 
@@ -45,21 +44,6 @@ class _BuscarPageState extends State<BuscarPage> {
               child: Text('Buscar Produtos'),
             ),
           ))),
-      /* Card(
-            child: Container(
-              height: 300,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15.0),
-                  image: const DecorationImage(
-                      fit: BoxFit.cover,
-                      image: AssetImage('images/produto.jpeg'))),
-              child: const Padding(
-                padding: EdgeInsets.all(10.0),
-                child: Text('Buscar Produtos'),
-              ),
-            ),
-          )), */
       GestureDetector(
           onTap: () => {
                 Navigator.push(
@@ -74,7 +58,8 @@ class _BuscarPageState extends State<BuscarPage> {
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15.0),
                   image: const DecorationImage(
-                      fit: BoxFit.cover, image: AssetImage('images/produto.jpeg'))),
+                      fit: BoxFit.cover,
+                      image: AssetImage('images/produto.jpeg'))),
               child: const Padding(
                 padding: EdgeInsets.all(10.0),
                 child: Text('Buscar Vendedores'),

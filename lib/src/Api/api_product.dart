@@ -23,12 +23,12 @@ class api_product {
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(
-          <String, dynamic>{"sellerId": idVendedor, "returnActiveOnly": false}),
+          <String, dynamic>{"sellerId": idVendedor, "returnActiveOnly": true}),
     );
 
     if (response.statusCode == 200) {
       return List<Map<String, dynamic>>.from(
-          json.decode(response.body)["produto"]);
+          json.decode(response.body)["produtos"]);
     } else {
       throw Exception('Failed to create MeusProdutos.');
     }
