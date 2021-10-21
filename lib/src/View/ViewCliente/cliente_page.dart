@@ -24,11 +24,13 @@ class _ClientePageState extends State<ClientePage> {
   Widget build(BuildContext context) {
     final List<Widget> _telas = [
       mapaComponent(this.context),
-      BuscarPage()
+      const BuscarPage()
     ];
 
     return Scaffold(
-        appBar: AppBar(title: const Text('Área do cliente')),
+        appBar: AppBar(
+            title: const Text('Área do cliente'),
+            backgroundColor: Colors.orange),
         body: _telas[_indiceAtual],
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: _indiceAtual,

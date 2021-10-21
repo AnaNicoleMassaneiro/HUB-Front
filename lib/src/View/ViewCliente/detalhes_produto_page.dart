@@ -16,16 +16,7 @@ class DetalhesProdutoPage extends StatefulWidget {
 class _DetalhesProdutoPageState extends State<DetalhesProdutoPage> {
   late final String texto;
   TextEditingController controller = TextEditingController();
-  List<Color> colors = [Colors.blue, Colors.green, Colors.yellow, Colors.pink];
-  List<String> imagePath = [
-    "images/shoe_blue.png",
-    "images/shoe_green.png",
-    "images/shoe_yellow.png",
-    "images/shoe_pink.png"
-  ];
-  var selectedColor = Colors.blue;
-  var isFavourite = false;
-
+  
   @override
   void initState() {
     super.initState();
@@ -50,9 +41,10 @@ class _DetalhesProdutoPageState extends State<DetalhesProdutoPage> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 50),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Column(
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               const Text("Produto",
                   style: TextStyle(fontWeight: FontWeight.w100, fontSize: 16)),
