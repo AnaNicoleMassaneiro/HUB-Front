@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:hub/src/Api/api_product.dart';
 import 'package:hub/src/View/Components/modal_message.dart';
 import '../Class/meus_produtos.dart';
+import 'detalhes_produto_page.dart';
 
 class ListaProdutosPage extends StatefulWidget {
   const ListaProdutosPage({Key? key}) : super(key: key);
@@ -17,7 +18,7 @@ class _ListaProdutosPageState extends State<ListaProdutosPage> {
   late final String texto;
   List<MeusProdutos> listaProdutos = [];
   TextEditingController controller = TextEditingController();
-  List<MeusProdutos> _searchResult = [];
+  final List<MeusProdutos> _searchResult = [];
 
   void buscaProdutos() {
     var api = api_product();
@@ -79,34 +80,49 @@ class _ListaProdutosPageState extends State<ListaProdutosPage> {
                     ),
                   ),
                   Expanded(
-                    child:
-                        _searchResult.isNotEmpty || controller.text.isNotEmpty
-                            ? ListView.builder(
-                                itemCount: _searchResult.length,
-                                itemBuilder: (context, i) {
-                                  return Card(
-                                    child: ListTile(
-                                      title: Text(_searchResult[i].nome),
-                                    ),
-                                    margin: const EdgeInsets.all(0.0),
-                                  );
-                                },
-                              )
-                            : ListView.builder(
-                                itemCount: listaProdutos.length,
-                                itemBuilder: (context, i) {
-                                  return Card(
-                                    child: ListTile(
-                                      // leading:  CircleAvatar(backgroundImage:  NetworkImage(listaProdutos[index].profileUrl,),),
-                                      title: Text(listaProdutos[i].nome),
-                                      trailing: Wrap(
-                                        spacing: 12,
-                                      ),
-                                    ),
-                                    margin: const EdgeInsets.all(0.0),
-                                  );
-                                },
-                              ),
+                    child: _searchResult.isNotEmpty ||
+                            controller.text.isNotEmpty
+                        ? ListView.builder(
+                            itemCount: _searchResult.length,
+                            itemBuilder: (context, i) {
+                              return Card(
+                                child: ListTile(
+                                  title: Text(_searchResult[i].nome),
+                                ),
+                                margin: const EdgeInsets.all(0.0),
+                              );
+                            },
+                          )
+                        : ListView.builder(
+                            itemCount: listaProdutos.length,
+                            itemBuilder: (context, i) {
+                              return Card(
+                                child: ListTile(
+                                  // leading:  CircleAvatar(backgroundImage:  NetworkImage(listaProdutos[index].profileUrl,),),
+                                  title: Text(listaProdutos[i].nome),
+                                  trailing: Wrap(
+                                    spacing: 12,
+                                    children: [
+                                      IconButton(
+                                        icon: const Icon(Icons.visibility),
+                                        onPressed: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      DetalhesProdutoPage(
+                                                        listaProdutos:
+                                                            listaProdutos[i],
+                                                      )));
+                                        },
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                margin: const EdgeInsets.all(0.0),
+                              );
+                            },
+                          ),
                   ),
                 ],
               ),

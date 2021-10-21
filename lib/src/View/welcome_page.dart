@@ -6,7 +6,7 @@ import 'Components/labels_text.dart';
 import 'Components/buttons.dart';
 
 class WelcomePage extends StatefulWidget {
-  WelcomePage({Key? key, required this.title}) : super(key: key);
+  const WelcomePage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
@@ -31,7 +31,7 @@ class _WelcomePageState extends State<WelcomePage> {
                     blurRadius: 5,
                     spreadRadius: 2)
               ],
-              gradient: LinearGradient(
+              gradient: const LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
                   colors: [Color(0xfffbb448), Color(0xffe46b10)])),
@@ -40,7 +40,7 @@ class _WelcomePageState extends State<WelcomePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               defaultTitleWhite(this.context, "HUB UFPR"),
-              SizedBox(
+              const SizedBox(
                 height: 80,
               ),
               submitButtonWhite(
@@ -49,7 +49,7 @@ class _WelcomePageState extends State<WelcomePage> {
                   LoginPage(
                     title: '',
                   )),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               submitButtonBorder(
@@ -58,7 +58,7 @@ class _WelcomePageState extends State<WelcomePage> {
                   SignUpPage(
                     title: '',
                   )),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
             ],
