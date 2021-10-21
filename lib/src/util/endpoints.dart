@@ -7,4 +7,5 @@ class Endpoints {
   static var updateProduct = host + "api/produto/update/";
   static var deleteProduct = host + "api/produto/deletar/";
   static var searchProductAll = host + "buscarTodos";
+  static var buscarTodosVendedores = host + "api/vendedor/buscarTodos";
 }
