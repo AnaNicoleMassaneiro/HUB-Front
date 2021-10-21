@@ -9,7 +9,7 @@ Widget mapaComponent(BuildContext context) {
   var location = Location();
   late LocationData minhaLocalizacao;
 
-/*   void pegarLocalizacao() async {
+  void pegarLocalizacao() async {
     minhaLocalizacao = await location.getLocation();
   }
 
@@ -29,18 +29,18 @@ Widget mapaComponent(BuildContext context) {
     });
   }
 
- */  return SizedBox(
+  return SizedBox(
     height: MediaQuery.of(context).size.height,
     width: MediaQuery.of(context).size.width,
     child: Stack(
-     /*  children: [
+      children: [
         GoogleMap(
           initialCameraPosition: CameraPosition(target: _initialcameraposition),
           mapType: MapType.normal,
           onMapCreated: _onMapCreated,
           myLocationEnabled: true,
         ),
-      ], */
+      ],
     ),
   );
 }

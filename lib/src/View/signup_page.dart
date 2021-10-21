@@ -40,30 +40,32 @@ class _SignUpPageState extends State<SignUpPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(
+          const Text(
             "Senha",
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           TextFormField(
             validator: (value) {
               var ret = validatePassword(value!);
-              if (ret != null)
+              if (ret != null) {
                 return ret;
-              else {
-                if (confirmaSenha.text == null || confirmaSenha.text.isEmpty)
+              } else {
+                if (confirmaSenha.text == null || confirmaSenha.text.isEmpty) {
                   return null;
-                if (value.compareTo(confirmaSenha.text) == 0)
+                }
+                if (value.compareTo(confirmaSenha.text) == 0) {
                   return null;
-                else
+                } else {
                   return "Senhas não coincidem!";
+                }
               }
             },
             controller: senha,
             obscureText: true,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
                 border: InputBorder.none,
                 fillColor: Color(0xfff3f3f4),
                 filled: true),
