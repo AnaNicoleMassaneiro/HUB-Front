@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:hub/src/Api/api_product.dart';
@@ -20,7 +21,8 @@ class EditarProdutoPage extends StatefulWidget {
       required this.preco,
       required this.descricao,
       required this.qtdDisponivel,
-      required this.idProduto})
+      required this.idProduto,
+      this.imagem})
       : super(key: key);
 
   final String title;
@@ -31,6 +33,7 @@ class EditarProdutoPage extends StatefulWidget {
   final String descricao;
   final int qtdDisponivel;
   final int idProduto;
+  final Uint8List? imagem;
 
   @override
   _EditarProdutoPageState createState() => _EditarProdutoPageState();
@@ -107,6 +110,7 @@ class _EditarProdutoPageState extends State<EditarProdutoPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
+                    _showImage(widget.imagem),
                     Form(
                       key: _formKey,
                       child: _cadastroForm(),
@@ -188,6 +192,15 @@ class _EditarProdutoPageState extends State<EditarProdutoPage> {
     } else {
       customMessageModal(context, "Falha ao cadastrar produto: ",
           jsonDecode(await ret.stream.bytesToString())["msg"], "Fechar");
+    }
+  }
+
+  Image _showImage(Uint8List? image){
+    if (image != null){
+      return Image.memory(image, height: 250, width: 250, fit: BoxFit.cover);
+    }
+    else {
+      return Image.asset("assets/product-icon.png", width: 200, height: 200);
     }
   }
 }

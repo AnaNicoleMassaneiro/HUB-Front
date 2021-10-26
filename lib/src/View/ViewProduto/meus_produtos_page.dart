@@ -35,7 +35,8 @@ class _MeusProdutosPageState extends State<MeusProdutosPage> {
               descricao: produto["descricao"],
               isAtivo: produto["isAtivo"],
               preco: double.parse(produto["preco"].toString()),
-              quantidadeDisponivel: produto["quantidadeDisponivel"]));
+              quantidadeDisponivel: produto["quantidadeDisponivel"],
+              imagem: produto["imagem"] == null ? null : base64.decode(produto["imagem"])));
         });
       }
     }, onError: (error) async {
@@ -103,6 +104,7 @@ class _MeusProdutosPageState extends State<MeusProdutosPage> {
                                               descricao:
                                                   listaProdutos[i].descricao,
                                               idProduto: listaProdutos[i].id,
+                                              imagem: listaProdutos[i].imagem,
                                             )));
                               },
                             ),
@@ -145,7 +147,8 @@ class _MeusProdutosPageState extends State<MeusProdutosPage> {
                                             preco: listaProdutos[i].preco,
                                             descricao:
                                                 listaProdutos[i].descricao,
-                                            idProduto: listaProdutos[i].id)));
+                                            idProduto: listaProdutos[i].id,
+                                            imagem: listaProdutos[i].imagem)));
                               },
                             ),
                             IconButton(

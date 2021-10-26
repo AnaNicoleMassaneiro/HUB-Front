@@ -31,7 +31,8 @@ class _ListaProdutosPageState extends State<ListaProdutosPage> {
               descricao: produto["descricao"],
               isAtivo: produto["isAtivo"],
               preco: double.parse(produto["preco"].toString()),
-              quantidadeDisponivel: produto["quantidadeDisponivel"]));
+              quantidadeDisponivel: produto["quantidadeDisponivel"],
+              imagem: produto["imagem"]));
         });
       }
     }, onError: (error) async {

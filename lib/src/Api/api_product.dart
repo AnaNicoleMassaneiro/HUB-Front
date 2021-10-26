@@ -23,7 +23,7 @@ class api_product {
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(
-          <String, dynamic>{"sellerId": idVendedor, "returnActiveOnly": true}),
+          <String, dynamic>{"sellerId": idVendedor, "returnActiveOnly": false}),
     );
 
     if (response.statusCode == 200) {
