@@ -20,14 +20,14 @@ class _WelcomePageState extends State<WelcomePage> {
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
           height: MediaQuery.of(context).size.height,
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(5)),
+              borderRadius: const BorderRadius.all(Radius.circular(5)),
               boxShadow: <BoxShadow>[
                 BoxShadow(
                     color: Colors.grey.shade200,
-                    offset: Offset(2, 4),
+                    offset: const Offset(2, 4),
                     blurRadius: 5,
                     spreadRadius: 2)
               ],
@@ -46,7 +46,7 @@ class _WelcomePageState extends State<WelcomePage> {
               submitButtonWhite(
                   this.context,
                   "Login",
-                  LoginPage(
+                  const LoginPage(
                     title: '',
                   )),
               const SizedBox(
@@ -55,7 +55,7 @@ class _WelcomePageState extends State<WelcomePage> {
               submitButtonBorder(
                   this.context,
                   "Registrar",
-                  SignUpPage(
+                  const SignUpPage(
                     title: '',
                   )),
               const SizedBox(

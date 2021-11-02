@@ -26,7 +26,7 @@ class _BuscarPageState extends State<BuscarPage> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => ListaProdutosPage())),
+                        builder: (context) => const ListaProdutosPage())),
               },
           child: Card(
               child: Container(
@@ -49,7 +49,7 @@ class _BuscarPageState extends State<BuscarPage> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => ListaVendedoresPage())),
+                        builder: (context) => const ListaVendedoresPage())),
               },
           child: Card(
             child: Container(

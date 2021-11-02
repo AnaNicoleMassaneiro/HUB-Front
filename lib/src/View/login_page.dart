@@ -16,7 +16,7 @@ import 'Components/labels_text.dart';
 import '../Validations/form_field_validations.dart';
 
 class LoginPage extends StatefulWidget {
-  LoginPage({Key? key, required this.title}) : super(key: key);
+  const LoginPage({Key? key, required this.title}) : super(key: key);
   final String title;
 
   @override
@@ -45,7 +45,7 @@ class _LoginPageState extends State<LoginPage> {
             boxShadow: <BoxShadow>[
               BoxShadow(
                   color: Colors.grey.shade200,
-                  offset: Offset(2, 4),
+                  offset: const Offset(2, 4),
                   blurRadius: 5,
                   spreadRadius: 2)
             ],
@@ -93,7 +93,7 @@ class _LoginPageState extends State<LoginPage> {
                 children: <Widget>[
                   SizedBox(height: height * .2),
                   defaultTitle(this.context, "HUB UFPR"),
-                  SizedBox(height: 50),
+                  const SizedBox(height: 50),
                   Form(key: _loginFormKey, child: (_userPasswordWidget())),
                   _submitButton(),
                   const SizedBox(height: 20),
@@ -109,7 +109,7 @@ class _LoginPageState extends State<LoginPage> {
                       this.context,
                       "Não tem uma conta?",
                       "Registrar",
-                      SignUpPage(
+                      const SignUpPage(
                         title: '',
                       )),
                 ],
@@ -129,9 +129,10 @@ class _LoginPageState extends State<LoginPage> {
         if (response.statusCode == 200) {
           final trataDados = jsonDecode(response.body).cast<String, dynamic>();
 
+          var idUser = trataDados["user"]["id"];
+
           if (trataDados["user"]["isVendedor"]) {
             var idVendedor = trataDados["idVendedor"];
-            var idUser = trataDados["user"]["idVendedor"];
 
             Navigator.push(
                 context,
@@ -140,11 +141,13 @@ class _LoginPageState extends State<LoginPage> {
                     builder: (context) => VendedorPage(
                         title: '', idVendedor: idVendedor, idUser: idUser)));
           } else {
+            var idCliente = trataDados["idCliente"];
+
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => const ClientePage(
-                          title: '',
+                    builder: (context) => ClientePage(
+                          title: '', idCliente: idCliente, idUser: idUser
                         )));
           }
         } else {

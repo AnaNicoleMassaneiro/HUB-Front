@@ -24,7 +24,6 @@ class _ListaVendedoresPageState extends State<ListaVendedoresPage> {
 
   void buscavendedores() {
     var api = ApiVendedores();
-    Map<String, dynamic> indexedData = {};
 
     api.searchAll().then((response) {
       for (var vendedores in response) {
@@ -120,9 +119,9 @@ class _ListaVendedoresPageState extends State<ListaVendedoresPage> {
       return;
     }
 
-    listaVendedores.forEach((userDetail) {
+    for (var userDetail in listaVendedores) {
       if (containsCaseInsensitive(userDetail.name, text)) _searchResult.add(userDetail);
-    });
+    }
 
     setState(() {});
   }

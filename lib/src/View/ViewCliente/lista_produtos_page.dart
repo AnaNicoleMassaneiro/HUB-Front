@@ -139,9 +139,9 @@ class _ListaProdutosPageState extends State<ListaProdutosPage> {
       return;
     }
 
-    listaProdutos.forEach((userDetail) {
+    for (var userDetail in listaProdutos) {
       if (userDetail.nome.contains(text)) _searchResult.add(userDetail);
-    });
+    }
 
     setState(() {});
   }

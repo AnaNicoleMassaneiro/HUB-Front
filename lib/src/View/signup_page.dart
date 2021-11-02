@@ -15,7 +15,7 @@ import 'Components/labels_text.dart';
 import '../Validations/form_field_validations.dart';
 
 class SignUpPage extends StatefulWidget {
-  SignUpPage({Key? key, required this.title}) : super(key: key);
+  const SignUpPage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
@@ -36,7 +36,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
   Widget passwordField() {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 10),
+      margin: const EdgeInsets.symmetric(vertical: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -53,7 +53,7 @@ class _SignUpPageState extends State<SignUpPage> {
               if (ret != null) {
                 return ret;
               } else {
-                if (confirmaSenha.text == null || confirmaSenha.text.isEmpty) {
+                if (confirmaSenha.text.trim().isEmpty) {
                   return null;
                 }
                 if (value.compareTo(confirmaSenha.text) == 0) {
@@ -145,10 +145,10 @@ class _SignUpPageState extends State<SignUpPage> {
             Positioned(
               top: -MediaQuery.of(context).size.height * .15,
               right: -MediaQuery.of(context).size.width * .4,
-              child: BezierContainer(),
+              child: const BezierContainer(),
             ),
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -172,7 +172,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         this.context,
                         'Já tem uma conta?',
                         'Login',
-                        LoginPage(
+                        const LoginPage(
                           title: '',
                         )),
                   ],
@@ -196,7 +196,7 @@ class _SignUpPageState extends State<SignUpPage> {
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => LoginPage(
+              builder: (context) => const LoginPage(
                     title: '',
                   )));
 
