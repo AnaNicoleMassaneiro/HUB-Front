@@ -131,7 +131,7 @@ class _MeusProdutosPageState extends State<MeusProdutosPage> {
                           spacing: 12,
                           children: [
                             IconButton(
-                              icon: const Icon(Icons.edit),
+                              icon: const Icon(Icons.remove_red_eye_rounded),
                               onPressed: () {
                                 Navigator.push(
                                     context,
@@ -221,7 +221,7 @@ class _MeusProdutosPageState extends State<MeusProdutosPage> {
       customMessageModal(
           context, "Sucesso!", "Produto excluido com sucesso", "OK");
     } else {
-      customMessageModal(context, "Falha ao cadastrar produto: ",
+      customMessageModal(context, "Falha ao excluir produto: ",
           jsonDecode(ret.body)["msg"], "Fechar");
     }
   }

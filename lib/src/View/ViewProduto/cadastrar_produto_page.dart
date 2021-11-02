@@ -90,6 +90,9 @@ class _CadastrarProdutoPageState extends State<CadastrarProdutoPage> {
                       child: _cadastroForm(),
                     ),
                     _showImage(selectedImage),
+                    const SizedBox(
+                      height: 20,
+                    ),
                     ElevatedButton(
                         onPressed: _pickedImage,
                         child: Container(
@@ -169,7 +172,7 @@ class _CadastrarProdutoPageState extends State<CadastrarProdutoPage> {
 
   Image _showImage(PickedFile? pf) {
     if (pf != null){
-      return Image.file(File(pf.path));
+      return Image.file(File(pf.path), height: 250, width: 250, fit: BoxFit.cover);
     }
     else {
       return Image.asset("assets/product-icon.png", width: 200, height: 200);

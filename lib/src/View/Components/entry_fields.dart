@@ -32,7 +32,8 @@ Widget simpleEntryField(String title, TextEditingController controllertxt,
 }
 
 Widget entryFieldValidation(String title, TextEditingController controllerTxt, Function validation,
-    {required String placeholder, bool isPassword = false, TextInputType keyboard = TextInputType.text,
+    {required String placeholder, bool isPassword = false,
+      TextInputType keyboard = TextInputType.text, bool enabled = true
     }) {
   return Container(
     margin: const EdgeInsets.symmetric(vertical: 10),
@@ -50,6 +51,7 @@ Widget entryFieldValidation(String title, TextEditingController controllerTxt, F
           validator: (value) {
             return validation(value);
           },
+          enabled: enabled,
           controller: controllerTxt,
           obscureText: isPassword,
           decoration: InputDecoration(
