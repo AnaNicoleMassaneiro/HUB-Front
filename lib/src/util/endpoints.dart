@@ -1,11 +1,12 @@
 class Endpoints {
-  static const host = "http://192.168.0.148:5000/";
-  static var create = host + "api/User/create";
-  static var autenticate = host + "api/User/authenticate";
-  static var searchProdutoPorVendedor = host + "api/produto/buscarPorVendedor";
-  static var registerProduct = host + "api/produto/cadastro";
-  static var updateProduct = host + "api/produto/update/";
-  static var deleteProduct = host + "api/produto/deletar/";
-  static var searchProductAll = host + "api/produto/buscarTodos";
-  static var buscarTodosVendedores = host + "api/vendedor/buscarTodos";
+  static const host = "http://192.168.1.2:5000/";
+  static const create = host + "api/User/create";
+  static const autenticate = host + "api/User/authenticate";
+  static const searchProdutoPorVendedor = host + "api/produto/buscarPorVendedor";
+  static const registerProduct = host + "api/produto/cadastro";
+  static const updateProduct = host + "api/produto/update/";
+  static const deleteProduct = host + "api/produto/deletar/";
+  static const searchProductAll = host + "api/produto/buscarTodos";
+  static const buscarTodosVendedores = host + "api/vendedor/buscarTodos";
+  static const updateLocation = host + "api/User/atualizarLocalizacao/";
 }
