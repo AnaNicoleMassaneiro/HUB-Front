@@ -5,8 +5,12 @@ import '../Components/mapa.dart';
 import 'buscar_page.dart';
 
 class ClientePage extends StatefulWidget {
-  const ClientePage({Key? key, required this.title}) : super(key: key);
+  const ClientePage(
+      {Key? key, required this.title, required this.idCliente, required this.idUser})
+      : super(key: key);
   final String title;
+  final int idCliente;
+  final int idUser;
 
   @override
   _ClientePageState createState() => _ClientePageState();
@@ -23,7 +27,7 @@ class _ClientePageState extends State<ClientePage> {
   @override
   Widget build(BuildContext context) {
     final List<Widget> _telas = [
-      mapaComponent(this.context),
+      mapaComponent(this.context, widget.idUser),
       const BuscarPage()
     ];
 
@@ -38,11 +42,11 @@ class _ClientePageState extends State<ClientePage> {
           // ignore: prefer_const_literals_to_create_immutables
           items: [
             const BottomNavigationBarItem(
-                icon: Icon(Icons.person), title: Text("localizacao")),
+                icon: Icon(Icons.person), label: "localizacao"),
             const BottomNavigationBarItem(
-                icon: Icon(Icons.person), title: Text("Buscar")),
+                icon: Icon(Icons.person), label: "Buscar"),
             const BottomNavigationBarItem(
-                icon: Icon(Icons.person), title: Text("null"))
+                icon: Icon(Icons.person), label: "null")
           ],
         ));
   }

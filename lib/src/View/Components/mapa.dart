@@ -1,16 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
+import '../../Api/api_location.dart';
 
-Widget mapaComponent(BuildContext context) {
+Widget mapaComponent(BuildContext context, int idUser) {
   late GoogleMapController _controller;
   final Location _location = Location();
-  const LatLng _initialcameraposition = const LatLng(-25.4340196, -49.2588484);
+  const LatLng _initialcameraposition = LatLng(-25.4340196, -49.2588484);
   var location = Location();
   late LocationData minhaLocalizacao;
 
   void pegarLocalizacao() async {
+    var api = ApiLocation();
     minhaLocalizacao = await location.getLocation();
+
+    api.updateCurrentLocation(
+        minhaLocalizacao.latitude, minhaLocalizacao.longitude, idUser)
+    .then((response) {
+      if (response == null){
+        throw Exception("Houve um erro ao atualizar a localização!");
+      }
+      else if (response.statusCode != 200) {
+        throw Exception(
+            "Houve um erro ao atualizar a localização: " + response.body
+        );
+      }
+      else {
+        print("\t\t>>>Atualizando localização...");
+      }
+    });
   }
 
   void _onMapCreated(GoogleMapController _cntlr) {
@@ -35,7 +53,7 @@ Widget mapaComponent(BuildContext context) {
     child: Stack(
       children: [
         GoogleMap(
-          initialCameraPosition: CameraPosition(target: _initialcameraposition),
+          initialCameraPosition: const CameraPosition(target: _initialcameraposition),
           mapType: MapType.normal,
           onMapCreated: _onMapCreated,
           myLocationEnabled: true,

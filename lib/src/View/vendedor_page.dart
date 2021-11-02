@@ -5,11 +5,11 @@ import 'ViewProduto/meus_produtos_page.dart';
 
 class VendedorPage extends StatefulWidget {
   const VendedorPage(
-      {Key? key, required this.title, required this.idVendedor, this.idUser})
+      {Key? key, required this.title, required this.idVendedor, required this.idUser})
       : super(key: key);
   final String title;
   final int idVendedor;
-  final int? idUser;
+  final int idUser;
 
   @override
   _VendedorPageState createState() => _VendedorPageState();
@@ -24,12 +24,14 @@ class _VendedorPageState extends State<VendedorPage> {
   @override
   Widget build(BuildContext context) {
     final List<Widget> _telas = [
-      mapaComponent(this.context),
+      mapaComponent(this.context, widget.idUser),
       MeusProdutosPage(
         idVendedor: widget.idVendedor,
+        idUser: widget.idUser
       ),
       MeusProdutosPage(
         idVendedor: widget.idVendedor,
+        idUser: widget.idUser
       ),
     ];
 
@@ -57,11 +59,11 @@ class _VendedorPageState extends State<VendedorPage> {
           // ignore: prefer_const_literals_to_create_immutables
           items: [
             const BottomNavigationBarItem(
-                icon: Icon(Icons.person), title: Text("localizacao")),
+                icon: Icon(Icons.person), label: "Localização"),
             const BottomNavigationBarItem(
-                icon: Icon(Icons.person), title: Text("Meus Produtos")),
+                icon: Icon(Icons.person), label: "Meus Produtos"),
             const BottomNavigationBarItem(
-                icon: Icon(Icons.person), title: Text("Null"))
+                icon: Icon(Icons.person), label: "Null")
           ],
         ));
   }

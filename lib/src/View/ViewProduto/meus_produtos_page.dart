@@ -5,14 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:hub/src/Api/api_product.dart';
 import 'package:hub/src/View/Components/modal_message.dart';
 import '../Class/meus_produtos.dart';
-import 'cadastrar_produto_page.dart';
 import 'editar_produto_page.dart';
 
 class MeusProdutosPage extends StatefulWidget {
-  const MeusProdutosPage({Key? key, required this.idVendedor, this.idUser})
+  const MeusProdutosPage({Key? key, required this.idVendedor, required this.idUser})
       : super(key: key);
   final int idVendedor;
-  final int? idUser;
+  final int idUser;
 
   @override
   _MeusProdutosPageState createState() => _MeusProdutosPageState();
@@ -176,9 +175,9 @@ class _MeusProdutosPageState extends State<MeusProdutosPage> {
       return;
     }
 
-    listaProdutos.forEach((userDetail) {
+    for (var userDetail in listaProdutos) {
       if (userDetail.nome.contains(text)) _searchResult.add(userDetail);
-    });
+    }
 
     setState(() {});
   }

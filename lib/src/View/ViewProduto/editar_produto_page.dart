@@ -27,7 +27,7 @@ class EditarProdutoPage extends StatefulWidget {
 
   final String title;
   final int idVendedor;
-  final int? idUser;
+  final int idUser;
   final String nome;
   final double preco;
   final String descricao;

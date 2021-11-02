@@ -12,12 +12,12 @@ import '../vendedor_page.dart';
 
 class CadastrarProdutoPage extends StatefulWidget {
   const CadastrarProdutoPage(
-      {Key? key, required this.title, required this.idVendedor, this.idUser})
+      {Key? key, required this.title, required this.idVendedor, required this.idUser})
       : super(key: key);
 
   final String title;
   final int idVendedor;
-  final int? idUser;
+  final int idUser;
 
   @override
   _CadastrarProdutoPageState createState() => _CadastrarProdutoPageState();
@@ -28,6 +28,7 @@ class _CadastrarProdutoPageState extends State<CadastrarProdutoPage> {
   final TextEditingController nome = TextEditingController();
   final TextEditingController descricao = TextEditingController();
   final TextEditingController qtdDisponivel = TextEditingController();
+
   PickedFile? selectedImage;
 
   bool isChecked = false;
@@ -88,6 +89,7 @@ class _CadastrarProdutoPageState extends State<CadastrarProdutoPage> {
                       key: _formKey,
                       child: _cadastroForm(),
                     ),
+                    _showImage(selectedImage),
                     ElevatedButton(
                         onPressed: _pickedImage,
                         child: Container(
@@ -162,6 +164,15 @@ class _CadastrarProdutoPageState extends State<CadastrarProdutoPage> {
     } else {
       customMessageModal(context, "Falha ao cadastrar produto: ",
           jsonDecode(await ret.stream.bytesToString())["msg"], "Fechar");
+    }
+  }
+
+  Image _showImage(PickedFile? pf) {
+    if (pf != null){
+      return Image.file(File(pf.path));
+    }
+    else {
+      return Image.asset("assets/product-icon.png", width: 200, height: 200);
     }
   }
 }
