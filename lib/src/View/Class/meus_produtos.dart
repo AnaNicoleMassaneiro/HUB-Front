@@ -6,6 +6,7 @@ class MeusProdutos {
   late String nome;
   late bool? isAtivo;
   late double preco;
+  late double? nota = 0;
   late String descricao;
   late int quantidadeDisponivel;
   late Uint8List? imagem;
@@ -15,6 +16,7 @@ class MeusProdutos {
       required this.nome,
       this.isAtivo,
       required this.preco,
+      this.nota,
       required this.descricao,
       required this.quantidadeDisponivel,
       this.imagem});
@@ -25,6 +27,7 @@ class MeusProdutos {
       nome: json['nome'],
       isAtivo: json['isAtivo'],
       preco: json['preco'],
+      nota: json['notaProduto'],
       descricao: json['descricao'],
       quantidadeDisponivel: json['quantidadeDisponivel'],
       imagem: base64Decode(json['imagem'])

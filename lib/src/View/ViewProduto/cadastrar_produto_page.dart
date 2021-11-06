@@ -8,8 +8,6 @@ import 'package:hub/src/View/Components/entry_fields.dart';
 import 'package:hub/src/View/Components/modal_message.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../vendedor_page.dart';
-
 class CadastrarProdutoPage extends StatefulWidget {
   const CadastrarProdutoPage(
       {Key? key, required this.title, required this.idVendedor, required this.idUser})
@@ -153,16 +151,7 @@ class _CadastrarProdutoPageState extends State<CadastrarProdutoPage> {
         widget.idVendedor, preco, nome, descricao, qtdDisponivel, upload);
 
     if (ret.statusCode == 200) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-            // ignore: prefer_const_constructors
-            builder: (context) => VendedorPage(
-                  title: '',
-                  idVendedor: widget.idVendedor,
-                  idUser: widget.idUser,
-                )),
-      );
+      Navigator.pop(context);
       customMessageModal(
           context, "Sucesso!", "Produto cadastrado com sucesso", "OK");
     } else {

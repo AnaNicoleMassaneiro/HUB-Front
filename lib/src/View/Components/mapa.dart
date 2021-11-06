@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import '../../Api/api_location.dart';
+import '../Class/user_data.dart';
 
 Widget mapaComponent(BuildContext context, int idUser) {
   late GoogleMapController _controller;
@@ -13,6 +14,9 @@ Widget mapaComponent(BuildContext context, int idUser) {
   void pegarLocalizacao() async {
     var api = ApiLocation();
     minhaLocalizacao = await location.getLocation();
+
+    userData.curLocationLat = minhaLocalizacao.latitude;
+    userData.curLocationLon = minhaLocalizacao.longitude;
 
     api.updateCurrentLocation(
         minhaLocalizacao.latitude, minhaLocalizacao.longitude, idUser)

@@ -30,9 +30,13 @@ class _ListaProdutosPageState extends State<ListaProdutosPage> {
               nome: produto["nome"],
               descricao: produto["descricao"],
               isAtivo: produto["isAtivo"],
+              nota: double.parse(produto['notaProduto'].toString()),
               preco: double.parse(produto["preco"].toString()),
               quantidadeDisponivel: produto["quantidadeDisponivel"],
-              imagem: produto["imagem"]));
+              imagem: produto["imagem"] == null ?
+                null :
+                base64.decode(produto["imagem"])
+          ));
         });
       }
     }, onError: (error) async {

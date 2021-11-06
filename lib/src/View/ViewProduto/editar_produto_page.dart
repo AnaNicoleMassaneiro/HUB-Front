@@ -9,8 +9,6 @@ import 'package:hub/src/View/Components/entry_fields.dart';
 import 'package:hub/src/View/Components/modal_message.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../vendedor_page.dart';
-
 class EditarProdutoPage extends StatefulWidget {
   const EditarProdutoPage(
       {Key? key,
@@ -252,17 +250,7 @@ class _EditarProdutoPageState extends State<EditarProdutoPage> {
     );
 
     if (ret.statusCode == 200) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          // ignore: prefer_const_constructors
-            builder: (context) =>
-                VendedorPage(
-                  title: '',
-                  idVendedor: widget.idVendedor,
-                  idUser: widget.idUser,
-                )),
-      );
+      Navigator.pop(context);
       customMessageModal(
           context, "Slucesso!", "Produto aterado com sucesso", "OK");
     } else {

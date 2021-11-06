@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../Class/meus_produtos.dart';
+import '../ViewReserva/create_reserva.dart';
 
 class DetalhesProdutoPage extends StatefulWidget {
   DetalhesProdutoPage({Key? key, required this.listaProdutos})
@@ -44,17 +45,26 @@ class _DetalhesProdutoPageState extends State<DetalhesProdutoPage> {
           Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
+              widget.listaProdutos.imagem == null ?
+                Image.asset("assets/product-icon.png", height: 250, fit: BoxFit.contain) :
+                Image.memory(widget.listaProdutos.imagem!, height: 250, fit: BoxFit.contain)
+              ,
               const Text("Produto",
                   style: TextStyle(fontWeight: FontWeight.w100, fontSize: 16)),
               Text(widget.listaProdutos.nome.toString(),
                   style: const TextStyle(
                       fontWeight: FontWeight.w700, fontSize: 24)),
-              const Text("Preço",
+              const Text("Nota",
                   style: TextStyle(fontWeight: FontWeight.w100, fontSize: 16)),
-              Text(widget.listaProdutos.preco.toString(),
+              Text(widget.listaProdutos.nota.toString(),
                   style: const TextStyle(
                       fontWeight: FontWeight.w700, fontSize: 24)),
-              const Text("Quantidade",
+              const Text("Preço",
+                  style: TextStyle(fontWeight: FontWeight.w100, fontSize: 16)),
+              Text('R\$ ' + widget.listaProdutos.preco.toString().replaceAll(".", ","),
+                  style: const TextStyle(
+                      fontWeight: FontWeight.w700, fontSize: 24)),
+              const Text("Quantidade disponível",
                   style: TextStyle(fontWeight: FontWeight.w100, fontSize: 16)),
               Text(widget.listaProdutos.quantidadeDisponivel.toString(),
                   style: const TextStyle(
@@ -76,7 +86,14 @@ class _DetalhesProdutoPageState extends State<DetalhesProdutoPage> {
                     ),
                   )),
               ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                          CreateReserva(produto: widget.listaProdutos)
+                      ));
+                  },
                   child: Container(
                     width: MediaQuery.of(context).size.width - 100,
                     padding: const EdgeInsets.symmetric(vertical: 15),

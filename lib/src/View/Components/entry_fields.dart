@@ -49,7 +49,7 @@ Widget entryFieldValidation(String title, TextEditingController controllerTxt, F
         ),
         TextFormField(
           validator: (value) {
-            return validation(value);
+            return validation(value.toString());
           },
           enabled: enabled,
           controller: controllerTxt,

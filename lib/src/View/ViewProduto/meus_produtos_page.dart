@@ -7,11 +7,13 @@ import 'package:hub/src/View/Components/modal_message.dart';
 import '../Class/meus_produtos.dart';
 import 'editar_produto_page.dart';
 
+import '../Class/user_data.dart';
+
 class MeusProdutosPage extends StatefulWidget {
-  const MeusProdutosPage({Key? key, required this.idVendedor, required this.idUser})
+  MeusProdutosPage({Key? key})
       : super(key: key);
-  final int idVendedor;
-  final int idUser;
+  final int idVendedor = userData.idVendedor!;
+  final int idUser = userData.idUser!;
 
   @override
   _MeusProdutosPageState createState() => _MeusProdutosPageState();

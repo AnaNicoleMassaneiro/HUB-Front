@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import 'Components/mapa.dart';
 import 'ViewProduto/cadastrar_produto_page.dart';
 import 'ViewProduto/meus_produtos_page.dart';
+import './Class/user_data.dart';
 
 class VendedorPage extends StatefulWidget {
-  const VendedorPage(
-      {Key? key, required this.title, required this.idVendedor, required this.idUser})
+  VendedorPage(
+      {Key? key, required this.title})
       : super(key: key);
+
   final String title;
-  final int idVendedor;
-  final int idUser;
+  final int idVendedor = userData.idVendedor!;
+  final int idUser = userData.idUser!;
 
   @override
   _VendedorPageState createState() => _VendedorPageState();
@@ -25,14 +27,8 @@ class _VendedorPageState extends State<VendedorPage> {
   Widget build(BuildContext context) {
     final List<Widget> _telas = [
       mapaComponent(this.context, widget.idUser),
-      MeusProdutosPage(
-        idVendedor: widget.idVendedor,
-        idUser: widget.idUser
-      ),
-      MeusProdutosPage(
-        idVendedor: widget.idVendedor,
-        idUser: widget.idUser
-      ),
+      MeusProdutosPage(),
+      MeusProdutosPage(),
     ];
 
     return Scaffold(

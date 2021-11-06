@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
+import './Class/user_data.dart';
 import '../Api/api_login.dart';
 import '../Widget/bezier_container.dart';
 
@@ -129,25 +130,25 @@ class _LoginPageState extends State<LoginPage> {
         if (response.statusCode == 200) {
           final trataDados = jsonDecode(response.body).cast<String, dynamic>();
 
-          var idUser = trataDados["user"]["id"];
+          userData.idUser = trataDados["user"]["id"];
 
           if (trataDados["user"]["isVendedor"]) {
-            var idVendedor = trataDados["idVendedor"];
+            userData.idVendedor = trataDados["idVendedor"];
 
             Navigator.push(
                 context,
                 MaterialPageRoute(
                     // ignore: prefer_const_constructors
                     builder: (context) => VendedorPage(
-                        title: '', idVendedor: idVendedor, idUser: idUser)));
+                        title: '')));
           } else {
-            var idCliente = trataDados["idCliente"];
+            userData.idCliente = trataDados["idCliente"];
 
             Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) => ClientePage(
-                          title: '', idCliente: idCliente, idUser: idUser
+                          title: ''
                         )));
           }
         } else {

@@ -9,4 +9,7 @@ class Endpoints {
   static const searchProductAll = host + "api/produto/buscarTodos";
   static const buscarTodosVendedores = host + "api/vendedor/buscarTodos";
   static const updateLocation = host + "api/User/atualizarLocalizacao/";
+  static const createReservation = host + "api/reserva/create";
+  static const cancelReservation = host + "api/reserva/cancel";
+  static const confirmReservation = host + "api/reserva/confirm";
 }

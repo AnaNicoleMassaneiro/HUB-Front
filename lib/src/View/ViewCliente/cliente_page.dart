@@ -3,14 +3,16 @@ import 'package:location/location.dart';
 
 import '../Components/mapa.dart';
 import 'buscar_page.dart';
+import '../Class/user_data.dart';
 
 class ClientePage extends StatefulWidget {
-  const ClientePage(
-      {Key? key, required this.title, required this.idCliente, required this.idUser})
+  ClientePage(
+      {Key? key, required this.title})
       : super(key: key);
+
   final String title;
-  final int idCliente;
-  final int idUser;
+  final int idCliente = userData.idCliente!;
+  final int idUser = userData.idUser!;
 
   @override
   _ClientePageState createState() => _ClientePageState();
