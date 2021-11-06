@@ -41,7 +41,7 @@ class api_product {
 
     request.fields['nome'] = nome;
     request.fields['isAtivo'] = "true";
-    request.fields['preco'] = preco.toString();
+    request.fields['preco'] = preco.toString().replaceAll(".", ",");
     request.fields['descricao'] = descricao;
     request.fields['quantidadeDisponivel'] = qtdDisponivel.toString();
     request.fields['idVendedor'] = idVendedor.toString();
@@ -61,15 +61,17 @@ class api_product {
       String nome,
       String descricao,
       int qtdDisponivel,
-      File? image) async {
+      File? image,
+      bool isKeepImage) async {
     var request = http.MultipartRequest(
         'Put', Uri.parse(Endpoints.updateProduct + idProduto.toString()));
 
     request.fields['nome'] = nome;
     request.fields['isAtivo'] = "true";
-    request.fields['preco'] = preco.toString();
+    request.fields['preco'] = preco.toString().replaceAll(".", ",");
     request.fields['descricao'] = descricao;
     request.fields['quantidadeDisponivel'] = qtdDisponivel.toString();
+    request.fields['isKeepImage'] = isKeepImage.toString();
 
     if (image != null) {
       request.files

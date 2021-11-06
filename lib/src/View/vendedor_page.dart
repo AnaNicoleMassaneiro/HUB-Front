@@ -19,7 +19,7 @@ class _VendedorPageState extends State<VendedorPage> {
   final TextEditingController user = TextEditingController();
   final TextEditingController senha = TextEditingController();
   late Map<String, double> userLocation;
-  int _indiceAtual = 0;
+  int _indiceAtual = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -40,19 +40,20 @@ class _VendedorPageState extends State<VendedorPage> {
             title: const Text('Área do vendedor'),
             backgroundColor: Colors.orange),
         body: _telas[_indiceAtual],
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => CadastrarProdutoPage(
-                        title: '',
-                        idVendedor: widget.idVendedor,
-                        idUser: widget.idUser)));
-          },
-          child: const Icon(Icons.plus_one),
-          backgroundColor: Colors.blue,
-        ),
+        floatingActionButton: _indiceAtual == 1 ?
+          FloatingActionButton(
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => CadastrarProdutoPage(
+                          title: '',
+                          idVendedor: widget.idVendedor,
+                          idUser: widget.idUser)));
+            },
+            child: const Icon(Icons.plus_one),
+            backgroundColor: Colors.blue,
+          ) : Column(),
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: _indiceAtual,
           onTap: onTabTapped,

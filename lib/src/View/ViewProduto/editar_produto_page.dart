@@ -70,7 +70,7 @@ class _EditarProdutoPageState extends State<EditarProdutoPage> {
         onPressed: () {
           _updateProduct(
               idProduto.text,
-              double.parse(precoText.text),
+              double.parse(precoText.text.replaceAll(",", ".")),
               nomeText.text,
               descricaoText.text,
               int.parse(qtdDisponivelText.text),
@@ -227,18 +227,17 @@ class _EditarProdutoPageState extends State<EditarProdutoPage> {
     var api = api_product();
 
     File? upload;
+    bool isKeepImage = false;
 
-    if (isRemoveImage) {
+    if (isRemoveImage) { //removendo imagem atual
       upload = null;
     }
-    else if (image != null){
+    else if (image != null){ //alterando imagem para nova imagemm
       upload = File.fromUri(Uri.parse(image.path));
     }
-    else if (oldImage != null){
-      upload = File.fromRawPath(oldImage);
-    }
-    else {
+    else { //mantendo imagem atual
       upload = null;
+      isKeepImage = true;
     }
 
     var ret = await api.update(
@@ -248,7 +247,9 @@ class _EditarProdutoPageState extends State<EditarProdutoPage> {
         nome,
         descricao,
         qtdDisponivel,
-        upload);
+        upload,
+        isKeepImage
+    );
 
     if (ret.statusCode == 200) {
       Navigator.push(
@@ -263,7 +264,7 @@ class _EditarProdutoPageState extends State<EditarProdutoPage> {
                 )),
       );
       customMessageModal(
-          context, "Sucesso!", "Produto alterado com sucesso", "OK");
+          context, "Slucesso!", "Produto aterado com sucesso", "OK");
     } else {
       customMessageModal(context, "Falha ao cadastrar produto: ",
           jsonDecode(await ret.stream.bytesToString())["msg"], "Fechar");

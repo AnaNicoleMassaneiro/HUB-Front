@@ -39,8 +39,9 @@ class _CadastrarProdutoPageState extends State<CadastrarProdutoPage> {
     return ElevatedButton(
         onPressed: () {
           if (_formKey.currentState!.validate()) {
-            _registerProduct(double.parse(preco.text), nome.text,
-                descricao.text, int.parse(qtdDisponivel.text), selectedImage);
+            _registerProduct(double.parse(preco.text.replaceAll(",", ".")),
+                nome.text, descricao.text, int.parse(qtdDisponivel.text),
+                selectedImage);
           }
         },
         child: Container(
