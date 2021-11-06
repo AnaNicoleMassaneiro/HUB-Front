@@ -3,6 +3,7 @@ import 'package:location/location.dart';
 
 import '../Components/mapa.dart';
 import 'buscar_page.dart';
+import 'minhas_reservas_page.dart';
 import '../Class/user_data.dart';
 
 class ClientePage extends StatefulWidget {
@@ -30,7 +31,8 @@ class _ClientePageState extends State<ClientePage> {
   Widget build(BuildContext context) {
     final List<Widget> _telas = [
       mapaComponent(this.context, widget.idUser),
-      const BuscarPage()
+      const BuscarPage(),
+      const MinhasReservasPage()
     ];
 
     return Scaffold(
@@ -44,11 +46,11 @@ class _ClientePageState extends State<ClientePage> {
           // ignore: prefer_const_literals_to_create_immutables
           items: [
             const BottomNavigationBarItem(
-                icon: Icon(Icons.person), label: "localizacao"),
+                icon: Icon(Icons.person), label: "Localização"),
             const BottomNavigationBarItem(
                 icon: Icon(Icons.person), label: "Buscar"),
             const BottomNavigationBarItem(
-                icon: Icon(Icons.person), label: "null")
+                icon: Icon(Icons.person), label: "Minhas Reservas")
           ],
         ));
   }

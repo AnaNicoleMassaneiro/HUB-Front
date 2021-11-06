@@ -10,6 +10,8 @@ class Endpoints {
   static const buscarTodosVendedores = host + "api/vendedor/buscarTodos";
   static const updateLocation = host + "api/User/atualizarLocalizacao/";
   static const createReservation = host + "api/reserva/create";
-  static const cancelReservation = host + "api/reserva/cancel";
-  static const confirmReservation = host + "api/reserva/confirm";
+  static const cancelReservation = host + "api/reserva/cancel/";
+  static const confirmReservation = host + "api/reserva/confirm/";
+  static const getReservationByCustomer = host + "api/reserva/getByCustomer/";
+  static const getReservationBySeller = host + "api/reserva/getBySeller/";
 }

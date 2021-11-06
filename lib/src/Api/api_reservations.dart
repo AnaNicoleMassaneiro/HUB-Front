@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:hub/src/util/endpoints.dart';
 import 'package:http/http.dart' as http;
 
@@ -20,6 +19,25 @@ class ApiReservations {
         "latitude": lat,
         "longitude": lon
       }),
+    );
+  }
+
+  Future<List<Map<String, dynamic>>> getByCustomer(int id) async{
+    final res = await http.get(
+      Uri.parse(Endpoints.getReservationByCustomer + id.toString()),
+    );
+
+    if (res.statusCode == 200) {
+      return List<Map<String, dynamic>>.from(
+          json.decode(res.body)["reservas"]);
+    } else {
+      throw Exception('Houve um erro ao buscar as Reservas!');
+    }
+  }
+
+  Future<http.Response> cancelReservation(int id) async{
+    return await http.patch(
+      Uri.parse(Endpoints.cancelReservation + id.toString())
     );
   }
 }

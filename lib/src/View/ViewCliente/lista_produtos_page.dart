@@ -25,18 +25,7 @@ class _ListaProdutosPageState extends State<ListaProdutosPage> {
     api.searchAll().then((response) {
       for (var produto in response) {
         setState(() {
-          listaProdutos.add(MeusProdutos(
-              id: produto["id"],
-              nome: produto["nome"],
-              descricao: produto["descricao"],
-              isAtivo: produto["isAtivo"],
-              nota: double.parse(produto['notaProduto'].toString()),
-              preco: double.parse(produto["preco"].toString()),
-              quantidadeDisponivel: produto["quantidadeDisponivel"],
-              imagem: produto["imagem"] == null ?
-                null :
-                base64.decode(produto["imagem"])
-          ));
+          listaProdutos.add(MeusProdutos.fromJson(produto));
         });
       }
     }, onError: (error) async {

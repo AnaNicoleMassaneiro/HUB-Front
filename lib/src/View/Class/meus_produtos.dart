@@ -21,16 +21,18 @@ class MeusProdutos {
       required this.quantidadeDisponivel,
       this.imagem});
 
-  factory MeusProdutos.fromJson(Map<String, dynamic> json) {
+  factory MeusProdutos.fromJson(Map<String, dynamic> produto) {
     return MeusProdutos(
-      id: json['id'],
-      nome: json['nome'],
-      isAtivo: json['isAtivo'],
-      preco: json['preco'],
-      nota: json['notaProduto'],
-      descricao: json['descricao'],
-      quantidadeDisponivel: json['quantidadeDisponivel'],
-      imagem: base64Decode(json['imagem'])
+        id: produto["id"],
+        nome: produto["nome"],
+        descricao: produto["descricao"],
+        isAtivo: produto["isAtivo"],
+        nota: double.parse(produto['notaProduto'].toString()),
+        preco: double.parse(produto["preco"].toString()),
+        quantidadeDisponivel: produto["quantidadeDisponivel"],
+        imagem: produto["imagem"] == null ?
+        null :
+        base64.decode(produto["imagem"])
     );
   }
 }
