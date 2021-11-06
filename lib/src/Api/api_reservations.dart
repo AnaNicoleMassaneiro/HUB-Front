@@ -35,9 +35,28 @@ class ApiReservations {
     }
   }
 
+  Future<List<Map<String, dynamic>>> getBySeller(int id) async{
+    final res = await http.get(
+      Uri.parse(Endpoints.getReservationBySeller + id.toString()),
+    );
+
+    if (res.statusCode == 200) {
+      return List<Map<String, dynamic>>.from(
+          json.decode(res.body)["reservas"]);
+    } else {
+      throw Exception('Houve um erro ao buscar as Reservas!');
+    }
+  }
+
   Future<http.Response> cancelReservation(int id) async{
     return await http.patch(
       Uri.parse(Endpoints.cancelReservation + id.toString())
+    );
+  }
+
+  Future<http.Response> confirmReservation(int id) async{
+    return await http.patch(
+        Uri.parse(Endpoints.confirmReservation + id.toString())
     );
   }
 }

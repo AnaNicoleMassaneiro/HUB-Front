@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hub/src/View/ViewVendedor/minhas_reservas_page.dart';
 import 'Components/mapa.dart';
 import 'ViewProduto/cadastrar_produto_page.dart';
 import 'ViewProduto/meus_produtos_page.dart';
@@ -28,7 +29,7 @@ class _VendedorPageState extends State<VendedorPage> {
     final List<Widget> _telas = [
       mapaComponent(this.context, widget.idUser),
       MeusProdutosPage(),
-      MeusProdutosPage(),
+      const MinhasReservasPage(),
     ];
 
     return Scaffold(
@@ -60,7 +61,7 @@ class _VendedorPageState extends State<VendedorPage> {
             const BottomNavigationBarItem(
                 icon: Icon(Icons.person), label: "Meus Produtos"),
             const BottomNavigationBarItem(
-                icon: Icon(Icons.person), label: "Null")
+                icon: Icon(Icons.person), label: "Minhas Reservas")
           ],
         ));
   }
