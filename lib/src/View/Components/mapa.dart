@@ -11,6 +11,24 @@ Widget mapaComponent(BuildContext context, int idUser) {
   var location = Location();
   late LocationData minhaLocalizacao;
 
+  Future<void> pegaVendedoresProximos() async {
+    var api = ApiLocation();
+    minhaLocalizacao = await location.getLocation();  
+
+    api
+        .pegaVendedoresProximos(minhaLocalizacao.latitude ?? -25.4340196,
+            minhaLocalizacao.longitude ?? -49.2588484)
+        .then((response) {
+      if (response == null) {
+        throw Exception("Houve um erro ao atualizar a localização!");
+      } else if (response.statusCode != 200) {
+        print("Houve um erro ao atualizar a localização: " + response.body);
+      } else {
+        print("\t\t>>>Atualizando localização...");
+      }
+    });
+  }
+
   void pegarLocalizacao() async {
     var api = ApiLocation();
     minhaLocalizacao = await location.getLocation();
@@ -33,33 +51,11 @@ Widget mapaComponent(BuildContext context, int idUser) {
     });
   }
 
-  void pegaVendedoresProximos() {
-    print('---------------------');
-    var api = ApiLocation();
-
-    userData.curLocationLat = minhaLocalizacao.latitude;
-    userData.curLocationLon = minhaLocalizacao.longitude;
-
-    api
-        .pegaVendedoresProximos(
-            minhaLocalizacao.latitude, minhaLocalizacao.longitude)
-        .then((response) {
-      if (response == null) {
-        throw Exception("Houve um erro ao atualizar a localização!");
-      } else if (response.statusCode != 200) {
-        throw Exception(
-            "Houve um erro ao atualizar a localização: " + response.body);
-      } else {
-        print("\t\t>>>Atualizando localização...");
-      }
-    });
-  }
-
   void _onMapCreated(GoogleMapController _cntlr) {
     _controller = _cntlr;
     _location.onLocationChanged.listen((l) {
+      print(l);
       pegarLocalizacao();
-
       pegaVendedoresProximos();
 
       _controller.animateCamera(
