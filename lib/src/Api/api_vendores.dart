@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 
 class ApiVendedores {
   Future<List<Map<String, dynamic>>> searchAll() async {
-    final response = await http.get(Uri.parse(Endpoints.buscarTodosVendedores));
+    final response = await http.get(Uri.parse(reservaCreateEndpoints.buscarTodosVendedores));
 
     if (response.statusCode == 200) {
       return List<Map<String, dynamic>>.from(

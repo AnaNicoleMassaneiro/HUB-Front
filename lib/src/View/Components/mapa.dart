@@ -11,6 +11,24 @@ Widget mapaComponent(BuildContext context, int idUser) {
   var location = Location();
   late LocationData minhaLocalizacao;
 
+  Future<void> pegaVendedoresProximos() async {
+    var api = ApiLocation();
+    minhaLocalizacao = await location.getLocation();  
+
+    api
+        .pegaVendedoresProximos(minhaLocalizacao.latitude ?? -25.4340196,
+            minhaLocalizacao.longitude ?? -49.2588484)
+        .then((response) {
+      if (response == null) {
+        throw Exception("Houve um erro ao atualizar a localização!");
+      } else if (response.statusCode != 200) {
+        print("Houve um erro ao atualizar a localização: " + response.body);
+      } else {
+        print("\t\t>>>Atualizando localização...");
+      }
+    });
+  }
+
   void pegarLocalizacao() async {
     var api = ApiLocation();
     minhaLocalizacao = await location.getLocation();
@@ -18,18 +36,16 @@ Widget mapaComponent(BuildContext context, int idUser) {
     userData.curLocationLat = minhaLocalizacao.latitude;
     userData.curLocationLon = minhaLocalizacao.longitude;
 
-    api.updateCurrentLocation(
-        minhaLocalizacao.latitude, minhaLocalizacao.longitude, idUser)
-    .then((response) {
-      if (response == null){
+    api
+        .updateCurrentLocation(
+            minhaLocalizacao.latitude, minhaLocalizacao.longitude, idUser)
+        .then((response) {
+      if (response == null) {
         throw Exception("Houve um erro ao atualizar a localização!");
-      }
-      else if (response.statusCode != 200) {
+      } else if (response.statusCode != 200) {
         throw Exception(
-            "Houve um erro ao atualizar a localização: " + response.body
-        );
-      }
-      else {
+            "Houve um erro ao atualizar a localização: " + response.body);
+      } else {
         print("\t\t>>>Atualizando localização...");
       }
     });
@@ -38,7 +54,9 @@ Widget mapaComponent(BuildContext context, int idUser) {
   void _onMapCreated(GoogleMapController _cntlr) {
     _controller = _cntlr;
     _location.onLocationChanged.listen((l) {
+      print(l);
       pegarLocalizacao();
+      pegaVendedoresProximos();
 
       _controller.animateCamera(
         CameraUpdate.newCameraPosition(
@@ -57,7 +75,8 @@ Widget mapaComponent(BuildContext context, int idUser) {
     child: Stack(
       children: [
         GoogleMap(
-          initialCameraPosition: const CameraPosition(target: _initialcameraposition),
+          initialCameraPosition:
+              const CameraPosition(target: _initialcameraposition),
           mapType: MapType.normal,
           onMapCreated: _onMapCreated,
           myLocationEnabled: true,
