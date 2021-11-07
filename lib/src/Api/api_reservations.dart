@@ -9,7 +9,7 @@ class ApiReservations {
       ) async {
 
     return http.post(
-      Uri.parse(Endpoints.createReservation),
+      Uri.parse(reservaCreateEndpoints.createReservation),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },

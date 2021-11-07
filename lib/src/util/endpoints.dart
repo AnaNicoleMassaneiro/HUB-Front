@@ -1,8 +1,9 @@
-class Endpoints {
-  static const host = "http://192.168.1.2:5000/";
+class reservaCreateEndpoints {
+  static const host = "http://192.168.18.4:5000/";
   static const create = host + "api/User/create";
   static const autenticate = host + "api/User/authenticate";
-  static const searchProdutoPorVendedor = host + "api/produto/buscarPorVendedor";
+  static const searchProdutoPorVendedor =
+      host + "api/produto/buscarPorVendedor";
   static const registerProduct = host + "api/produto/cadastro";
   static const updateProduct = host + "api/produto/update/";
   static const deleteProduct = host + "api/produto/deletar/";
@@ -12,4 +13,6 @@ class Endpoints {
   static const createReservation = host + "api/reserva/create";
   static const cancelReservation = host + "api/reserva/cancel";
   static const confirmReservation = host + "api/reserva/confirm";
+  static const reservaCreate = host + "api/reserva/create";
+  static const buscaPorLocalizacao = host + "api/vendedor/buscarPorLocalizacao";
 }

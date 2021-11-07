@@ -18,18 +18,38 @@ Widget mapaComponent(BuildContext context, int idUser) {
     userData.curLocationLat = minhaLocalizacao.latitude;
     userData.curLocationLon = minhaLocalizacao.longitude;
 
-    api.updateCurrentLocation(
-        minhaLocalizacao.latitude, minhaLocalizacao.longitude, idUser)
-    .then((response) {
-      if (response == null){
+    api
+        .updateCurrentLocation(
+            minhaLocalizacao.latitude, minhaLocalizacao.longitude, idUser)
+        .then((response) {
+      if (response == null) {
         throw Exception("Houve um erro ao atualizar a localização!");
-      }
-      else if (response.statusCode != 200) {
+      } else if (response.statusCode != 200) {
         throw Exception(
-            "Houve um erro ao atualizar a localização: " + response.body
-        );
+            "Houve um erro ao atualizar a localização: " + response.body);
+      } else {
+        print("\t\t>>>Atualizando localização...");
       }
-      else {
+    });
+  }
+
+  void pegaVendedoresProximos() {
+    print('---------------------');
+    var api = ApiLocation();
+
+    userData.curLocationLat = minhaLocalizacao.latitude;
+    userData.curLocationLon = minhaLocalizacao.longitude;
+
+    api
+        .pegaVendedoresProximos(
+            minhaLocalizacao.latitude, minhaLocalizacao.longitude)
+        .then((response) {
+      if (response == null) {
+        throw Exception("Houve um erro ao atualizar a localização!");
+      } else if (response.statusCode != 200) {
+        throw Exception(
+            "Houve um erro ao atualizar a localização: " + response.body);
+      } else {
         print("\t\t>>>Atualizando localização...");
       }
     });
@@ -39,6 +59,8 @@ Widget mapaComponent(BuildContext context, int idUser) {
     _controller = _cntlr;
     _location.onLocationChanged.listen((l) {
       pegarLocalizacao();
+
+      pegaVendedoresProximos();
 
       _controller.animateCamera(
         CameraUpdate.newCameraPosition(
@@ -57,7 +79,8 @@ Widget mapaComponent(BuildContext context, int idUser) {
     child: Stack(
       children: [
         GoogleMap(
-          initialCameraPosition: const CameraPosition(target: _initialcameraposition),
+          initialCameraPosition:
+              const CameraPosition(target: _initialcameraposition),
           mapType: MapType.normal,
           onMapCreated: _onMapCreated,
           myLocationEnabled: true,
