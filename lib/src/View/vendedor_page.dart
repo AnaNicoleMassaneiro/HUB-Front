@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:hub/src/SQLite/user_data_sqlite.dart';
 import 'package:hub/src/View/ViewVendedor/minhas_reservas_page.dart';
+import 'package:hub/src/View/welcome_page.dart';
 import 'Components/mapa.dart';
 import 'ViewProduto/cadastrar_produto_page.dart';
 import 'ViewProduto/meus_produtos_page.dart';
@@ -36,6 +38,24 @@ class _VendedorPageState extends State<VendedorPage> {
         appBar: AppBar(
             title: const Text('Área do vendedor'),
             backgroundColor: Colors.orange),
+        drawer: Drawer(
+          child: ListView(
+            children: [
+              ListTile(
+                title: const Text('Logout'),
+                onTap: () {
+                  userDataSqlite.deleteUserData(userData.idUser!);
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const WelcomePage(title: '')
+                    ),
+                    (route) => false);
+                },
+              ),
+            ],
+          )
+        ),
         body: _telas[_indiceAtual],
         floatingActionButton: _indiceAtual == 1 ?
           FloatingActionButton(

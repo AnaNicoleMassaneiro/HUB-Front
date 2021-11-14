@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:hub/src/SQLite/user_data_sqlite.dart';
 import 'package:location/location.dart';
 import '../../Api/api_location.dart';
 import '../Class/user_data.dart';
@@ -17,6 +18,8 @@ Widget mapaComponent(BuildContext context, int idUser) {
 
     userData.curLocationLat = minhaLocalizacao.latitude;
     userData.curLocationLon = minhaLocalizacao.longitude;
+
+    userDataSqlite.updateUserData(userData.toMap());
 
     api.updateCurrentLocation(
         minhaLocalizacao.latitude, minhaLocalizacao.longitude, idUser)

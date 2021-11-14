@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:hub/src/SQLite/user_data_sqlite.dart';
 import 'package:location/location.dart';
 
 import '../Components/mapa.dart';
+import '../welcome_page.dart';
 import 'buscar_page.dart';
 import 'minhas_reservas_page.dart';
 import '../Class/user_data.dart';
@@ -37,8 +39,26 @@ class _ClientePageState extends State<ClientePage> {
 
     return Scaffold(
         appBar: AppBar(
-            title: const Text('Área do cliente'),
-            backgroundColor: Colors.orange),
+          title: const Text('Área do cliente'),
+          backgroundColor: Colors.orange),
+          drawer: Drawer(
+            child: ListView(
+              children: [
+                ListTile(
+                  title: const Text('Logout'),
+                  onTap: () {
+                    userDataSqlite.deleteUserData(userData.idUser!);
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const WelcomePage(title: '')
+                        ),
+                            (route) => false);
+                  },
+                ),
+              ],
+            )
+        ),
         body: _telas[_indiceAtual],
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: _indiceAtual,

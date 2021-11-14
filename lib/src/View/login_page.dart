@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:hub/src/SQLite/user_data_sqlite.dart';
 
 import './Class/user_data.dart';
 import '../Api/api_login.dart';
@@ -131,25 +132,35 @@ class _LoginPageState extends State<LoginPage> {
           final trataDados = jsonDecode(response.body).cast<String, dynamic>();
 
           userData.idUser = trataDados["user"]["id"];
+          userData.token = trataDados["token"];
 
           if (trataDados["user"]["isVendedor"]) {
             userData.idVendedor = trataDados["idVendedor"];
 
-            Navigator.push(
+            userDataSqlite.insertUserData(userData.toMap());
+
+            Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(
-                    // ignore: prefer_const_constructors
                     builder: (context) => VendedorPage(
-                        title: '')));
+                        title: ''
+                    )
+                ),
+                    (r) => false
+            );
           } else {
             userData.idCliente = trataDados["idCliente"];
+            userDataSqlite.insertUserData(userData.toMap());
 
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => ClientePage(
-                          title: ''
-                        )));
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ClientePage(
+                  title: ''
+                )
+              ),
+              (r) => false
+            );
           }
         } else {
           customMessageModal(
