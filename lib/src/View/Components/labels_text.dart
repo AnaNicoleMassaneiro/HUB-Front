@@ -24,7 +24,7 @@ Widget linkedLabel(BuildContext context, String text1, String text2,
           Text(
             text2,
             style: TextStyle(
-                color: Color(0xfff79c4f),
+                color: Color(0xFF915FB5),
                 fontSize: 13,
                 fontWeight: FontWeight.w600),
           ),
@@ -44,7 +44,7 @@ Widget defaultTitle(BuildContext context, String title) {
           textStyle: Theme.of(context).textTheme.headline1,
           fontSize: 30,
           fontWeight: FontWeight.w700,
-          color: Color(0xffe46b10),
+          color: Color(0xFF915FB5),
         ),
       ));
 }
