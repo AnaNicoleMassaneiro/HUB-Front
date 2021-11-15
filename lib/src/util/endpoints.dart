@@ -1,5 +1,5 @@
 class reservaCreateEndpoints {
-  static const host = "http://192.168.18.4:5000/";
+  static const host = "http://192.168.18.70:4000/";
   static const create = host + "api/User/create";
   static const autenticate = host + "api/User/authenticate";
   static const searchProdutoPorVendedor =
@@ -16,4 +16,6 @@ class reservaCreateEndpoints {
   static const getReservationByCustomer = host + "api/reserva/getByCustomer/";
   static const getReservationBySeller = host + "api/reserva/getBySeller/";
   static const buscaPorLocalizacao = host + "api/vendedor/buscarPorLocalizacao";
+  static const buscarUserPorId = host + "api/User/buscarUserPorId/";
+
 }
