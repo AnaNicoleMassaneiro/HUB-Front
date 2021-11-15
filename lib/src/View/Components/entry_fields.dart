@@ -4,15 +4,15 @@ import 'package:flutter/services.dart';
 Widget simpleEntryField(String title, TextEditingController controllertxt,
     {String? placeholder, bool isPassword = false, TextInputType keyboard = TextInputType.text}) {
   return Container(
-    margin: EdgeInsets.symmetric(vertical: 10),
+    margin: const EdgeInsets.symmetric(vertical: 10),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
           title,
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
         ),
-        SizedBox(
+        const SizedBox(
           height: 10,
         ),
         TextFormField(
@@ -20,7 +20,7 @@ Widget simpleEntryField(String title, TextEditingController controllertxt,
             obscureText: isPassword,
             decoration: InputDecoration(
                 border: InputBorder.none,
-                fillColor: Color(0xfff3f3f4),
+                fillColor: const Color(0xfff3f3f4),
                 labelText: placeholder,
                 filled: true
             ),
@@ -32,29 +32,31 @@ Widget simpleEntryField(String title, TextEditingController controllertxt,
 }
 
 Widget entryFieldValidation(String title, TextEditingController controllerTxt, Function validation,
-    {required String placeholder, bool isPassword = false, TextInputType keyboard = TextInputType.text,
+    {required String placeholder, bool isPassword = false,
+      TextInputType keyboard = TextInputType.text, bool enabled = true
     }) {
   return Container(
-    margin: EdgeInsets.symmetric(vertical: 10),
+    margin: const EdgeInsets.symmetric(vertical: 10),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
           title,
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
         ),
-        SizedBox(
+        const SizedBox(
           height: 10,
         ),
         TextFormField(
           validator: (value) {
-            return validation(value);
+            return validation(value.toString());
           },
+          enabled: enabled,
           controller: controllerTxt,
           obscureText: isPassword,
           decoration: InputDecoration(
               border: InputBorder.none,
-              fillColor: Color(0xfff3f3f4),
+              fillColor: const Color(0xfff3f3f4),
               labelText: placeholder,
               filled: true
           ),

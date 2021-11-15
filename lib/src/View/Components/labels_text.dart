@@ -8,23 +8,23 @@ Widget linkedLabel(BuildContext context, String text1, String text2,
           context, MaterialPageRoute(builder: (context) => target)
     ),
     child: Container(
-      margin: EdgeInsets.symmetric(vertical: 20),
-      padding: EdgeInsets.all(15),
+      margin: const EdgeInsets.symmetric(vertical: 20),
+      padding: const EdgeInsets.all(15),
       alignment: Alignment.bottomCenter,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Text(
             text1,
-            style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+            style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
           ),
-          SizedBox(
+          const SizedBox(
             width: 10,
           ),
           Text(
             text2,
-            style: TextStyle(
-                color: Color(0xFF915FB5),
+            style: const TextStyle(
+                color: Color(0xfff79c4f),
                 fontSize: 13,
                 fontWeight: FontWeight.w600),
           ),
@@ -44,7 +44,7 @@ Widget defaultTitle(BuildContext context, String title) {
           textStyle: Theme.of(context).textTheme.headline1,
           fontSize: 30,
           fontWeight: FontWeight.w700,
-          color: Color(0xFF915FB5),
+          color: const Color(0xffe46b10),
         ),
       ));
 }
@@ -58,7 +58,7 @@ Widget defaultTitleWhite(BuildContext context, String title) {
           textStyle: Theme.of(context).textTheme.headline1,
           fontSize: 30,
           fontWeight: FontWeight.w700,
-          color: Color(0xffffffff),
+          color: const Color(0xffffffff),
         ),
       ));
 }

@@ -34,6 +34,9 @@ dependencies:
   google_fonts: ^2.1.0
   geocoding: ^2.0.1
   location: ^4.3.0
+  image_picker: ^0.8.4+2
+  sqflite:
+  path:
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -56,7 +59,9 @@ dev_dependencies:
 
 # The following section is specific to Flutter.
 flutter:
-
+  assets:
+    - images/produto.jpeg
+    - assets/
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

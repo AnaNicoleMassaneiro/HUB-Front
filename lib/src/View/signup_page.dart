@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:hub/src/Widget/bezier_container.dart';
 import 'package:hub/src/View/login_page.dart';
 
-import '../Api/apiRegister.dart';
+import '../Api/api_register.dart';
 import '../Widget/bezier_container.dart';
 
 import 'Components/modal_message.dart';
@@ -15,7 +15,7 @@ import 'Components/labels_text.dart';
 import '../Validations/form_field_validations.dart';
 
 class SignUpPage extends StatefulWidget {
-  SignUpPage({Key? key, required this.title}) : super(key: key);
+  const SignUpPage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
@@ -36,34 +36,36 @@ class _SignUpPageState extends State<SignUpPage> {
 
   Widget passwordField() {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 10),
+      margin: const EdgeInsets.symmetric(vertical: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(
+          const Text(
             "Senha",
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           TextFormField(
             validator: (value) {
               var ret = validatePassword(value!);
-              if (ret != null)
+              if (ret != null) {
                 return ret;
-              else {
-                if (confirmaSenha.text == null || confirmaSenha.text.isEmpty)
+              } else {
+                if (confirmaSenha.text.trim().isEmpty) {
                   return null;
-                if (value.compareTo(confirmaSenha.text) == 0)
+                }
+                if (value.compareTo(confirmaSenha.text) == 0) {
                   return null;
-                else
+                } else {
                   return "Senhas não coincidem!";
+                }
               }
             },
             controller: senha,
             obscureText: true,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
                 border: InputBorder.none,
                 fillColor: Color(0xfff3f3f4),
                 filled: true),
@@ -118,7 +120,7 @@ class _SignUpPageState extends State<SignUpPage> {
             "Confirmação de senha", confirmaSenha, validatePassword,
             isPassword: true, placeholder: ''),
         CheckboxListTile(
-          title: Text("Eu sou um Vendedor"),
+          title: const Text("Eu sou um Vendedor"),
           value: isChecked,
           onChanged: (newValue) {
             setState(() {
@@ -136,17 +138,17 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
-      body: Container(
+      body: SizedBox(
         height: height,
         child: Stack(
           children: <Widget>[
             Positioned(
               top: -MediaQuery.of(context).size.height * .15,
               right: -MediaQuery.of(context).size.width * .4,
-              child: BezierContainer(),
+              child: const BezierContainer(),
             ),
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -154,20 +156,25 @@ class _SignUpPageState extends State<SignUpPage> {
                   children: <Widget>[
                     SizedBox(height: height * .2),
                     defaultTitle(this.context, "HUB UFPR"),
-                    SizedBox(
+                    const SizedBox(
                       height: 50,
                     ),
                     Form(
                       key: _formKey,
                       child: _emailPasswordWidget(),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     _submitButton(),
                     SizedBox(height: height * .14),
-                    linkedLabel(this.context, 'Já tem uma conta?', 'Login',
-                        LoginPage(title: '',)),
+                    linkedLabel(
+                        this.context,
+                        'Já tem uma conta?',
+                        'Login',
+                        const LoginPage(
+                          title: '',
+                        )),
                   ],
                 ),
               ),
@@ -186,17 +193,20 @@ class _SignUpPageState extends State<SignUpPage> {
         await api.create(nome, isChecked, senha, confirmaSenha, grr, email);
 
     if (ret.statusCode == 200) {
-
       Navigator.push(
-          context, MaterialPageRoute(builder: (context) => LoginPage(title: '',)));
+          context,
+          MaterialPageRoute(
+              builder: (context) => const LoginPage(
+                    title: '',
+                  )));
 
       customMessageModal(
-          this.context,
+          context,
           "Sucesso!",
           "Seu cadastro foi realizado com sucesso. Agora você já pode efetuar seu login.",
           "OK");
     } else {
-      customMessageModal(this.context, "Falha ao cadastrar usuário: ",
+      customMessageModal(context, "Falha ao cadastrar usuário: ",
           jsonDecode(ret.body)["msg"], "Fechar");
     }
   }

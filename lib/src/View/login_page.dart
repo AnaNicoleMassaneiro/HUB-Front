@@ -1,12 +1,14 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:hub/src/SQLite/user_data_sqlite.dart';
 
-import '../Api/apiLogin.dart';
+import './Class/user_data.dart';
+import '../Api/api_login.dart';
 import '../Widget/bezier_container.dart';
 
 import 'vendedor_page.dart';
-import 'cliente_page.dart';
+import 'ViewCliente/cliente_page.dart';
 import 'signup_page.dart';
 
 import 'Components/modal_message.dart';
@@ -16,7 +18,7 @@ import 'Components/labels_text.dart';
 import '../Validations/form_field_validations.dart';
 
 class LoginPage extends StatefulWidget {
-  LoginPage({Key? key, required this.title}) : super(key: key);
+  const LoginPage({Key? key, required this.title}) : super(key: key);
   final String title;
 
   @override
@@ -32,23 +34,24 @@ class _LoginPageState extends State<LoginPage> {
   Widget _submitButton() {
     return ElevatedButton(
       onPressed: () {
-        if (_loginFormKey.currentState!.validate())
+        if (_loginFormKey.currentState!.validate()) {
           _authenticate(user.text, senha.text);
+        }
       },
-      child: new Container(
+      child: Container(
         width: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.symmetric(vertical: 15),
+        padding: const EdgeInsets.symmetric(vertical: 15),
         alignment: Alignment.center,
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(5)),
+            borderRadius: const BorderRadius.all(Radius.circular(5)),
             boxShadow: <BoxShadow>[
               BoxShadow(
                   color: Colors.grey.shade200,
-                  offset: Offset(2, 4),
+                  offset: const Offset(2, 4),
                   blurRadius: 5,
                   spreadRadius: 2)
             ],
-            gradient: LinearGradient(
+            gradient: const LinearGradient(
                 begin: Alignment.centerLeft,
                 end: Alignment.centerRight,
                 colors: [Color(0xFF915FB5),const Color(0xFFCA436B)])),
@@ -63,7 +66,8 @@ class _LoginPageState extends State<LoginPage> {
   Widget _userPasswordWidget() {
     return Column(
       children: <Widget>[
-        entryFieldValidation("Email ou GRR", user, validateUsername, placeholder: ''),
+        entryFieldValidation("Email ou GRR", user, validateUsername,
+            placeholder: ''),
         entryFieldValidation("Senha", senha, validatePassword,
             isPassword: true, placeholder: ''),
       ],
@@ -74,16 +78,16 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
-        body: Container(
+        body: SizedBox(
       height: height,
       child: Stack(
         children: <Widget>[
           Positioned(
               top: -height * .15,
               right: -MediaQuery.of(context).size.width * .4,
-              child: BezierContainer()),
+              child: const BezierContainer()),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -91,14 +95,14 @@ class _LoginPageState extends State<LoginPage> {
                 children: <Widget>[
                   SizedBox(height: height * .2),
                   defaultTitle(this.context, "HUB UFPR"),
-                  SizedBox(height: 50),
+                  const SizedBox(height: 50),
                   Form(key: _loginFormKey, child: (_userPasswordWidget())),
                   _submitButton(),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   Container(
-                    padding: EdgeInsets.symmetric(vertical: 10),
+                    padding: const EdgeInsets.symmetric(vertical: 10),
                     alignment: Alignment.centerRight,
-                    child: Text('Esqueceu a senha?',
+                    child: const Text('Esqueceu a senha?',
                         style: TextStyle(
                             fontSize: 14, fontWeight: FontWeight.w500)),
                   ),
@@ -107,7 +111,7 @@ class _LoginPageState extends State<LoginPage> {
                       this.context,
                       "Não tem uma conta?",
                       "Registrar",
-                      SignUpPage(
+                      const SignUpPage(
                         title: '',
                       )),
                 ],
@@ -121,30 +125,46 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void _authenticate(user, senha) {
-    var api = new apiLogin();
+    var api = apiLogin();
     api.login(user, senha).then((response) {
       setState(() {
         if (response.statusCode == 200) {
           final trataDados = jsonDecode(response.body).cast<String, dynamic>();
 
+          userData.idUser = trataDados["user"]["id"];
+          userData.token = trataDados["token"];
+
           if (trataDados["user"]["isVendedor"]) {
-            Navigator.push(
+            userData.idVendedor = trataDados["idVendedor"];
+
+            userDataSqlite.insertUserData(userData.toMap());
+
+            Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(
                     builder: (context) => VendedorPage(
-                          title: '',
-                        )));
+                        title: ''
+                    )
+                ),
+                    (r) => false
+            );
           } else {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => ClientePage(
-                          title: '',
-                        )));
+            userData.idCliente = trataDados["idCliente"];
+            userDataSqlite.insertUserData(userData.toMap());
+
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ClientePage(
+                  title: ''
+                )
+              ),
+              (r) => false
+            );
           }
         } else {
           customMessageModal(
-              this.context,
+              context,
               "Falha ao autenticar: ",
               "Usuário e/ou senha incorretos. Por favor, tente novamente.",
               "Fechar");
@@ -152,7 +172,6 @@ class _LoginPageState extends State<LoginPage> {
         }
       });
     }, onError: (error) async {
-      print(error);
       setState(() {});
     });
   }
