@@ -18,8 +18,7 @@ class UserData {
       'idCliente': idCliente,
       'idUser': idUser,
       'locationLat': curLocationLat,
-      'locationLon': curLocationLon,
-      'token': token,
+      'locationLon': curLocationLon
     };
   }
 

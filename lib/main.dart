@@ -21,6 +21,7 @@ class MyApp extends StatelessWidget {
       userData.idCliente = ret["idCliente"];
       userData.curLocationLat = ret["locationLat"];
       userData.curLocationLon = ret["locationLon"];
+      userData.token = ret["token"];
     }
   }
 
