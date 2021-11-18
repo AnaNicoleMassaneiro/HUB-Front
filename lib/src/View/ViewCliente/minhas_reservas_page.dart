@@ -21,13 +21,15 @@ class _ListaProdutosPageState extends State<MinhasReservasPage> {
     var api = ApiReservations();
     api.getByCustomer(userData.idCliente!).then((response) {
       for (var reserva in response){
-        setState(() {
-          reservas.add(Reservas.fromJson(reserva));
-        });
+        reservas.add(Reservas.fromJson(reserva));
       }
     }, onError: (error) async {
       setState(() {});
     });
+
+    if (mounted){
+      setState(() { reservas = reservas;});
+    }
   }
 
   @override
