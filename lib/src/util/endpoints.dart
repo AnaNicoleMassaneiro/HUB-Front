@@ -16,4 +16,6 @@ class ReservaCreateEndpoints {
   static const getReservationByCustomer = host + "api/reserva/getByCustomer/";
   static const getReservationBySeller = host + "api/reserva/getBySeller/";
   static const buscaPorLocalizacao = host + "api/vendedor/buscarPorLocalizacao";
+  static const buscarUserPorId = host + "api/User/buscarUserPorId/";
+
 }

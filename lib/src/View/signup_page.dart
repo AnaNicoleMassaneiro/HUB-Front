@@ -99,7 +99,7 @@ class _SignUpPageState extends State<SignUpPage> {
               gradient: const LinearGradient(
                   begin: Alignment.centerLeft,
                   end: Alignment.centerRight,
-                  colors: [Color(0xfffbb448), Color(0xfff7892b)])),
+                  colors: [Color(0xFF915FB5), Color(0xFFCA436B)])),
           child: const Text(
             "Registrar",
             style: TextStyle(fontSize: 20, color: Colors.white),

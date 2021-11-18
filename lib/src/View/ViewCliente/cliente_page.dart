@@ -3,15 +3,14 @@ import 'package:hub/src/SQLite/user_data_sqlite.dart';
 import 'package:location/location.dart';
 
 import '../Components/mapa.dart';
+import '../perfil_page.dart';
 import '../welcome_page.dart';
 import 'buscar_page.dart';
 import 'minhas_reservas_page.dart';
 import '../Class/user_data.dart';
 
 class ClientePage extends StatefulWidget {
-  ClientePage(
-      {Key? key, required this.title})
-      : super(key: key);
+  ClientePage({Key? key, required this.title}) : super(key: key);
 
   final String title;
   final int idCliente = userData.idCliente!;
@@ -39,26 +38,31 @@ class _ClientePageState extends State<ClientePage> {
 
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Área do cliente'),
-          backgroundColor: Colors.orange),
-          drawer: Drawer(
+            title: const Text('Área do cliente'),
+            backgroundColor: Colors.orange),
+        drawer: Drawer(
             child: ListView(
-              children: [
-                ListTile(
-                  title: const Text('Logout'),
-                  onTap: () {
-                    userDataSqlite.deleteUserData(userData.idUser!);
-                    Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const WelcomePage(title: '')
-                        ),
-                            (route) => false);
-                  },
-                ),
-              ],
-            )
-        ),
+          children: [
+            ListTile(
+              title: const Text('Perfil'),
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => PerfilPage()));
+              },
+            ),
+            ListTile(
+              title: const Text('Logout'),
+              onTap: () {
+                userDataSqlite.deleteUserData(userData.idUser!);
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const WelcomePage(title: '')),
+                    (route) => false);
+              },
+            ),
+          ],
+        )),
         body: _telas[_indiceAtual],
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: _indiceAtual,
