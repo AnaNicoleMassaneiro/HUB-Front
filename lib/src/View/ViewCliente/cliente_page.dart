@@ -32,7 +32,7 @@ class _ClientePageState extends State<ClientePage> {
   @override
   Widget build(BuildContext context) {
     final List<Widget> _telas = [
-      mapaComponent(this.context, widget.idUser),
+      const MapComponent(),
       const BuscarPage(),
       const MinhasReservasPage()
     ];

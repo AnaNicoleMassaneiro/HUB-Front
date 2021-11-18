@@ -29,7 +29,7 @@ class _VendedorPageState extends State<VendedorPage> {
   @override
   Widget build(BuildContext context) {
     final List<Widget> _telas = [
-      mapaComponent(this.context, widget.idUser),
+      const MapComponent(),
       MeusProdutosPage(),
       const MinhasReservasPage(),
     ];
