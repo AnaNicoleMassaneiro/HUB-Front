@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 // ignore: camel_case_types
 class api_product {
   Future<List<Map<String, dynamic>>> searchAll() async {
-    final response = await http.get(Uri.parse(reservaCreateEndpoints.searchProductAll));
+    final response = await http.get(Uri.parse(ReservaCreateEndpoints.searchProductAll));
   
     if (response.statusCode == 200) {
       return List<Map<String, dynamic>>.from(
@@ -18,7 +18,7 @@ class api_product {
 
   Future<List<Map<String, dynamic>>> search(int? idVendedor) async {
     final response = await http.post(
-      Uri.parse(reservaCreateEndpoints.searchProdutoPorVendedor),
+      Uri.parse(ReservaCreateEndpoints.searchProdutoPorVendedor),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -37,7 +37,7 @@ class api_product {
   Future<http.StreamedResponse> register(int idVendedor, double preco,
       String nome, String descricao, int qtdDisponivel, File? image) async {
     var request =
-        http.MultipartRequest('Post', Uri.parse(reservaCreateEndpoints.registerProduct));
+        http.MultipartRequest('Post', Uri.parse(ReservaCreateEndpoints.registerProduct));
 
     request.fields['nome'] = nome;
     request.fields['isAtivo'] = "true";
@@ -64,7 +64,7 @@ class api_product {
       File? image,
       bool isKeepImage) async {
     var request = http.MultipartRequest(
-        'Put', Uri.parse(reservaCreateEndpoints.updateProduct + idProduto.toString()));
+        'Put', Uri.parse(ReservaCreateEndpoints.updateProduct + idProduto.toString()));
 
     request.fields['nome'] = nome;
     request.fields['isAtivo'] = "true";
@@ -83,7 +83,7 @@ class api_product {
 
   Future<http.Response> delete(id) async {
     final http.Response response = await http.delete(
-      Uri.parse(reservaCreateEndpoints.deleteProduct + id.toString()),
+      Uri.parse(ReservaCreateEndpoints.deleteProduct + id.toString()),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },

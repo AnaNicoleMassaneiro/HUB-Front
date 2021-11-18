@@ -14,7 +14,7 @@ class UserDataSqlite {
             'idVendedor INTEGER, '
             'idCliente INTEGER, '
             'locationLat FLOAT, '
-            'locationLon FLOAT,'
+            'locationLon FLOAT, '
             'token TEXT)'
         );
       },

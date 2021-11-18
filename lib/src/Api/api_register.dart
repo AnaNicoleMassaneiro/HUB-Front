@@ -8,7 +8,7 @@ class apiRegister {
   Future<http.Response> create(String name, bool isChecked, String senha,
       String confirmSenha, String grr, String email) async {
     return http.post(
-      Uri.parse(reservaCreateEndpoints.create),
+      Uri.parse(ReservaCreateEndpoints.create),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },

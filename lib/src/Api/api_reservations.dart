@@ -6,7 +6,7 @@ class ApiReservations {
   Future<http.Response> create(int idCliente, int idProduto, int quantidade,
       double lat, double lon) async {
     return http.post(
-      Uri.parse(reservaCreateEndpoints.createReservation),
+      Uri.parse(ReservaCreateEndpoints.createReservation),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -23,7 +23,7 @@ class ApiReservations {
   Future<List<Map<String, dynamic>>> getByCustomer(int id) async {
     final res = await http.get(
       Uri.parse(
-          reservaCreateEndpoints.getReservationByCustomer + id.toString()),
+          ReservaCreateEndpoints.getReservationByCustomer + id.toString()),
     );
 
     if (res.statusCode == 200) {
@@ -35,7 +35,7 @@ class ApiReservations {
 
   Future<List<Map<String, dynamic>>> getBySeller(int id) async {
     final res = await http.get(
-      Uri.parse(reservaCreateEndpoints.getReservationBySeller + id.toString()),
+      Uri.parse(ReservaCreateEndpoints.getReservationBySeller + id.toString()),
     );
 
     if (res.statusCode == 200) {
@@ -47,11 +47,11 @@ class ApiReservations {
 
   Future<http.Response> cancelReservation(int id) async {
     return await http.patch(
-        Uri.parse(reservaCreateEndpoints.cancelReservation + id.toString()));
+        Uri.parse(ReservaCreateEndpoints.cancelReservation + id.toString()));
   }
 
   Future<http.Response> confirmReservation(int id) async {
     return await http.patch(
-        Uri.parse(reservaCreateEndpoints.confirmReservation + id.toString()));
+        Uri.parse(ReservaCreateEndpoints.confirmReservation + id.toString()));
   }
 }
