@@ -1,5 +1,6 @@
 class ReservaCreateEndpoints {
-  static const host = "http://192.168.1.2:5000/";
+  //http://192.168.0.148:4000
+  static const host = "http://192.168.0.148:4000/";
   static const create = host + "api/User/create";
   static const autenticate = host + "api/User/authenticate";
   static const searchProdutoPorVendedor =
