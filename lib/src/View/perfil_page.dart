@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hub/src/Api/api_user.dart';
 import '../View/Class/user_data.dart';
 import 'Class/User.dart';
+import 'editar_senha_page.dart';
 
 class PerfilPage extends StatefulWidget {
   const PerfilPage({Key? key}) : super(key: key);
@@ -41,19 +42,21 @@ class _PerfilPageState extends State<PerfilPage> {
   Widget header() {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 50),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Builder(builder: (context) {
-                return Text(usuario.name,
-                    style:
-                        TextStyle(fontWeight: FontWeight.w100, fontSize: 16));
-              }),
-            ],
+      child: Column(
+        children: <Widget>[
+          TextButton(
+            style: ButtonStyle(
+              foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
+            ),
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => EditarSenhaPage()));
+            },
+            child: Text('Editar Senha'),
           ),
+          Text('Nome ' + usuario.name),
+          Text('Email ' + usuario.email),
+          Text('GRR '+ usuario.grr)
         ],
       ),
     );
@@ -62,6 +65,10 @@ class _PerfilPageState extends State<PerfilPage> {
   void buscarUsuario() {
     var api = ApiUser();
 
-    api.searchId(idUser).then((response) => usuario = User.fromJson(response));
+    api.searchId(idUser).then((response) => setState(() {
+      print('----------------------------');
+          usuario = User.fromJson(response);
+          print(usuario.name );
+        }));
   }
 }

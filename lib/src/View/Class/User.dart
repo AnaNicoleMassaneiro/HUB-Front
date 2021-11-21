@@ -14,8 +14,6 @@ class User {
   String? activation_code;
   String? token;
   bool isVendedor;
-  bool isAtivo;
-  bool isOpen;
 
   User(
       {required this.name,
@@ -30,26 +28,22 @@ class User {
       required this.latitude,
       required this.longitude,
       required this.noteApp,
-      required this.token,
-      required this.isAtivo,
-      required this.isOpen});
+      required this.token});
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-        name: json['user']['name'],
+        name: json['name'],
         id: json['id'],
-        password: json['user']['password'],
-        lastLogon: json['user']['lastLogon'],
-        activation_code: json['user']['activationCode'],
-        createdOn: json['user']['createdOn'],
-        email: json['user']['email'],
-        grr: json['user']['grr'],
-        isVendedor: json['user']['isVendedor'],
-        latitude: double.parse(json['user']['latitude'].toString()),
-        longitude: double.parse(json['user']['longitude'].toString()),
-        noteApp: double.parse(json['user']['noteApp'].toString()),
-        token: json['user']['token'],
-        isAtivo: json['isAtivo'],
-        isOpen: json['isOpen']);
+        password: json['password'],
+        lastLogon: json['lastLogon'],
+        activation_code: json['activationCode'],
+        createdOn: json['createdOn'],
+        email: json['email'],
+        grr: json['grr'],
+        isVendedor: json['isVendedor'],
+        latitude: double.parse(json['latitude'].toString()),
+        longitude: double.parse(json['longitude'].toString()),
+        noteApp: double.parse(json['noteApp'].toString()),
+        token: json['token']);
   }
 }
