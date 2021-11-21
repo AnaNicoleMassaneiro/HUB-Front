@@ -45,19 +45,46 @@ class _PerfilPageState extends State<PerfilPage> {
       padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 50),
       child: Column(
         children: <Widget>[
-          TextButton(
-            style: ButtonStyle(
-              foregroundColor: MaterialStateProperty.all<Color>(Colors.blue),
-            ),
-            onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => EditarSenhaPage()));
-            },
-            child: Text('Editar Senha'),
-          ),
+
           Text('Nome ' + usuario.name),
           Text('Email ' + usuario.email),
-          Text('GRR '+ usuario.grr)
+          Text('GRR '+ usuario.grr),
+          Padding(
+            padding: EdgeInsets.only(top: 5),
+            child: ElevatedButton(
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => EditarSenhaPage()));
+                },
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  padding: const EdgeInsets.symmetric(vertical: 15),
+                  alignment: Alignment.center,
+                  color: Colors.orange,
+                  child: const Text(
+                    "Editar Senha",
+                    style: TextStyle(fontSize: 20, color: Colors.white),
+                  ),
+                )),
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 5),
+            child: ElevatedButton(
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => EditarSenhaPage()));
+                },
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  padding: const EdgeInsets.symmetric(vertical: 15),
+                  alignment: Alignment.center,
+                  color: Colors.orange,
+                  child: const Text(
+                    "Editar Nome",
+                    style: TextStyle(fontSize: 20, color: Colors.white),
+                  ),
+                )),
+          ),
         ],
       ),
     );
