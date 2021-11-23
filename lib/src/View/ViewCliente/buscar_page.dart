@@ -24,9 +24,11 @@ class _BuscarPageState extends State<BuscarPage> {
       GestureDetector(
           onTap: () => {
                 Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const ListaProdutosPage())),
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const ListaProdutosPage()
+                  )
+                ),
               },
           child: Card(
               child: Container(
