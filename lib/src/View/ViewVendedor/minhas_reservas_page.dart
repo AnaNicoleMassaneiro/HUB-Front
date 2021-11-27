@@ -16,13 +16,15 @@ class _ListaProdutosPageState extends State<MinhasReservasPage> {
   List<Reservas> reservas = [];
 
   void buscaReservas() {
-    reservas = [];
+    reservas.clear();
 
     var api = ApiReservations();
     api.getBySeller(userData.idVendedor!).then((response) {
       for (var reserva in response){
         setState(() {
-          reservas.add(Reservas.fromJson(reserva));
+          setState(() {
+            reservas.add(Reservas.fromJson(reserva));
+          });
         });
       }
     }, onError: (error) async {

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hub/src/SQLite/user_data_sqlite.dart';
 import 'package:hub/src/View/Class/vendedores.dart';
+import 'package:hub/src/View/ViewCliente/detalhes_vendedor_page.dart';
 import 'package:location/location.dart';
 import '../../Api/api_location.dart';
 import '../Class/user_data.dart';
@@ -42,11 +43,23 @@ class _MapComponentState extends State<MapComponent> {
         }
 
         for (var m in vendedores) {
-          markers.add(Marker(
+          markers.add(
+            Marker(
               markerId: MarkerId('Marker ' + m.id.toString()),
               position: LatLng(m.latitude!, m.longitude!),
-              infoWindow: InfoWindow(title: m.name)
-          ));
+              infoWindow: InfoWindow(title: m.name),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => DetalhesVendedorPage(
+                      vendedor: m
+                    )
+                  )
+                );
+              },
+            )
+          );
         }
 
         print("\t\t>>>Atualizando localização... Vendedores próximos");
