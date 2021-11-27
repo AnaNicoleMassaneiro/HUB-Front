@@ -1,6 +1,6 @@
-class ReservaCreateEndpoints {
-  //http://192.168.0.148:4000
-  static const host = "http://192.168.18.4:4000/";
+class Endpoints {
+  //static const host = "http://192.168.1.2:5000/"; // ENDPOINT LOCAL MATHEUS
+  static const host = "http://192.168.0.148:4000"; // ENDPOINT LOCAL ANA
   static const create = host + "api/User/create";
   static const autenticate = host + "api/User/authenticate";
   static const searchProdutoPorVendedor =

@@ -3,8 +3,6 @@ import 'package:hub/src/Api/api_user.dart';
 import 'package:hub/src/View/editar_senha_page.dart';
 import '../View/Class/user_data.dart';
 import 'Class/User.dart';
-import 'editar_nome_page.dart';
-import 'editar_senha_page.dart';
 
 class PerfilPage extends StatefulWidget {
   const PerfilPage({Key? key}) : super(key: key);
