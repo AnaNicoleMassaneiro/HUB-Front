@@ -3,6 +3,7 @@ import 'package:hub/src/Api/api_user.dart';
 import 'package:hub/src/View/editar_senha_page.dart';
 import '../View/Class/user_data.dart';
 import 'Class/User.dart';
+import 'editar_nome_page.dart';
 import 'editar_senha_page.dart';
 
 class PerfilPage extends StatefulWidget {
@@ -72,7 +73,7 @@ class _PerfilPageState extends State<PerfilPage> {
             child: ElevatedButton(
                 onPressed: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => EditarSenhaPage()));
+                      MaterialPageRoute(builder: (context) => EditarNomePage(usuario.name, usuario.email, usuario.grr, email: '',)));
                 },
                 child: Container(
                   width: MediaQuery.of(context).size.width,
@@ -99,6 +100,4 @@ class _PerfilPageState extends State<PerfilPage> {
           print(usuario.name );
         }));
   }
-
-
 }
