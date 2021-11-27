@@ -40,9 +40,16 @@ class _EditarNomePageState extends State<EditarNomePage> {
       padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 50),
       child: Column(
         children: <Widget>[
-          TextField(
-            decoration:
-                InputDecoration(border: OutlineInputBorder(), hintText: 'Nome'),
+          Column(
+            children: [
+              Text('Nome ' + widget.name),
+              Text('Email ' + widget.email),
+              Text('GRR ' + widget.grr),
+              const TextField(
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(), hintText: 'Nome'),
+              ),
+            ],
           ),
         ],
       ),

@@ -3,6 +3,7 @@ import 'package:hub/src/Api/api_user.dart';
 import 'package:hub/src/View/editar_senha_page.dart';
 import '../View/Class/user_data.dart';
 import 'Class/User.dart';
+import 'editar_nome_page.dart';
 
 class PerfilPage extends StatefulWidget {
   const PerfilPage({Key? key}) : super(key: key);
@@ -30,13 +31,14 @@ class _PerfilPageState extends State<PerfilPage> {
     return Scaffold(
         appBar:
             AppBar(title: const Text('Perfil'), backgroundColor: Colors.orange),
-        body: SafeArea(
-          child: Column(
+        body: FutureBuilder<User>(builder: (context, snapShot) {  
+          return SafeArea(
+              child: Column(
             children: [
               header(),
             ],
-          ),
-        ));
+          ));
+        }));
   }
 
   Widget header() {
@@ -71,8 +73,13 @@ class _PerfilPageState extends State<PerfilPage> {
             padding: EdgeInsets.only(top: 5),
             child: ElevatedButton(
                 onPressed: () {
-                  /* Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => EditarNomePage(usuario.name, usuario.email, usuario.grr, email: '',))); */
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => EditarNomePage(
+                              name: usuario.name,
+                              email: usuario.email,
+                              grr: usuario.grr)));
                 },
                 child: Container(
                   width: MediaQuery.of(context).size.width,
