@@ -5,7 +5,7 @@ import 'package:hub/src/util/endpoints.dart';
 class ApiUser {
   Future<Map<String, dynamic>> searchId(int? id) async {
     final response = await http
-        .get(Uri.parse(ReservaCreateEndpoints.buscarUserPorId + id.toString()));
+        .get(Uri.parse(Endpoints.buscarUserPorId + id.toString()));
 
     if (response.statusCode == 200) {
       return Map<String, dynamic>.from(json.decode(response.body)["user"]);

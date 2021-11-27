@@ -65,12 +65,18 @@ class _VendedorPageState extends State<VendedorPage> {
             ? FloatingActionButton(
                 onPressed: () {
                   Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => CadastrarProdutoPage(
-                              title: '',
-                              idVendedor: widget.idVendedor,
-                              idUser: widget.idUser)));
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CadastrarProdutoPage(
+                        title: '',
+                        idVendedor: widget.idVendedor,
+                        idUser: widget.idUser
+                      )
+                    )
+                  ).then((value) {
+                    setState(() {
+                    });
+                  });
                 },
                 child: const Icon(Icons.plus_one),
                 backgroundColor: Colors.blue,

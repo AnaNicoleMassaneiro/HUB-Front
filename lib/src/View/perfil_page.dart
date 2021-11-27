@@ -46,16 +46,17 @@ class _PerfilPageState extends State<PerfilPage> {
       padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 50),
       child: Column(
         children: <Widget>[
-
           Text('Nome ' + usuario.name),
           Text('Email ' + usuario.email),
-          Text('GRR '+ usuario.grr),
+          Text('GRR ' + usuario.grr),
           Padding(
             padding: EdgeInsets.only(top: 5),
             child: ElevatedButton(
                 onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => EditarSenhaPage()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => EditarSenhaPage()));
                 },
                 child: Container(
                   width: MediaQuery.of(context).size.width,
@@ -72,8 +73,8 @@ class _PerfilPageState extends State<PerfilPage> {
             padding: EdgeInsets.only(top: 5),
             child: ElevatedButton(
                 onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => EditarNomePage(usuario.name, usuario.email, usuario.grr, email: '',)));
+                  /* Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => EditarNomePage(usuario.name, usuario.email, usuario.grr, email: '',))); */
                 },
                 child: Container(
                   width: MediaQuery.of(context).size.width,
@@ -95,9 +96,9 @@ class _PerfilPageState extends State<PerfilPage> {
     var api = ApiUser();
 
     api.searchId(idUser).then((response) => setState(() {
-      print('----------------------------');
+          print('----------------------------');
           usuario = User.fromJson(response);
-          print(usuario.name );
+          print(usuario.name);
         }));
   }
 }

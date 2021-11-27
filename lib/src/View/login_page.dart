@@ -54,8 +54,8 @@ class _LoginPageState extends State<LoginPage> {
             gradient: const LinearGradient(
                 begin: Alignment.centerLeft,
                 end: Alignment.centerRight,
-                colors: [Color(0xFF915FB5),const Color(0xFFCA436B)])),
-        child: Text(
+                colors: [Color(0xFF915FB5), Color(0xFFCA436B)])),
+        child: const Text(
           'Login',
           style: TextStyle(fontSize: 20, color: Colors.white),
         ),
@@ -168,7 +168,6 @@ class _LoginPageState extends State<LoginPage> {
               "Falha ao autenticar: ",
               "Usuário e/ou senha incorretos. Por favor, tente novamente.",
               "Fechar");
-          throw Exception('Failed to load album');
         }
       });
     }, onError: (error) async {
