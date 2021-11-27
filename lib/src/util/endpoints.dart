@@ -1,6 +1,6 @@
 class ReservaCreateEndpoints {
   //http://192.168.0.148:4000
-  static const host = "http://192.168.0.148:4000/";
+  static const host = "https://hubufpr.herokuapp.com/";
   static const create = host + "api/User/create";
   static const autenticate = host + "api/User/authenticate";
   static const searchProdutoPorVendedor =
