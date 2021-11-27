@@ -3,6 +3,7 @@ import 'package:hub/src/Api/api_user.dart';
 import 'package:hub/src/View/editar_senha_page.dart';
 import '../View/Class/user_data.dart';
 import 'Class/User.dart';
+import 'editar_nome_page.dart';
 
 class PerfilPage extends StatefulWidget {
   const PerfilPage({Key? key}) : super(key: key);
@@ -35,21 +36,18 @@ class _PerfilPageState extends State<PerfilPage> {
                 gradient: LinearGradient(
                   begin: Alignment.centerLeft,
                   end: Alignment.centerRight,
-                  colors: <Color>[
-                    Colors.red,
-                    Colors.green,
-                  ],
+                  colors: [Color(0xFF915FB5), Color(0xFFCA436B)]),
                 ),
               )
             ),
-            ),
-          body: SafeArea(
-            child: Column(
+          body: FutureBuilder<User>(builder: (context, snapShot) {
+            return SafeArea(
+                child: Column(
             children: [
               header(),
             ],
-          ),
-        ));
+          ));
+        }));
   }
 
   Widget header() {
@@ -73,7 +71,7 @@ class _PerfilPageState extends State<PerfilPage> {
                   width: MediaQuery.of(context).size.width,
                   padding: const EdgeInsets.symmetric(vertical: 15),
                   alignment: Alignment.center,
-                  color: Colors.orange,
+                  color: const Color(0xFF915FB5),
                   child: const Text(
                     "Editar Senha",
                     style: TextStyle(fontSize: 20, color: Colors.white),
@@ -84,14 +82,19 @@ class _PerfilPageState extends State<PerfilPage> {
             padding: EdgeInsets.only(top: 5),
             child: ElevatedButton(
                 onPressed: () {
-                  /* Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => EditarNomePage(usuario.name, usuario.email, usuario.grr, email: '',))); */
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => EditarNomePage(
+                              name: usuario.name,
+                              email: usuario.email,
+                              grr: usuario.grr)));
                 },
                 child: Container(
                   width: MediaQuery.of(context).size.width,
                   padding: const EdgeInsets.symmetric(vertical: 15),
                   alignment: Alignment.center,
-                  color: Colors.orange,
+                  color: const Color(0xFF915FB5),
                   child: const Text(
                     "Editar Nome",
                     style: TextStyle(fontSize: 20, color: Colors.white),

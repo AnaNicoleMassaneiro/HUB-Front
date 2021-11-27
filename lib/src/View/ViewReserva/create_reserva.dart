@@ -67,7 +67,15 @@ class _CreateReservaPageState extends State<CreateReserva> {
     return Scaffold(
         appBar: AppBar(
             title: const Text('Detalhes do Produto'),
-            backgroundColor: Colors.orange),
+            flexibleSpace: Container(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                    colors: [Color(0xFF915FB5), Color(0xFFCA436B)]),
+              ),
+            )
+        ),
         body: SizedBox(
           child: Stack(
             children: <Widget>[

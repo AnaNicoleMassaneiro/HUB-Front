@@ -73,7 +73,15 @@ class _CadastrarProdutoPageState extends State<CadastrarProdutoPage> {
     return Scaffold(
       appBar: AppBar(
           title: const Text('Cadastrar Produto'),
-          backgroundColor: Colors.orange),
+          flexibleSpace: Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                  colors: [Color(0xFF915FB5), Color(0xFFCA436B)]),
+            ),
+          )
+      ),
       body: SizedBox(
         child: Stack(
           children: <Widget>[
@@ -98,7 +106,7 @@ class _CadastrarProdutoPageState extends State<CadastrarProdutoPage> {
                           width: MediaQuery.of(context).size.width,
                           padding: const EdgeInsets.symmetric(vertical: 15),
                           alignment: Alignment.center,
-                          color: Colors.orange,
+                          color: const Color(0xFF915FB5),
                           child: const Text(
                             "Adicionar imagem",
                             style: TextStyle(fontSize: 20, color: Colors.white),

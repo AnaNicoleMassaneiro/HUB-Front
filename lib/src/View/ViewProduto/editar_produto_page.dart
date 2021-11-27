@@ -108,7 +108,16 @@ class _EditarProdutoPageState extends State<EditarProdutoPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: const Text('Editar Produto'), backgroundColor: Colors.orange),
+          title: const Text('Editar Produto'),
+          flexibleSpace: Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                  colors: [Color(0xFF915FB5), Color(0xFFCA436B)]),
+            ),
+          )
+      ),
       floatingActionButton: isEditing ?
         FloatingActionButton(
             backgroundColor: Colors.red,
@@ -155,7 +164,7 @@ class _EditarProdutoPageState extends State<EditarProdutoPage> {
                               width: MediaQuery.of(context).size.width,
                               padding: const EdgeInsets.symmetric(vertical: 15),
                               alignment: Alignment.center,
-                              color: Colors.orange,
+                              color: const Color(0xFF915FB5),
                               child: const Text(
                                 "Adicionar imagem",
                                 style: TextStyle(fontSize: 20, color: Colors.white),
@@ -171,7 +180,7 @@ class _EditarProdutoPageState extends State<EditarProdutoPage> {
                               width: MediaQuery.of(context).size.width,
                               padding: const EdgeInsets.symmetric(vertical: 15),
                               alignment: Alignment.center,
-                              color: Colors.orange,
+                              color: const Color(0xFF915FB5),
                               child: const Text(
                                 "Remover imagem",
                                 style: TextStyle(fontSize: 20, color: Colors.white),
