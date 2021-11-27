@@ -22,4 +22,9 @@ class Endpoints {
   static const getCustomeratings = host + "api/avaliacao/cliente/";
   static const getSellerRatings = host + "api/avaliacao/vendedor/";
   static const getProductRatings = host + "api/avaliacao/produto/";
+  static const addPaymentModes = host + "api/vendedor/formadepagamento/adicionar";
+  static const removePaymentModes =
+    host + "api/vendedor/formadepagamento/remover";
+  static const getPaymentModesBySeller =
+    host + "api/vendedor/formadepagamento/buscar/";
 }

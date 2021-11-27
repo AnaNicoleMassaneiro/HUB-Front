@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:hub/src/Api/api_product.dart';
 import 'package:hub/src/Api/api_rating.dart';
+import 'package:hub/src/Api/api_vendores.dart';
 import 'package:hub/src/View/Class/avaliacao.dart';
+import 'package:hub/src/View/Class/forma_de_pagamento.dart';
 import 'package:hub/src/View/Class/meus_produtos.dart';
 import 'package:hub/src/View/Class/user_data.dart';
 import 'package:hub/src/View/Class/vendedores.dart';
@@ -24,6 +26,7 @@ class _DetalhesVendedorPageState extends State<DetalhesVendedorPage> {
   late final String texto;
   TextEditingController controller = TextEditingController();
   List<MeusProdutos> produtos = <MeusProdutos>[];
+  List<FormaDePagamento> payment = <FormaDePagamento>[];
 
   final _avaliaFormKey = GlobalKey<FormState>();
 
@@ -35,6 +38,7 @@ class _DetalhesVendedorPageState extends State<DetalhesVendedorPage> {
   void initState() {
     super.initState();
     searchSellerProducts();
+    getPaymentModes();
   }
 
   @override
@@ -57,6 +61,48 @@ class _DetalhesVendedorPageState extends State<DetalhesVendedorPage> {
             ),
             const Padding(
               padding: EdgeInsets.only(bottom: 25)
+            ),
+            payment.isEmpty
+            ? Column()
+            : Column(
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const Text("Formas de pagamento aceitas: ",
+                    style: TextStyle(fontWeight: FontWeight.w100, fontSize: 16)
+                ),
+                const Padding(
+                    padding: EdgeInsets.only(bottom: 5)
+                ),
+                GridView.builder(
+                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                    maxCrossAxisExtent: 180,
+                    mainAxisSpacing: 5,
+                    mainAxisExtent: 75
+                  ),
+                  shrinkWrap: true,
+                  itemCount: payment.length,
+                  itemBuilder: (context, i) {
+                    return Card(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            payment[i].icone,
+                            height: 35,
+                            fit: BoxFit.contain,
+                          ),
+                          Text(
+                            payment[i].descricao
+                          )
+                        ]
+                      ),
+                    );
+                  },
+                  padding: const EdgeInsets.all(5),
+                ),
+              ],
             ),
             const Text("Nota",
               style: TextStyle(fontWeight: FontWeight.w100, fontSize: 16)
@@ -236,6 +282,19 @@ class _DetalhesVendedorPageState extends State<DetalhesVendedorPage> {
         setState(() {
           produtos.add(MeusProdutos.fromJson(p));
         });
+      }
+    });
+  }
+
+  void getPaymentModes(){
+    var api = ApiVendedores();
+
+
+    print("HERE");
+    api.getFormasDePagamentoBySeller(widget.vendedor.id).then((response) {
+      for (var f in response){
+        print(f["descricao"]);
+        payment.add(FormaDePagamento.fromJson(f));
       }
     });
   }
