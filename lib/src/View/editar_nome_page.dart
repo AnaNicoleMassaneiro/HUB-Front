@@ -25,7 +25,16 @@ class _EditarNomePageState extends State<EditarNomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            title: const Text('Editar Nome'), backgroundColor: Colors.orange),
+            title: const Text('Editar Nome'),
+            flexibleSpace: Container(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                    colors: [Color(0xFF915FB5), Color(0xFFCA436B)]),
+              ),
+            )
+        ),
         body: SafeArea(
           child: Column(
             children: [

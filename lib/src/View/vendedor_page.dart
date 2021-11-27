@@ -36,7 +36,15 @@ class _VendedorPageState extends State<VendedorPage> {
     return Scaffold(
         appBar: AppBar(
             title: const Text('Área do vendedor'),
-            backgroundColor: Colors.orange),
+            flexibleSpace: Container(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                    colors: [Color(0xFF915FB5), Color(0xFFCA436B)]),
+              ),
+            )
+        ),
         drawer: Drawer(
             child: ListView(
           children: [

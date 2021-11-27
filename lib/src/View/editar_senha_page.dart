@@ -28,7 +28,16 @@ class _EditarSenhaPageState extends State<EditarSenhaPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar:
-            AppBar(title: const Text('Perfil'), backgroundColor: Colors.orange),
+            AppBar(title: const Text('Perfil'),
+                flexibleSpace: Container(
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                        begin: Alignment.centerLeft,
+                        end: Alignment.centerRight,
+                        colors: [Color(0xFF915FB5), Color(0xFFCA436B)]),
+                  ),
+                )
+            ),
         body: SafeArea(
           child: Column(
             children: [

@@ -30,10 +30,19 @@ class _PerfilPageState extends State<PerfilPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar:
-            AppBar(title: const Text('Perfil'), backgroundColor: Colors.orange),
-        body: FutureBuilder<User>(builder: (context, snapShot) {  
-          return SafeArea(
-              child: Column(
+            AppBar(title: const Text('Perfil'),
+              flexibleSpace: Container(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                  colors: [Color(0xFF915FB5), Color(0xFFCA436B)]),
+                ),
+              )
+            ),
+          body: FutureBuilder<User>(builder: (context, snapShot) {
+            return SafeArea(
+                child: Column(
             children: [
               header(),
             ],
@@ -62,7 +71,7 @@ class _PerfilPageState extends State<PerfilPage> {
                   width: MediaQuery.of(context).size.width,
                   padding: const EdgeInsets.symmetric(vertical: 15),
                   alignment: Alignment.center,
-                  color: Colors.orange,
+                  color: const Color(0xFF915FB5),
                   child: const Text(
                     "Editar Senha",
                     style: TextStyle(fontSize: 20, color: Colors.white),
@@ -85,7 +94,7 @@ class _PerfilPageState extends State<PerfilPage> {
                   width: MediaQuery.of(context).size.width,
                   padding: const EdgeInsets.symmetric(vertical: 15),
                   alignment: Alignment.center,
-                  color: Colors.orange,
+                  color: const Color(0xFF915FB5),
                   child: const Text(
                     "Editar Nome",
                     style: TextStyle(fontSize: 20, color: Colors.white),
