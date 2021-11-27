@@ -60,3 +60,19 @@ String? validateNumber(String name){
     return null;
   }
 }
+
+String? validateRatingTitle(String title){
+  if (title.trim().isEmpty) {
+    return "Preencha o título da avaliação!";
+  } else {
+    return null;
+  }
+}
+
+String? validateRatingDescription(String desc){
+  if (desc.trim().isEmpty) {
+    return "Preencha a descrição da avaliação!";
+  } else {
+    return null;
+  }
+}

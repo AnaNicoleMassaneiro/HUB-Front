@@ -23,6 +23,8 @@ class _ListaProdutosPageState extends State<ListaProdutosPage> {
   void buscaProdutos() {
     var api = api_product();
     api.searchAll().then((response) {
+      listaProdutos.clear();
+
       for (var produto in response) {
         setState(() {
           listaProdutos.add(MeusProdutos.fromJson(produto));
@@ -74,49 +76,92 @@ class _ListaProdutosPageState extends State<ListaProdutosPage> {
                     ),
                   ),
                   Expanded(
-                    child: _searchResult.isNotEmpty ||
-                            controller.text.isNotEmpty
-                        ? ListView.builder(
-                            itemCount: _searchResult.length,
-                            itemBuilder: (context, i) {
-                              return Card(
-                                child: ListTile(
-                                  title: Text(_searchResult[i].nome),
-                                ),
-                                margin: const EdgeInsets.all(0.0),
-                              );
-                            },
+                    child: listaProdutos.isEmpty || (controller.text.isNotEmpty && _searchResult.isEmpty)
+                      ? Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: const [
+                          Text(
+                            "Parece que não há nenhum produto por aqui...",
+                            style: TextStyle(
+                              fontWeight: FontWeight.w200,
+                              fontStyle: FontStyle.italic,
+                            )
                           )
-                        : ListView.builder(
-                            itemCount: listaProdutos.length,
-                            itemBuilder: (context, i) {
-                              return Card(
-                                child: ListTile(
-                                  // leading:  CircleAvatar(backgroundImage:  NetworkImage(listaProdutos[index].profileUrl,),),
-                                  title: Text(listaProdutos[i].nome),
-                                  trailing: Wrap(
-                                    spacing: 12,
-                                    children: [
-                                      IconButton(
-                                        icon: const Icon(Icons.visibility),
-                                        onPressed: () {
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      DetalhesProdutoPage(
-                                                        listaProdutos:
-                                                            listaProdutos[i],
-                                                      )));
-                                        },
-                                      )
-                                    ],
-                                  ),
+                        ],
+                      )
+                      : _searchResult.isNotEmpty || controller.text.isNotEmpty
+                        ? ListView.builder(
+                          itemCount: _searchResult.length,
+                          itemBuilder: (context, i) {
+                            return Card(
+                              child: ListTile(
+                                // leading:  CircleAvatar(backgroundImage:  NetworkImage(listaProdutos[index].profileUrl,),),
+                                title: Text(_searchResult[i].nome),
+                                trailing: Wrap(
+                                  spacing: 12,
+                                  children: [
+                                    IconButton(
+                                      icon: const Icon(Icons.visibility),
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                              DetalhesProdutoPage(
+                                                produto: _searchResult[i],
+                                              )
+                                          )
+                                        ).then((value) {
+                                          setState(() {
+                                            buscaProdutos();
+                                            onSearchTextChanged(controller.text);
+                                          });
+                                        });
+                                      },
+                                    )
+                                  ],
                                 ),
-                                margin: const EdgeInsets.all(0.0),
-                              );
-                            },
-                          ),
+                              ),
+                              margin: const EdgeInsets.all(0.0),
+                            );
+                          },
+                        )
+                        : ListView.builder(
+                          itemCount: listaProdutos.length,
+                          itemBuilder: (context, i) {
+                            return Card(
+                              child: ListTile(
+                                // leading:  CircleAvatar(backgroundImage:  NetworkImage(listaProdutos[index].profileUrl,),),
+                                title: Text(listaProdutos[i].nome),
+                                trailing: Wrap(
+                                  spacing: 12,
+                                  children: [
+                                    IconButton(
+                                      icon: const Icon(Icons.visibility),
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                              DetalhesProdutoPage(
+                                                produto: listaProdutos[i],
+                                              )
+                                          )
+                                        ).then((value) {
+                                          setState(() {
+                                            buscaProdutos();
+                                          });
+                                        });
+                                      },
+                                    )
+                                  ],
+                                ),
+                              ),
+                              margin: const EdgeInsets.all(0.0),
+                            );
+                          },
+                        ),
                   ),
                 ],
               ),
@@ -127,6 +172,7 @@ class _ListaProdutosPageState extends State<ListaProdutosPage> {
 
   onSearchTextChanged(String text) async {
     _searchResult.clear();
+
     if (text.isEmpty) {
       setState(() {});
       return;

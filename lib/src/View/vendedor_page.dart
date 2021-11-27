@@ -36,7 +36,7 @@ class _VendedorPageState extends State<VendedorPage> {
     return Scaffold(
         appBar: AppBar(
             title: const Text('Área do vendedor'),
-            backgroundColor: Colors.orange),
+            backgroundColor: Color(0xFFCA436B)),
         drawer: Drawer(
             child: ListView(
           children: [
@@ -65,12 +65,18 @@ class _VendedorPageState extends State<VendedorPage> {
             ? FloatingActionButton(
                 onPressed: () {
                   Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => CadastrarProdutoPage(
-                              title: '',
-                              idVendedor: widget.idVendedor,
-                              idUser: widget.idUser)));
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => CadastrarProdutoPage(
+                        title: '',
+                        idVendedor: widget.idVendedor,
+                        idUser: widget.idUser
+                      )
+                    )
+                  ).then((value) {
+                    setState(() {
+                    });
+                  });
                 },
                 child: const Icon(Icons.plus_one),
                 backgroundColor: Colors.blue,

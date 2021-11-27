@@ -57,10 +57,45 @@ Widget entryFieldValidation(String title, TextEditingController controllerTxt, F
           decoration: InputDecoration(
               border: InputBorder.none,
               fillColor: const Color(0xfff3f3f4),
-              labelText: placeholder,
+              labelText: placeholder.trim() == "" ? null : placeholder,
               filled: true
           ),
           keyboardType: keyboard,
+        )
+      ],
+    ),
+  );
+}
+
+Widget textAreaEntryFieldValidation(
+    String title, TextEditingController controllerTxt, Function validation,
+    int maxLines, {String? placeholder, bool enabled = true}
+  ) {
+  return Container(
+    margin: const EdgeInsets.symmetric(vertical: 10),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          title,
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        TextFormField(
+          validator: (value) {
+            return validation(value.toString());
+          },
+          maxLines: maxLines,
+          enabled: enabled,
+          controller: controllerTxt,
+          decoration: InputDecoration(
+              border: InputBorder.none,
+              fillColor: const Color(0xfff3f3f4),
+              labelText: placeholder,
+              filled: true
+          ),
         )
       ],
     ),

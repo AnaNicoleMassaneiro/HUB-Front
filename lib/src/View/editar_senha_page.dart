@@ -28,7 +28,7 @@ class _EditarSenhaPageState extends State<EditarSenhaPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar:
-        AppBar(title: const Text('Perfil'), backgroundColor: Colors.orange),
+            AppBar(title: const Text('Perfil'), backgroundColor: Colors.orange),
         body: SafeArea(
           child: Column(
             children: [
@@ -48,9 +48,10 @@ class _EditarSenhaPageState extends State<EditarSenhaPage> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Builder(builder: (context) {
-                return Text("AAAAAAAAAAA",
-                    style:
-                    TextStyle(fontWeight: FontWeight.w100, fontSize: 16));
+                return const TextField(
+                  decoration: InputDecoration(
+                      border: OutlineInputBorder(), hintText: 'Nome'),
+                );
               }),
             ],
           ),

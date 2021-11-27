@@ -3,7 +3,6 @@ import 'package:hub/src/Api/api_user.dart';
 import 'package:hub/src/View/editar_senha_page.dart';
 import '../View/Class/user_data.dart';
 import 'Class/User.dart';
-import 'editar_senha_page.dart';
 
 class PerfilPage extends StatefulWidget {
   const PerfilPage({Key? key}) : super(key: key);
@@ -30,9 +29,22 @@ class _PerfilPageState extends State<PerfilPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar:
-            AppBar(title: const Text('Perfil'), backgroundColor: Colors.orange),
-        body: SafeArea(
-          child: Column(
+            AppBar(title: const Text('Perfil'),
+              flexibleSpace: Container(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                  colors: <Color>[
+                    Colors.red,
+                    Colors.green,
+                  ],
+                ),
+              )
+            ),
+            ),
+          body: SafeArea(
+            child: Column(
             children: [
               header(),
             ],
@@ -45,16 +57,17 @@ class _PerfilPageState extends State<PerfilPage> {
       padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 50),
       child: Column(
         children: <Widget>[
-
           Text('Nome ' + usuario.name),
           Text('Email ' + usuario.email),
-          Text('GRR '+ usuario.grr),
+          Text('GRR ' + usuario.grr),
           Padding(
             padding: EdgeInsets.only(top: 5),
             child: ElevatedButton(
                 onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => EditarSenhaPage()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => EditarSenhaPage()));
                 },
                 child: Container(
                   width: MediaQuery.of(context).size.width,
@@ -71,8 +84,8 @@ class _PerfilPageState extends State<PerfilPage> {
             padding: EdgeInsets.only(top: 5),
             child: ElevatedButton(
                 onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => EditarSenhaPage()));
+                  /* Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => EditarNomePage(usuario.name, usuario.email, usuario.grr, email: '',))); */
                 },
                 child: Container(
                   width: MediaQuery.of(context).size.width,
@@ -94,11 +107,9 @@ class _PerfilPageState extends State<PerfilPage> {
     var api = ApiUser();
 
     api.searchId(idUser).then((response) => setState(() {
-      print('----------------------------');
+          print('----------------------------');
           usuario = User.fromJson(response);
-          print(usuario.name );
+          print(usuario.name);
         }));
   }
-
-
 }

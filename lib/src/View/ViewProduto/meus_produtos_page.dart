@@ -28,6 +28,8 @@ class _MeusProdutosPageState extends State<MeusProdutosPage> {
   void buscaProdutos() {
     var api = api_product();
     api.search(widget.idVendedor).then((response) {
+      listaProdutos.clear();
+
       for (var produto in response) {
         setState(() {
           listaProdutos.add(MeusProdutos(
@@ -89,30 +91,34 @@ class _MeusProdutosPageState extends State<MeusProdutosPage> {
                           spacing: 12,
                           children: [
                             IconButton(
-                              icon: const Icon(Icons.edit),
+                              icon: const Icon(Icons.remove_red_eye_rounded),
                               onPressed: () {
                                 Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => EditarProdutoPage(
-                                              title: '',
-                                              idVendedor: widget.idVendedor,
-                                              idUser: widget.idUser,
-                                              nome: listaProdutos[i].nome,
-                                              qtdDisponivel: listaProdutos[i]
-                                                  .quantidadeDisponivel,
-                                              preco: listaProdutos[i].preco,
-                                              descricao:
-                                                  listaProdutos[i].descricao,
-                                              idProduto: listaProdutos[i].id,
-                                              imagem: listaProdutos[i].imagem,
-                                            )));
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => EditarProdutoPage(
+                                      title: '',
+                                      idVendedor: widget.idVendedor,
+                                      idUser: widget.idUser,
+                                      nome: _searchResult[i].nome,
+                                      qtdDisponivel: _searchResult[i]
+                                        .quantidadeDisponivel,
+                                      preco: _searchResult[i].preco,
+                                      descricao: _searchResult[i].descricao,
+                                      idProduto: _searchResult[i].id,
+                                      imagem: _searchResult[i].imagem,
+                                    )
+                                  )
+                                ).then((value) {
+                                  buscaProdutos();
+                                  onSearchTextChanged(controller.text);
+                                });
                               },
                             ),
                             IconButton(
                               icon: const Icon(Icons.delete),
                               onPressed: () {
-                                verificaDeletarProduto(listaProdutos[i].id);
+                                verificaDeletarProduto(_searchResult[i].id);
                               },
                             ),
                           ],
@@ -136,20 +142,24 @@ class _MeusProdutosPageState extends State<MeusProdutosPage> {
                               icon: const Icon(Icons.remove_red_eye_rounded),
                               onPressed: () {
                                 Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => EditarProdutoPage(
-                                            title: '',
-                                            idVendedor: widget.idVendedor,
-                                            idUser: widget.idUser,
-                                            nome: listaProdutos[i].nome,
-                                            qtdDisponivel: listaProdutos[i]
-                                                .quantidadeDisponivel,
-                                            preco: listaProdutos[i].preco,
-                                            descricao:
-                                                listaProdutos[i].descricao,
-                                            idProduto: listaProdutos[i].id,
-                                            imagem: listaProdutos[i].imagem)));
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => EditarProdutoPage(
+                                      title: '',
+                                      idVendedor: widget.idVendedor,
+                                      idUser: widget.idUser,
+                                      nome: listaProdutos[i].nome,
+                                      qtdDisponivel: listaProdutos[i]
+                                          .quantidadeDisponivel,
+                                      preco: listaProdutos[i].preco,
+                                      descricao: listaProdutos[i].descricao,
+                                      idProduto: listaProdutos[i].id,
+                                      imagem: listaProdutos[i].imagem
+                                    )
+                                  )
+                                ).then((value) {
+                                  buscaProdutos();
+                                });
                               },
                             ),
                             IconButton(
