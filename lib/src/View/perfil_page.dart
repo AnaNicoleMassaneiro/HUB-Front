@@ -79,7 +79,8 @@ class _PerfilPageState extends State<PerfilPage> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const EditarSenhaPage()));
+                          builder: (context) =>
+                               EditarSenhaPage(idUser: idUser)));
                 },
                 child: Container(
                   width: MediaQuery.of(context).size.width,

@@ -25,4 +25,5 @@ class Endpoints {
   static const getSellerRatings = host + "api/avaliacao/vendedor/";
   static const getProductRatings = host + "api/avaliacao/produto/";
   static const updateUserName = host + "api/User/updateUser/";
+  static const atualizarSenha = host + "api/User/atualizarSenha/";
 }

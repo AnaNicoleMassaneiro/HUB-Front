@@ -18,4 +18,17 @@ class ApiUser {
     return await http.patch(Uri.parse(
         Endpoints.updateUserName + name.toString() + '/' + id.toString()));
   }
+
+  Future<http.Response> updatePassword(int? id, String senha, confSenha) async {
+    return await http.patch(
+      Uri.parse(Endpoints.atualizarSenha + id.toString()),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, dynamic>{
+        "newPassword": senha,
+        "confirmNewPassword": confSenha
+      }),
+    );
+  }
 }
