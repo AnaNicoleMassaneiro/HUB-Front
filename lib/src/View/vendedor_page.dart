@@ -41,7 +41,7 @@ class _VendedorPageState extends State<VendedorPage> {
                 gradient: LinearGradient(
                     begin: Alignment.centerLeft,
                     end: Alignment.centerRight,
-                    colors: [Color(0xFF915FB5), Color(0xFFCA436B)]),
+                    colors: [Color(0xFFFBC02D), Color(0xFFFBC02D)]),
               ),
             )
         ),
@@ -87,7 +87,7 @@ class _VendedorPageState extends State<VendedorPage> {
                   });
                 },
                 child: const Icon(Icons.plus_one),
-                backgroundColor: Colors.blue,
+                backgroundColor: Colors.black,
               )
             : Column(),
         bottomNavigationBar: BottomNavigationBar(

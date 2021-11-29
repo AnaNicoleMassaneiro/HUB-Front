@@ -36,7 +36,7 @@ class _PerfilPageState extends State<PerfilPage> {
                 gradient: LinearGradient(
                   begin: Alignment.centerLeft,
                   end: Alignment.centerRight,
-                  colors: [Color(0xFF915FB5), Color(0xFFCA436B)]),
+                  colors: [Color(0xFFFBC02D), Color(0xFFFBC02D)]),
                 ),
               )
             ),
@@ -71,10 +71,10 @@ class _PerfilPageState extends State<PerfilPage> {
                   width: MediaQuery.of(context).size.width,
                   padding: const EdgeInsets.symmetric(vertical: 15),
                   alignment: Alignment.center,
-                  color: const Color(0xFF915FB5),
+                  color: const Color(0xFFFBC02D),
                   child: const Text(
                     "Editar Senha",
-                    style: TextStyle(fontSize: 20, color: Colors.white),
+                    style: TextStyle(fontSize: 20, color: Colors.black),
                   ),
                 )),
           ),
@@ -94,10 +94,10 @@ class _PerfilPageState extends State<PerfilPage> {
                   width: MediaQuery.of(context).size.width,
                   padding: const EdgeInsets.symmetric(vertical: 15),
                   alignment: Alignment.center,
-                  color: const Color(0xFF915FB5),
+                  color: const Color(0xFFFBC02D),
                   child: const Text(
                     "Editar Nome",
-                    style: TextStyle(fontSize: 20, color: Colors.white),
+                    style: TextStyle(fontSize: 20, color: Colors.black),
                   ),
                 )),
           ),

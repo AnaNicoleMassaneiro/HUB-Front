@@ -34,7 +34,7 @@ class _WelcomePageState extends State<WelcomePage> {
               gradient: const LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
-                  colors: [Color(0xFF915FB5), Color(0xFFCA436B)])),
+                  colors: [Color(0xFFFBC02D), Color(0xFFFBC02D)])),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,

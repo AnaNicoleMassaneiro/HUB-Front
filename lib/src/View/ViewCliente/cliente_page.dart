@@ -39,7 +39,7 @@ class _ClientePageState extends State<ClientePage> {
     return Scaffold(
         appBar: AppBar(
             title: const Text('Área do cliente'),
-            backgroundColor: const Color(0xFF915FB5)),
+            backgroundColor: const Color(0xFFFBC02D)),
         drawer: Drawer(
             child: ListView(
           children: [
