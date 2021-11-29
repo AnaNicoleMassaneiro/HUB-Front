@@ -2,10 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hub/src/Api/api_product.dart';
 import 'package:hub/src/Api/api_vendores.dart';
 import 'package:hub/src/View/Class/vendedores.dart';
-import 'package:hub/src/View/Components/modal_message.dart';
+import 'package:hub/src/View/ViewCliente/detalhes_vendedor_page.dart';
 
 import 'package:hub/src/util/contains_case_insensitive.dart';
 
@@ -24,6 +23,7 @@ class _ListaVendedoresPageState extends State<ListaVendedoresPage> {
 
   void buscavendedores() {
     var api = ApiVendedores();
+    listaVendedores.clear();
 
     api.searchAll().then((response) {
       for (var vendedores in response) {
@@ -83,98 +83,102 @@ class _ListaVendedoresPageState extends State<ListaVendedoresPage> {
                       ),
                     ),
                   ),
-                  Expanded(
-                    child:
-                        _searchResult.isNotEmpty || controller.text.isNotEmpty
-                            ? ListView.builder(
-                                itemCount: _searchResult.length,
-                                itemBuilder: (context, i) {
-                                  return Card(
-                                    child: ListTile(
-                                      title: Text(_searchResult[i].name),
-                                    ),
-                                    margin: const EdgeInsets.all(0.0),
-                                  );
+                ),
+                Expanded(
+                  child: _searchResult.isNotEmpty || controller.text.isNotEmpty
+                    ? ListView.builder(
+                      itemCount: _searchResult.length,
+                      itemBuilder: (context, i) {
+                        return Card(
+                          child: ListTile(
+                            title: Text(_searchResult[i].name),
+                            trailing: Wrap(
+                              spacing: 12,
+                              children: [
+                                IconButton(
+                                  icon: const Icon(Icons.visibility),
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                          DetalhesVendedorPage(
+                                            vendedor: listaVendedores[i],
+                                          )
+                                      )
+                                    ).then((value) {
+                                      setState(() {
+                                        buscavendedores();
+                                        onSearchTextChanged(controller.text);
+                                      });
+                                    });
+                                  },
+                                )
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    )
+                  : ListView.builder(
+                    itemCount: listaVendedores.length,
+                    itemBuilder: (context, i) {
+                      return Card(
+                        child: ListTile(
+                          // leading:  CircleAvatar(backgroundImage:  NetworkImage(listaVendedores[index].profileUrl,),),
+                          title: Text(listaVendedores[i].name),
+                          trailing: Wrap(
+                            spacing: 12,
+                            children: [
+                              IconButton(
+                                icon: const Icon(Icons.visibility),
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                        DetalhesVendedorPage(
+                                          vendedor: listaVendedores[i],
+                                        )
+                                    )
+                                  ).then((value) {
+                                    setState(() {
+                                      buscavendedores();
+                                      onSearchTextChanged(controller.text);
+                                    });
+                                  });
                                 },
                               )
-                            : ListView.builder(
-                                itemCount: listaVendedores.length,
-                                itemBuilder: (context, i) {
-                                  return Card(
-                                    child: ListTile(
-                                      // leading:  CircleAvatar(backgroundImage:  NetworkImage(listaVendedores[index].profileUrl,),),
-                                      title: Text(listaVendedores[i].name),
-                                      trailing: Wrap(
-                                        spacing: 12,
-                                      ),
-                                    ),
-                                    margin: const EdgeInsets.all(0.0),
-                                  );
-                                },
-                              ),
+                            ],
+                          ),
+                        ),
+                        margin: const EdgeInsets.all(0.0),
+                      );
+                    },
                   ),
-                ],
-              ),
-            ],
-          ),
-        ));
+                ),
+              ],
+            ),
+          ],
+        ),
+      )
+    );
   }
 
   onSearchTextChanged(String text) async {
     _searchResult.clear();
+
     if (text.isEmpty) {
       setState(() {});
       return;
     }
 
     for (var userDetail in listaVendedores) {
-      if (containsCaseInsensitive(userDetail.name, text)) _searchResult.add(userDetail);
+      if (containsCaseInsensitive(userDetail.name, text)) {
+        _searchResult.add(userDetail);
+      }
     }
 
     setState(() {});
-  }
-
-  verificaDeletarProduto(int? id) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text("Excluir Produto"),
-          content: const Text("Tem certeza que deseja excluir este produto?"),
-          actions: <Widget>[
-            TextButton(
-              child: const Text("Sim"),
-              onPressed: () {
-                deletarProduto(id);
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: const Text("Cancelar"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  void deletarProduto(id) async {
-    var api = api_product();
-    var ret = await api.delete(id);
-
-    if (ret.statusCode == 200) {
-      setState(() {
-        listaVendedores.clear();
-        buscavendedores();
-      });
-      customMessageModal(
-          context, "Sucesso!", "Produto excluido com sucesso", "OK");
-    } else {
-      customMessageModal(context, "Falha ao cadastrar produto: ",
-          jsonDecode(ret.body)["msg"], "Fechar");
-    }
   }
 }

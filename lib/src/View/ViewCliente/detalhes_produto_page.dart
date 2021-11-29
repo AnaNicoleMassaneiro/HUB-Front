@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:hub/src/Api/api_rating.dart';
+import 'package:hub/src/View/Class/avaliacao.dart';
 import 'package:hub/src/View/Class/user_data.dart';
 import 'package:hub/src/View/Components/modal_message.dart';
 import '../Class/meus_produtos.dart';
@@ -77,21 +78,27 @@ class _DetalhesProdutoPageState extends State<DetalhesProdutoPage> {
                       fontWeight: FontWeight.w700, fontSize: 24)),
               const Text("Nota",
                   style: TextStyle(fontWeight: FontWeight.w100, fontSize: 16)),
-              RatingBar.builder(
-                initialRating: widget.produto.nota == null
-                  ? 0
-                  : ((widget.produto.nota!/0.5).truncateToDouble()) / 2
-                ,
-                direction: Axis.horizontal,
-                ignoreGestures: true,
-                allowHalfRating: true,
-                itemCount: 5,
-                itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-                itemBuilder: (context, _) => const Icon(
-                  Icons.star,
-                  color: Colors.black,
-                ),
-                onRatingUpdate: (double value) {},
+              GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () {
+                  openRatingsModal();
+                },
+                child: RatingBar.builder(
+                  initialRating: widget.produto.nota == null
+                    ? 0
+                    : ((widget.produto.nota!/0.5).truncateToDouble()) / 2
+                  ,
+                  direction: Axis.horizontal,
+                  ignoreGestures: true,
+                  allowHalfRating: true,
+                  itemCount: 5,
+                  itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+                  itemBuilder: (context, _) => const Icon(
+                    Icons.star,
+                    color: Colors.amber,
+                  ),
+                  onRatingUpdate: (double value) {},
+                )
               ),
               const Text("Preço",
                   style: TextStyle(fontWeight: FontWeight.w100, fontSize: 16)),
@@ -199,6 +206,82 @@ class _DetalhesProdutoPageState extends State<DetalhesProdutoPage> {
           ),
         ],
       ),
+    );
+  }
+
+  void openRatingsModal() async {
+    var api = ApiRating();
+
+    List<Avaliacao> ratings = [];
+
+    var ret = await api.getProductRatings(widget.produto.id);
+
+    for (var r in ret){
+      ratings.add(Avaliacao.fromJson(r));
+    }
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) =>  AlertDialog(
+        title: const Text("Avaliações do Produto:"),
+        content: SizedBox(
+          height: 500,
+          width: 300,
+          child:
+            ratings.isEmpty
+            ? const Text(
+              "Ainda não existem avaliações para este produto."
+            )
+            : ListView.builder(
+              itemCount: ratings.length,
+              itemBuilder: (context, i) {
+                return Card(
+                  child: Column(
+                    children: [
+                      Text(ratings[i].titulo),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 10)
+                      ),
+                      RatingBar.builder(
+                        initialRating: double.parse(ratings[i].nota.toString()),
+                        direction: Axis.horizontal,
+                        ignoreGestures: true,
+                        allowHalfRating: true,
+                        itemCount: 5,
+                        itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+                        itemBuilder: (context, _) => const Icon(
+                          Icons.star,
+                          color: Colors.amber,
+                        ),
+                        onRatingUpdate: (double value) {},
+                      ),
+                      Text(ratings[i].descricao),
+                      const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 5)
+                      ),
+                      Text(
+                        "Por " +
+                          ratings[i].nome +
+                          ", em " +
+                          ratings[i].dataCriacao.day.toString() + "/" +
+                          ratings[i].dataCriacao.month.toString() + "/" +
+                          ratings[i].dataCriacao.year.toString() + " as " +
+                          ratings[i].dataCriacao.hour.toString() + ":" +
+                          ratings[i].dataCriacao.minute.toString()
+                      )
+                    ],
+                  )
+                );
+              },
+            ),
+        ),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Voltar'),
+          ),
+        ],
+      )
     );
   }
 

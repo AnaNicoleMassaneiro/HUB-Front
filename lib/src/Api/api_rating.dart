@@ -24,4 +24,37 @@ class ApiRating {
 
     return response;
   }
+
+  Future<List<Map<String, dynamic>>> getProductRatings(int idProduct) async {
+    final response = await http.get(
+      Uri.parse(Endpoints.getProductRatings + idProduct.toString()),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return List<Map<String, dynamic>>.from(
+          json.decode(response.body)["avaliacoes"]);
+    }
+    else {
+      return <Map<String, dynamic>>[];
+    }
+  }
+
+  Future<List<Map<String, dynamic>>> getSellerRatings(int idVendedor) async {
+    final response = await http.get(
+      Uri.parse(Endpoints.getSellerRatings + idVendedor.toString()),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      return List<Map<String, dynamic>>.from(
+          json.decode(response.body)["avaliacoes"]);
+    } else {
+      throw Exception('Failed to get product avaliations.');
+    }
+  }
 }
