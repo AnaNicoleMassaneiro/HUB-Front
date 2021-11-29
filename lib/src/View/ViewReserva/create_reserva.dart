@@ -46,7 +46,7 @@ class _CreateReservaPageState extends State<CreateReserva> {
                 colors: [Color(0xfffbb448), Color(0xfff7892b)])),
         child: const Text(
           'Confirmar Reserva',
-          style: TextStyle(fontSize: 20, color: Colors.white),
+          style: TextStyle(fontSize: 20, color: Colors.black),
         ),
       ),
     );
@@ -68,13 +68,8 @@ class _CreateReservaPageState extends State<CreateReserva> {
         appBar: AppBar(
             title: const Text('Detalhes do Produto'),
             flexibleSpace: Container(
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
-                    colors: [Color(0xFF915FB5), Color(0xFFCA436B)]),
-              ),
-            )
+              color: const Color(0xFFFBC02D)
+            ),
         ),
         body: SizedBox(
           child: Stack(

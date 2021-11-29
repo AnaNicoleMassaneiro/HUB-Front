@@ -39,7 +39,7 @@ class _EditarNomePageState extends State<EditarNomePage> {
                 gradient: LinearGradient(
                     begin: Alignment.centerLeft,
                     end: Alignment.centerRight,
-                    colors: [Color(0xFF915FB5), Color(0xFFCA436B)]),
+                    colors: [Color(0xFFFFD600), Color(0xFFFBC02D)]),
               ),
             )
         ),

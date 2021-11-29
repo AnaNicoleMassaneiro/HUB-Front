@@ -52,7 +52,7 @@ class _ListaVendedoresPageState extends State<ListaVendedoresPage> {
                 gradient: LinearGradient(
                     begin: Alignment.centerLeft,
                     end: Alignment.centerRight,
-                    colors: [Color(0xFF915FB5), Color(0xFFCA436B)]),
+                    colors: [Color(0xFFFBC02D), Color(0xFFFBC02D)]),
               ),
             )
         ),

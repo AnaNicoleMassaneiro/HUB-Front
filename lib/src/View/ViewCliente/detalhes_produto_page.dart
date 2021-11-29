@@ -43,7 +43,7 @@ class _DetalhesProdutoPageState extends State<DetalhesProdutoPage> {
                 gradient: LinearGradient(
                     begin: Alignment.centerLeft,
                     end: Alignment.centerRight,
-                    colors: [Color(0xFF915FB5), Color(0xFFCA436B)]),
+                    colors: [Color(0xFFFBC02D), Color(0xFFFBC02D)]),
               ),
             )
         ),
@@ -89,7 +89,7 @@ class _DetalhesProdutoPageState extends State<DetalhesProdutoPage> {
                 itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
                 itemBuilder: (context, _) => const Icon(
                   Icons.star,
-                  color: Colors.amber,
+                  color: Colors.black,
                 ),
                 onRatingUpdate: (double value) {},
               ),
