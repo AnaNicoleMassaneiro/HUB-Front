@@ -22,7 +22,6 @@ class _PerfilPageState extends State<PerfilPage> {
   void initState() {
     idUser = userData.idUser;
 
-    buscarUsuario();
     super.initState();
   }
 
@@ -30,24 +29,39 @@ class _PerfilPageState extends State<PerfilPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar:
-            AppBar(title: const Text('Perfil'),
-              flexibleSpace: Container(
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,
-                  colors: [Color(0xFFFBC02D), Color(0xFFFBC02D)]),
-                ),
-              )
-            ),
-          body: FutureBuilder<User>(builder: (context, snapShot) {
-            return SafeArea(
-                child: Column(
-            children: [
-              header(),
-            ],
-          ));
+            AppBar(title: const Text('Perfil'), backgroundColor: Colors.orange),
+        body: buildContainer());
+  }
+
+  Future<User> getFutureDados() async {
+    var api = ApiUser();
+
+    await api.searchId(idUser).then((response) => setState(() {
+          usuario = User.fromJson(response);
         }));
+
+    return usuario;
+  }
+
+  Container buildContainer() {
+    // ignore: avoid_unnecessary_containers
+    return Container(
+        child: FutureBuilder(
+            future: getFutureDados(),
+            builder: (context, snapshot) {
+              if (snapshot.data == null) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else {
+                return SafeArea(
+                    child: Column(
+                  children: [
+                    header(),
+                  ],
+                ));
+              }
+            }));
   }
 
   Widget header() {
@@ -59,13 +73,14 @@ class _PerfilPageState extends State<PerfilPage> {
           Text('Email ' + usuario.email),
           Text('GRR ' + usuario.grr),
           Padding(
-            padding: EdgeInsets.only(top: 5),
+            padding: const EdgeInsets.only(top: 5),
             child: ElevatedButton(
                 onPressed: () {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => EditarSenhaPage()));
+                          builder: (context) =>
+                               EditarSenhaPage(idUser: idUser)));
                 },
                 child: Container(
                   width: MediaQuery.of(context).size.width,
@@ -79,13 +94,14 @@ class _PerfilPageState extends State<PerfilPage> {
                 )),
           ),
           Padding(
-            padding: EdgeInsets.only(top: 5),
+            padding: const EdgeInsets.only(top: 5),
             child: ElevatedButton(
                 onPressed: () {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) => EditarNomePage(
+                              idUser: idUser,
                               name: usuario.name,
                               email: usuario.email,
                               grr: usuario.grr)));
@@ -104,15 +120,5 @@ class _PerfilPageState extends State<PerfilPage> {
         ],
       ),
     );
-  }
-
-  void buscarUsuario() {
-    var api = ApiUser();
-
-    api.searchId(idUser).then((response) => setState(() {
-          print('----------------------------');
-          usuario = User.fromJson(response);
-          print(usuario.name);
-        }));
   }
 }
