@@ -46,7 +46,7 @@ class _ListaVendedoresPageState extends State<ListaVendedoresPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            title: const Text('Buscar Produto'),
+            title: const Text('Buscar Vendedores'),
             flexibleSpace: Container(
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
@@ -57,7 +57,7 @@ class _ListaVendedoresPageState extends State<ListaVendedoresPage> {
             )
         ),
         body: SizedBox(
-          child: Stack(
+          child: Column(
             children: <Widget>[
               Column(
                 children: [

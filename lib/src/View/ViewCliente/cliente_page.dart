@@ -6,6 +6,7 @@ import '../Components/mapa.dart';
 import '../perfil_page.dart';
 import '../welcome_page.dart';
 import 'buscar_page.dart';
+import 'meus_favoritos_page.dart';
 import 'minhas_reservas_page.dart';
 import '../Class/user_data.dart';
 
@@ -42,27 +43,38 @@ class _ClientePageState extends State<ClientePage> {
             backgroundColor: const Color(0xFFFBC02D)),
         drawer: Drawer(
             child: ListView(
-          children: [
-            ListTile(
-              title: const Text('Perfil'),
-              onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => PerfilPage()));
-              },
-            ),
-            ListTile(
-              title: const Text('Logout'),
-              onTap: () {
-                userDataSqlite.deleteUserData(userData.idUser!);
-                Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const WelcomePage(title: '')),
-                    (route) => false);
-              },
-            ),
-          ],
-        )),
+              children: [
+                ListTile(
+                  title: const Text('Perfil'),
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => PerfilPage()));
+                  },
+                ),
+                ListTile(
+                  title: const Text('Favoritos'),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const MeusFavoritosPage()),
+                    );
+                  },
+                ),
+                ListTile(
+                  title: const Text('Logout'),
+                  onTap: () {
+                    userDataSqlite.deleteUserData(userData.idUser!);
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const WelcomePage(title: '')),
+                        (route) => false);
+                  },
+                ),
+              ],
+            )
+        ),
         body: _telas[_indiceAtual],
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: _indiceAtual,
