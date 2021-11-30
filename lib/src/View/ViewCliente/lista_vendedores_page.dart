@@ -83,43 +83,44 @@ class _ListaVendedoresPageState extends State<ListaVendedoresPage> {
                       ),
                     ),
                   ),
-                ),
-                Expanded(
-                  child: _searchResult.isNotEmpty || controller.text.isNotEmpty
-                    ? ListView.builder(
-                      itemCount: _searchResult.length,
-                      itemBuilder: (context, i) {
-                        return Card(
-                          child: ListTile(
-                            title: Text(_searchResult[i].name),
-                            trailing: Wrap(
-                              spacing: 12,
-                              children: [
-                                IconButton(
-                                  icon: const Icon(Icons.visibility),
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                          DetalhesVendedorPage(
-                                            vendedor: listaVendedores[i],
-                                          )
-                                      )
-                                    ).then((value) {
-                                      setState(() {
-                                        buscavendedores();
-                                        onSearchTextChanged(controller.text);
-                                      });
+                ]
+              ),
+              Expanded(
+                child: _searchResult.isNotEmpty || controller.text.isNotEmpty
+                  ? ListView.builder(
+                    itemCount: _searchResult.length,
+                    itemBuilder: (context, i) {
+                      return Card(
+                        child: ListTile(
+                          title: Text(_searchResult[i].name),
+                          trailing: Wrap(
+                            spacing: 12,
+                            children: [
+                              IconButton(
+                                icon: const Icon(Icons.visibility),
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                        DetalhesVendedorPage(
+                                          vendedor: listaVendedores[i],
+                                        )
+                                    )
+                                  ).then((value) {
+                                    setState(() {
+                                      buscavendedores();
+                                      onSearchTextChanged(controller.text);
                                     });
-                                  },
-                                )
-                              ],
-                            ),
+                                  });
+                                },
+                              )
+                            ],
                           ),
-                        );
-                      },
-                    )
+                        ),
+                      );
+                    },
+                  )
                   : ListView.builder(
                     itemCount: listaVendedores.length,
                     itemBuilder: (context, i) {
@@ -159,10 +160,8 @@ class _ListaVendedoresPageState extends State<ListaVendedoresPage> {
                 ),
               ],
             ),
-          ],
         ),
-      )
-    );
+      );
   }
 
   onSearchTextChanged(String text) async {
