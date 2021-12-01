@@ -31,4 +31,8 @@ class Endpoints {
     host + "api/vendedor/formadepagamento/remover";
   static const getPaymentModesBySeller =
     host + "api/vendedor/formadepagamento/buscar/";
+  static const addToFavorites = host + "api/vendedor/favoritos/adicionar";
+  static const removeFromFavorites = host + "api/vendedor/favoritos/remover";
+  static const getFavorites = host + "api/vendedor/favoritos/buscar/";
+  static const isFavorite = host + "api/vendedor/favoritos/isFavorite";
 }

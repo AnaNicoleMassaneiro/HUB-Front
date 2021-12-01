@@ -31,6 +31,69 @@ class ApiVendedores {
     else {
       throw Exception(response.body);
     }
+  }
 
+  Future<http.Response> addToFavorites(int idVendedor, int idCliente) async {
+    return await http.post(
+      Uri.parse(Endpoints.addToFavorites),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(
+        <String, dynamic>{
+          "idCliente": idCliente,
+          "idVendedor": idVendedor
+        }
+      ),
+    );
+  }
+
+  Future<bool> isFavorite(int idCliente, int idVendedor) async {
+    var response = await http.post(Uri.parse(Endpoints.isFavorite),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(
+          <String, dynamic>{
+            "idCliente": idCliente,
+            "idVendedor": idVendedor
+          }
+      ),
+    );
+
+    return jsonDecode(response.body)["isFavorite"];
+  }
+
+  Future<http.Response> removeFromFavorites(int idVendedor, int idCliente) async {
+    return await http.delete(
+      Uri.parse(Endpoints.removeFromFavorites),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(
+          <String, dynamic>{
+            "idCliente": idCliente,
+            "idVendedor": idVendedor
+          }
+      ),
+    );
+  }
+
+  Future<List<Map<String, dynamic>>> getFavorites(int idCliente) async {
+    final response = await http.get(Uri.parse(
+        Endpoints.getFavorites + idCliente.toString())
+    );
+
+    if (response.statusCode == 200){
+      return List<Map<String, dynamic>>.from(
+          json.decode(response.body)["favoritos"]
+      );
+    }
+    else if (response.statusCode == 404){
+      return <Map<String, dynamic>>[];
+    }
+    else {
+      throw Exception(response.body);
+    }
   }
 }
