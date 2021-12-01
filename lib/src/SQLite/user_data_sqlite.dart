@@ -60,8 +60,6 @@ class UserDataSqlite {
 
     await db.delete(
       'userData',
-      where: 'idUser = ?',
-      whereArgs: [id],
     );
   }
 }
