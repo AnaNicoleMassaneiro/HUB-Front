@@ -26,9 +26,11 @@ class Endpoints {
   static const getProductRatings = host + "api/avaliacao/produto/";
   static const updateUserName = host + "api/User/updateUser/";
   static const atualizarSenha = host + "api/User/atualizarSenha/";
-  static const addPaymentModes = host + "api/vendedor/formadepagamento/adicionar";
+  static const addPaymentModes = host + "api/formaPagamento/adicionar";
   static const removePaymentModes =
-    host + "api/vendedor/formadepagamento/remover";
+    host + "api/formaPagamento/remover";
   static const getPaymentModesBySeller =
-    host + "api/vendedor/formadepagamento/buscar/";
+    host + "api/formaPagamento/buscar/";
+  static const listPaymentModes =
+      host + "api/formaPagamento/buscar";
 }
