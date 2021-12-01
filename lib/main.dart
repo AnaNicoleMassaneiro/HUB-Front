@@ -42,11 +42,12 @@ class MyApp extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
       home: userData.idUser == null
-      ? const WelcomePage(title: '',)
-      : userData.idVendedor == null
-        ? ClientePage(title: '')
-        : VendedorPage(title: '')
-      ,
+          ? const WelcomePage(
+              title: '',
+            )
+          : userData.idVendedor == null
+              ? ClientePage(title: '')
+              : VendedorPage(title: ''),
     );
   }
 }

@@ -43,47 +43,43 @@ class _VendedorPageState extends State<VendedorPage> {
                     end: Alignment.centerRight,
                     colors: [Color(0xFFFBC02D), Color(0xFFFBC02D)]),
               ),
-            )
-        ),
+            )),
         drawer: Drawer(
             child: ListView(
-          children: [
-            ListTile(
-              title: const Text('Perfil'),
-              onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => PerfilPage()));
-              },
-            ),
-            ListTile(
-              title: const Text('Logout'),
-              onTap: () {
-                userDataSqlite.deleteUserData(userData.idUser!);
-                Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const WelcomePage(title: '')),
-                    (route) => false);
-              },
-            ),
-          ],
-        )),
+              children: [
+                ListTile(
+                  title: const Text('Perfil'),
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => PerfilPage()));
+                  },
+                ),
+                ListTile(
+                  title: const Text('Logout'),
+                  onTap: () {
+                    userDataSqlite.deleteUserData(userData.idUser!);
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const WelcomePage(title: '')),
+                        (route) => false);
+                  },
+                ),
+              ],
+            )
+        ),
         body: _telas[_indiceAtual],
         floatingActionButton: _indiceAtual == 1
             ? FloatingActionButton(
                 onPressed: () {
                   Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => CadastrarProdutoPage(
-                        title: '',
-                        idVendedor: widget.idVendedor,
-                        idUser: widget.idUser
-                      )
-                    )
-                  ).then((value) {
-                    setState(() {
-                    });
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => CadastrarProdutoPage(
+                              title: '',
+                              idVendedor: widget.idVendedor,
+                              idUser: widget.idUser))).then((value) {
+                    setState(() {});
                   });
                 },
                 child: const Icon(Icons.plus_one),
