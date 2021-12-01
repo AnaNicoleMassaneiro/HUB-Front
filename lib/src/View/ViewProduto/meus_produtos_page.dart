@@ -32,14 +32,7 @@ class _MeusProdutosPageState extends State<MeusProdutosPage> {
 
       for (var produto in response) {
         setState(() {
-          listaProdutos.add(MeusProdutos(
-              id: produto["id"],
-              nome: produto["nome"],
-              descricao: produto["descricao"],
-              isAtivo: produto["isAtivo"],
-              preco: double.parse(produto["preco"].toString()),
-              quantidadeDisponivel: produto["quantidadeDisponivel"],
-              imagem: produto["imagem"] == null ? null : base64.decode(produto["imagem"])));
+          listaProdutos.add(MeusProdutos.fromJson(produto));
         });
       }
     }, onError: (error) async {
@@ -97,16 +90,7 @@ class _MeusProdutosPageState extends State<MeusProdutosPage> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => EditarProdutoPage(
-                                      title: '',
-                                      idVendedor: widget.idVendedor,
-                                      idUser: widget.idUser,
-                                      nome: _searchResult[i].nome,
-                                      qtdDisponivel: _searchResult[i]
-                                        .quantidadeDisponivel,
-                                      preco: _searchResult[i].preco,
-                                      descricao: _searchResult[i].descricao,
-                                      idProduto: _searchResult[i].id,
-                                      imagem: _searchResult[i].imagem,
+                                      produto: _searchResult[i],
                                     )
                                   )
                                 ).then((value) {
@@ -145,16 +129,7 @@ class _MeusProdutosPageState extends State<MeusProdutosPage> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => EditarProdutoPage(
-                                      title: '',
-                                      idVendedor: widget.idVendedor,
-                                      idUser: widget.idUser,
-                                      nome: listaProdutos[i].nome,
-                                      qtdDisponivel: listaProdutos[i]
-                                          .quantidadeDisponivel,
-                                      preco: listaProdutos[i].preco,
-                                      descricao: listaProdutos[i].descricao,
-                                      idProduto: listaProdutos[i].id,
-                                      imagem: listaProdutos[i].imagem
+                                      produto: listaProdutos[i]
                                     )
                                   )
                                 ).then((value) {

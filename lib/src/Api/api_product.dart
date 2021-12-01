@@ -61,6 +61,7 @@ class api_product {
       String nome,
       String descricao,
       int qtdDisponivel,
+      bool isAtivo,
       File? image,
       bool isKeepImage) async {
     var request = http.MultipartRequest(
@@ -71,6 +72,7 @@ class api_product {
     request.fields['preco'] = preco.toString().replaceAll(".", ",");
     request.fields['descricao'] = descricao;
     request.fields['quantidadeDisponivel'] = qtdDisponivel.toString();
+    request.fields['isAtivo'] = isAtivo.toString();
     request.fields['isKeepImage'] = isKeepImage.toString();
 
     if (image != null) {
