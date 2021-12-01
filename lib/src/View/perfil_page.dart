@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hub/src/Api/api_user.dart';
+import 'package:hub/src/View/ViewVendedor/minhas_formas_de_pagamento.dart';
 import 'package:hub/src/View/editar_senha_page.dart';
 import '../View/Class/user_data.dart';
 import 'Class/User.dart';
@@ -15,12 +16,14 @@ class PerfilPage extends StatefulWidget {
 class _PerfilPageState extends State<PerfilPage> {
   late final String texto;
   late final int? idUser;
+  late final bool isVendedor;
   TextEditingController controller = TextEditingController();
   late User usuario;
 
   @override
   void initState() {
     idUser = userData.idUser;
+    isVendedor = userData.idVendedor != null && userData.idVendedor! > 0;
 
     super.initState();
   }
@@ -80,7 +83,7 @@ class _PerfilPageState extends State<PerfilPage> {
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
-                               EditarSenhaPage(idUser: idUser)));
+                              EditarSenhaPage(idUser: idUser)));
                 },
                 child: Container(
                   width: MediaQuery.of(context).size.width,
@@ -117,6 +120,29 @@ class _PerfilPageState extends State<PerfilPage> {
                   ),
                 )),
           ),
+          isVendedor
+              ? Padding(
+                  padding: const EdgeInsets.only(top: 5),
+                  child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const MinhasFormasDePagamentoPage()));
+                      },
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        padding: const EdgeInsets.symmetric(vertical: 15),
+                        alignment: Alignment.center,
+                        color: const Color(0xFFFBC02D),
+                        child: const Text(
+                          "Formas de Pagamento",
+                          style: TextStyle(fontSize: 20, color: Colors.black),
+                        ),
+                      )),
+                )
+              : Container(),
         ],
       ),
     );
