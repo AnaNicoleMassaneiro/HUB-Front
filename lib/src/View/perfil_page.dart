@@ -75,7 +75,6 @@ class _PerfilPageState extends State<PerfilPage> {
           Text('Nome ' + usuario.name),
           Text('Email ' + usuario.email),
           Text('GRR ' + usuario.grr),
-        
           Padding(
             padding: const EdgeInsets.only(top: 5),
             child: ElevatedButton(
@@ -83,11 +82,8 @@ class _PerfilPageState extends State<PerfilPage> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => EditarNomePage(
-                              idUser: idUser,
-                              name: usuario.name,
-                              email: usuario.email,
-                              grr: usuario.grr)));
+                          builder: (context) =>
+                              EditarNomePage(idUser: idUser)));
                 },
                 child: Container(
                   width: MediaQuery.of(context).size.width,
