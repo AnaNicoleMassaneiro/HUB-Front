@@ -128,7 +128,7 @@ class _ListaProdutosPageState extends State<MinhasReservasPage> {
         return AlertDialog(
           content: const Text(
             'Tem certeza que deseja confirmar essa reserva? '
-            'Isso indica que o comprador foi até você e a venda foi efetuadoa. '
+            'Isso indica que o comprador foi até você e a venda foi efetuada. '
             'Esta ação não pode ser desfeita.'
           ),
           actions: [
