@@ -64,6 +64,7 @@ class _ClientePageState extends State<ClientePage> {
                 ListTile(
                   title: const Text('Logout'),
                   onTap: () {
+                    userData.clearAllData();
                     userDataSqlite.deleteUserData(userData.idUser!);
                     Navigator.pushAndRemoveUntil(
                         context,

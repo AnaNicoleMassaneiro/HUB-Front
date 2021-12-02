@@ -22,6 +22,15 @@ class UserData {
     };
   }
 
+  void clearAllData() {
+    idVendedor = null;
+    idUser = null;
+    idCliente = null;
+    curLocationLon = null;
+    curLocationLon = null;
+    token = null;
+  }
+
   UserData._internal();
 }
 

@@ -58,6 +58,7 @@ class _VendedorPageState extends State<VendedorPage> {
                   title: const Text('Logout'),
                   onTap: () {
                     userDataSqlite.deleteUserData(userData.idUser!);
+                    userData.clearAllData();
                     Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(
