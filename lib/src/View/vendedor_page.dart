@@ -51,7 +51,7 @@ class _VendedorPageState extends State<VendedorPage> {
                   title: const Text('Minha conta'),
                   onTap: () {
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => PerfilPage()));
+                        MaterialPageRoute(builder: (context) => const PerfilPage()));
                   },
                 ),
                 ListTile(
@@ -83,7 +83,7 @@ class _VendedorPageState extends State<VendedorPage> {
                   });
                 },
                 child: const Icon(Icons.plus_one),
-                backgroundColor: Colors.black,
+                backgroundColor: const Color(0xFFFBC02D),
               )
             : Column(),
         bottomNavigationBar: BottomNavigationBar(

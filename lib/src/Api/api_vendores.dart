@@ -11,7 +11,18 @@ class ApiVendedores {
       return List<Map<String, dynamic>>.from(
           json.decode(response.body)["vendedores"]);
     } else {
-      throw Exception('Failed to create MeusProdutos.');
+      throw Exception('Erro ao buscar vendedores!');
+    }
+  }
+
+  Future<Map<String, dynamic>> searchById(int idVendedor) async {
+    final response = await http
+        .get(Uri.parse(Endpoints.buscarVendedorPorId + idVendedor.toString()));
+
+    if (response.statusCode == 200) {
+      return Map<String, dynamic>.from(json.decode(response.body)["vendedor"]);
+    } else {
+      throw Exception('Erro ao buscar vendedor!');
     }
   }
 
@@ -69,8 +80,8 @@ class ApiVendedores {
         }));
 
     return response;
-      }
-      
+  }
+
   Future<http.Response> addToFavorites(int idVendedor, int idCliente) async {
     return await http.post(
       Uri.parse(Endpoints.addToFavorites),
@@ -78,60 +89,61 @@ class ApiVendedores {
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(
-        <String, dynamic>{
-          "idCliente": idCliente,
-          "idVendedor": idVendedor
-        }
-      ),
+          <String, dynamic>{"idCliente": idCliente, "idVendedor": idVendedor}),
     );
   }
 
   Future<bool> isFavorite(int idCliente, int idVendedor) async {
-    var response = await http.post(Uri.parse(Endpoints.isFavorite),
+    var response = await http.post(
+      Uri.parse(Endpoints.isFavorite),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(
-          <String, dynamic>{
-            "idCliente": idCliente,
-            "idVendedor": idVendedor
-          }
-      ),
+          <String, dynamic>{"idCliente": idCliente, "idVendedor": idVendedor}),
     );
 
     return jsonDecode(response.body)["isFavorite"];
   }
 
-  Future<http.Response> removeFromFavorites(int idVendedor, int idCliente) async {
+  Future<http.Response> removeFromFavorites(
+      int idVendedor, int idCliente) async {
     return await http.delete(
       Uri.parse(Endpoints.removeFromFavorites),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(
-          <String, dynamic>{
-            "idCliente": idCliente,
-            "idVendedor": idVendedor
-          }
-      ),
+          <String, dynamic>{"idCliente": idCliente, "idVendedor": idVendedor}),
     );
   }
 
   Future<List<Map<String, dynamic>>> getFavorites(int idCliente) async {
-    final response = await http.get(Uri.parse(
-        Endpoints.getFavorites + idCliente.toString())
-    );
+    final response = await http
+        .get(Uri.parse(Endpoints.getFavorites + idCliente.toString()));
 
-    if (response.statusCode == 200){
+    if (response.statusCode == 200) {
       return List<Map<String, dynamic>>.from(
-          json.decode(response.body)["favoritos"]
-      );
-    }
-    else if (response.statusCode == 404){
+          json.decode(response.body)["favoritos"]);
+    } else if (response.statusCode == 404) {
       return <Map<String, dynamic>>[];
-    }
-    else {
+    } else {
       throw Exception(response.body);
     }
+  }
+
+  Future<http.Response> updateSellerStatus(
+      int idVendedor, bool isAtivo, bool isOpen) async {
+    return await http.patch(
+      Uri.parse(Endpoints.atualizarStatusVendedor),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, dynamic>{
+        "idVendedor": idVendedor,
+        "isOpen": isOpen,
+        "isAtivo": isAtivo
+      }),
+    );
   }
 }

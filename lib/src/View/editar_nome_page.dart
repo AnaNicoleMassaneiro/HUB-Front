@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:hub/src/Api/api_user.dart';
 
 import 'Class/User.dart';
+import 'Class/user_data.dart';
 import 'Components/modal_message.dart';
 import 'editar_senha_page.dart';
 
 class EditarNomePage extends StatefulWidget {
-  const EditarNomePage({Key? key, required this.idUser}) : super(key: key);
+  const EditarNomePage({Key? key, required this.usuario}) : super(key: key);
 
-  final dynamic idUser;
+  final User usuario;
 
   @override
   _EditarNomePageState createState() => _EditarNomePageState();
@@ -17,21 +18,13 @@ class EditarNomePage extends StatefulWidget {
 class _EditarNomePageState extends State<EditarNomePage> {
   TextEditingController controller = TextEditingController();
   TextEditingController controllerTel = TextEditingController();
-  late User usuario;
 
   @override
   void initState() {
     super.initState();
-  }
 
-  Future<User> getFutureDados() async {
-    var api = ApiUser();
-
-    await api.searchId(widget.idUser).then((response) => setState(() {
-          usuario = User.fromJson(response);
-        }));
-
-    return usuario;
+    controller.text = widget.usuario.name;
+    controllerTel.text = widget.usuario.telefone;
   }
 
   @override
@@ -53,22 +46,12 @@ class _EditarNomePageState extends State<EditarNomePage> {
   Container buildContainer() {
     // ignore: avoid_unnecessary_containers
     return Container(
-        child: FutureBuilder(
-            future: getFutureDados(),
-            builder: (context, snapshot) {
-              if (snapshot.data == null) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              } else {
-                return SafeArea(
-                    child: Column(
-                  children: [
-                    tela(),
-                  ],
-                ));
-              }
-            }));
+        child: SafeArea(
+            child: Column(
+              children: [
+                tela(),
+              ],
+            )));
   }
 
   tela() {
@@ -77,32 +60,11 @@ class _EditarNomePageState extends State<EditarNomePage> {
         padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 50),
         child: Column(
           children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(top: 5),
-              child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                EditarSenhaPage(idUser: widget.idUser)));
-                  },
-                  child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    padding: const EdgeInsets.symmetric(vertical: 15),
-                    alignment: Alignment.center,
-                    color: const Color(0xFFFBC02D),
-                    child: const Text(
-                      "Editar Senha",
-                      style: TextStyle(fontSize: 20, color: Colors.black),
-                    ),
-                  )),
+            const Padding(
+              padding: EdgeInsets.only(top: 5),
             ),
             Column(
               children: [
-                Text('Nome ' + usuario.name),
-                Text('Email ' + usuario.email),
-                Text('GRR ' + usuario.grr),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   child: TextField(
@@ -116,7 +78,7 @@ class _EditarNomePageState extends State<EditarNomePage> {
                   child: TextField(
                     controller: controllerTel,
                     keyboardType: TextInputType.number,
-                    maxLength: 11,
+                    maxLength: 15,
                     decoration: const InputDecoration(
                         border: OutlineInputBorder(), hintText: 'Telefone'),
                   ),
@@ -124,18 +86,21 @@ class _EditarNomePageState extends State<EditarNomePage> {
                 ElevatedButton(
                     onPressed: () {
                       _salvar(
-                          widget.idUser, controller.text, controllerTel.text);
+                          userData.idVendedor!, controller.text, controllerTel.text);
                     },
                     child: Container(
-                    width: MediaQuery.of(context).size.width,
-                    padding: const EdgeInsets.symmetric(vertical: 15),
-                    alignment: Alignment.center,
-                    color: const Color(0xFFFBC02D),
-                    child: const Text(
-                      "Salvar",
-                      style: TextStyle(fontSize: 20, color: Colors.black),
-                    ),
-                  )),
+                      width: MediaQuery
+                          .of(context)
+                          .size
+                          .width,
+                      padding: const EdgeInsets.symmetric(vertical: 15),
+                      alignment: Alignment.center,
+                      color: const Color(0xFFFBC02D),
+                      child: const Text(
+                        "Salvar",
+                        style: TextStyle(fontSize: 20, color: Colors.black),
+                      ),
+                    )),
               ],
             ),
           ],
@@ -148,11 +113,10 @@ class _EditarNomePageState extends State<EditarNomePage> {
     var api = ApiUser();
     api.updateUserName(id, name, phone).then((response) {
       if (response.statusCode == 200) {
-        customMessageModal(
-            context, 'Sucesso', 'Sucesso ao alterar nome do usuario', 'Fechar');
+        Navigator.of(context).pop();
 
-        controller.clear();
-        controllerTel.clear();
+        customMessageModal(
+            context, 'Sucesso', 'Nome do usuário alterado com sucesso.', 'Fechar');
       } else {
         customMessageModal(
             context, 'Erro', 'Erro ao alterar nome do usuario', 'Fechar');
