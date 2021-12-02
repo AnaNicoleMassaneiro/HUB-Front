@@ -9,6 +9,7 @@ class User {
   double? noteApp;
   String email;
   String grr;
+  String telefone;
   String lastLogon;
   String createdOn;
   String? activation_code;
@@ -24,6 +25,7 @@ class User {
       required this.createdOn,
       required this.email,
       required this.grr,
+      required this.telefone,
       required this.isVendedor,
       required this.latitude,
       required this.longitude,
@@ -40,6 +42,7 @@ class User {
         createdOn: json['createdOn'],
         email: json['email'],
         grr: json['grr'],
+        telefone: json['telefone'],
         isVendedor: json['isVendedor'],
         latitude: double.parse(json['latitude'].toString()),
         longitude: double.parse(json['longitude'].toString()),
