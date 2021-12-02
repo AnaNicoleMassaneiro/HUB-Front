@@ -31,7 +31,7 @@ class _EditarSenhaPageState extends State<EditarSenhaPage> {
                 gradient: LinearGradient(
                     begin: Alignment.centerLeft,
                     end: Alignment.centerRight,
-                    colors: [Color(0xFF915FB5), Color(0xFFCA436B)]),
+                    colors: [Color(0xFFFFD600), Color(0xFFFBC02D)]),
               ),
             )),
         body: SafeArea(
@@ -44,19 +44,25 @@ class _EditarSenhaPageState extends State<EditarSenhaPage> {
                   children: <Widget>[
                     Column(
                       children: [
-                        TextField(
-                          controller: novaSenha,
-                          obscureText: true,
-                          decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              hintText: 'Nova senha'),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 5),
+                          child: TextField(
+                            controller: novaSenha,
+                            obscureText: true,
+                            decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                                hintText: 'Nova senha'),
+                          ),
                         ),
-                        TextField(
-                          controller: confNovaSenha,
-                          obscureText: true,
-                          decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              hintText: 'Confirmar nova senha'),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 5),
+                          child: TextField(
+                            controller: confNovaSenha,
+                            obscureText: true,
+                            decoration: const InputDecoration(
+                                border: OutlineInputBorder(),
+                                hintText: 'Confirmar nova senha'),
+                          ),
                         ),
                         ElevatedButton(
                             onPressed: () {
