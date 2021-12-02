@@ -1,7 +1,7 @@
 class Endpoints {
   //http://192.168.0.148:4000
-  static const host = "https://hubufpr.herokuapp.com/";
-  //static const host = "http://192.168.1.2:5000/"; // ENDPOINT LOCAL MATHEUS
+  //static const host = "https://hubufpr.herokuapp.com/";
+  static const host = "http://192.168.0.148:4000/"; // ENDPOINT LOCAL MATHEUS
   // static const host = "https://hubufpr.herokuapp.com/"; // ENDPOINT HEROKU
   static const create = host + "api/User/create";
   static const autenticate = host + "api/User/authenticate";
@@ -27,12 +27,9 @@ class Endpoints {
   static const updateUserName = host + "api/User/updateUser/";
   static const atualizarSenha = host + "api/User/atualizarSenha/";
   static const addPaymentModes = host + "api/formaPagamento/adicionar";
-  static const removePaymentModes =
-    host + "api/formaPagamento/remover";
-  static const getPaymentModesBySeller =
-    host + "api/formaPagamento/buscar/";
-  static const listPaymentModes =
-      host + "api/formaPagamento/buscar";
+  static const removePaymentModes = host + "api/formaPagamento/remover";
+  static const getPaymentModesBySeller = host + "api/formaPagamento/buscar/";
+  static const listPaymentModes = host + "api/formaPagamento/buscar";
   static const addToFavorites = host + "api/vendedor/favoritos/adicionar";
   static const removeFromFavorites = host + "api/vendedor/favoritos/remover";
   static const getFavorites = host + "api/vendedor/favoritos/buscar/";

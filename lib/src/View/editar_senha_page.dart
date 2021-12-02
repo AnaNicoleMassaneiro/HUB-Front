@@ -25,7 +25,7 @@ class _EditarSenhaPageState extends State<EditarSenhaPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            title: const Text('Editar Nome'),
+            title: const Text('Alterar Senha'),
             flexibleSpace: Container(
               decoration: const BoxDecoration(
                 gradient: LinearGradient(

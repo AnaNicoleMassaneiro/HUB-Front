@@ -14,9 +14,14 @@ class ApiUser {
     }
   }
 
-  Future<http.Response> updateUserName(int? id, String name) async {
-    return await http.patch(Uri.parse(
-        Endpoints.updateUserName + name.toString() + '/' + id.toString()));
+  Future<http.Response> updateUserName(int? id, String name, phone) async {
+    return await http.patch(
+      Uri.parse(Endpoints.updateUserName + id.toString()),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, dynamic>{"nome": name, "telefone": phone}),
+    );
   }
 
   Future<http.Response> updatePassword(int? id, String senha, confSenha) async {

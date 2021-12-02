@@ -75,27 +75,7 @@ class _PerfilPageState extends State<PerfilPage> {
           Text('Nome ' + usuario.name),
           Text('Email ' + usuario.email),
           Text('GRR ' + usuario.grr),
-          Padding(
-            padding: const EdgeInsets.only(top: 5),
-            child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              EditarSenhaPage(idUser: idUser)));
-                },
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  padding: const EdgeInsets.symmetric(vertical: 15),
-                  alignment: Alignment.center,
-                  color: const Color(0xFFFBC02D),
-                  child: const Text(
-                    "Editar Senha",
-                    style: TextStyle(fontSize: 20, color: Colors.black),
-                  ),
-                )),
-          ),
+        
           Padding(
             padding: const EdgeInsets.only(top: 5),
             child: ElevatedButton(
@@ -115,7 +95,7 @@ class _PerfilPageState extends State<PerfilPage> {
                   alignment: Alignment.center,
                   color: const Color(0xFFFBC02D),
                   child: const Text(
-                    "Editar Nome",
+                    "Editar Perfil",
                     style: TextStyle(fontSize: 20, color: Colors.black),
                   ),
                 )),

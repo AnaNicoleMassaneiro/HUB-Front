@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hub/src/Api/api_user.dart';
 
 import 'Components/modal_message.dart';
+import 'editar_senha_page.dart';
 
 class EditarNomePage extends StatefulWidget {
   const EditarNomePage(
@@ -23,6 +24,7 @@ class EditarNomePage extends StatefulWidget {
 
 class _EditarNomePageState extends State<EditarNomePage> {
   TextEditingController controller = TextEditingController();
+  TextEditingController controllerTel = TextEditingController();
 
   @override
   void initState() {
@@ -33,7 +35,7 @@ class _EditarNomePageState extends State<EditarNomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            title: const Text('Editar Nome'),
+            title: const Text('Editar Perfil'),
             flexibleSpace: Container(
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
@@ -41,8 +43,7 @@ class _EditarNomePageState extends State<EditarNomePage> {
                     end: Alignment.centerRight,
                     colors: [Color(0xFFFFD600), Color(0xFFFBC02D)]),
               ),
-            )
-        ),
+            )),
         body: SafeArea(
           child: Column(
             children: [
@@ -51,6 +52,28 @@ class _EditarNomePageState extends State<EditarNomePage> {
                     const EdgeInsets.symmetric(horizontal: 25, vertical: 50),
                 child: Column(
                   children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(top: 5),
+                      child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => EditarSenhaPage(
+                                        idUser: widget.idUser)));
+                          },
+                          child: Container(
+                            width: MediaQuery.of(context).size.width,
+                            padding: const EdgeInsets.symmetric(vertical: 15),
+                            alignment: Alignment.center,
+                            color: const Color(0xFFFBC02D),
+                            child: const Text(
+                              "Editar Senha",
+                              style:
+                                  TextStyle(fontSize: 20, color: Colors.black),
+                            ),
+                          )),
+                    ),
                     Column(
                       children: [
                         Text('Nome ' + widget.name),
@@ -61,9 +84,17 @@ class _EditarNomePageState extends State<EditarNomePage> {
                           decoration: const InputDecoration(
                               border: OutlineInputBorder(), hintText: 'Nome'),
                         ),
+                        TextField(
+                          controller: controllerTel,
+                          keyboardType: TextInputType.number,
+                          decoration: const InputDecoration(
+                              border: OutlineInputBorder(),
+                              hintText: 'Telefone'),
+                        ),
                         ElevatedButton(
                             onPressed: () {
-                              _salvar(widget.idUser, controller.text);
+                              _salvar(widget.idUser, controller.text,
+                                  controllerTel.text);
                             },
                             child: Container(
                               width: MediaQuery.of(context).size.width,
@@ -86,14 +117,15 @@ class _EditarNomePageState extends State<EditarNomePage> {
         ));
   }
 
-  void _salvar(id, name) {
+  void _salvar(id, name, phone) {
     var api = ApiUser();
-    api.updateUserName(id, name).then((response) {
+    api.updateUserName(id, name, phone).then((response) {
       if (response.statusCode == 200) {
         customMessageModal(
             context, 'Sucesso', 'Sucesso ao alterar nome do usuario', 'Fechar');
 
         controller.clear();
+        controllerTel.clear();
       } else {
         customMessageModal(
             context, 'Erro', 'Erro ao alterar nome do usuario', 'Fechar');
