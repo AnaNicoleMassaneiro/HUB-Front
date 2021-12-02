@@ -64,22 +64,26 @@ class _EditarSenhaPageState extends State<EditarSenhaPage> {
                                 hintText: 'Confirmar nova senha'),
                           ),
                         ),
-                        ElevatedButton(
-                            onPressed: () {
-                              _salvar(widget.idUser, novaSenha.text,
-                                  confNovaSenha.text);
-                            },
-                            child: Container(
-                              width: MediaQuery.of(context).size.width,
-                              padding: const EdgeInsets.symmetric(vertical: 15),
-                              alignment: Alignment.center,
-                              color: Colors.orange,
-                              child: const Text(
-                                "Salvar",
-                                style: TextStyle(
-                                    fontSize: 20, color: Colors.white),
-                              ),
-                            )),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 5),
+                          child: ElevatedButton(
+                              onPressed: () {
+                                _salvar(widget.idUser, novaSenha.text,
+                                    confNovaSenha.text);
+                              },
+                              child: Container(
+                                width: MediaQuery.of(context).size.width,
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 15),
+                                alignment: Alignment.center,
+                                color: const Color(0xFFFBC02D),
+                                child: const Text(
+                                  "Salvar",
+                                  style: TextStyle(
+                                      fontSize: 20, color: Colors.black),
+                                ),
+                              )),
+                        ),
                       ],
                     ),
                   ],
