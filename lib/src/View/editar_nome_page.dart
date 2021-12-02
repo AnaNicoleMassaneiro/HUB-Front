@@ -103,17 +103,23 @@ class _EditarNomePageState extends State<EditarNomePage> {
                 Text('Nome ' + usuario.name),
                 Text('Email ' + usuario.email),
                 Text('GRR ' + usuario.grr),
-                TextField(
-                  controller: controller,
-                  decoration: const InputDecoration(
-                      border: OutlineInputBorder(), hintText: 'Nome'),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: TextField(
+                    controller: controller,
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(), hintText: 'Nome'),
+                  ),
                 ),
-                TextField(
-                  controller: controllerTel,
-                  keyboardType: TextInputType.number,
-                  maxLength: 11,
-                  decoration: const InputDecoration(
-                      border: OutlineInputBorder(), hintText: 'Telefone'),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  child: TextField(
+                    controller: controllerTel,
+                    keyboardType: TextInputType.number,
+                    maxLength: 11,
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(), hintText: 'Telefone'),
+                  ),
                 ),
                 ElevatedButton(
                     onPressed: () {

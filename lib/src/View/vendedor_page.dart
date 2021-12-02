@@ -48,7 +48,7 @@ class _VendedorPageState extends State<VendedorPage> {
             child: ListView(
               children: [
                 ListTile(
-                  title: const Text('Perfil'),
+                  title: const Text('Minha conta'),
                   onTap: () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => PerfilPage()));
