@@ -24,7 +24,7 @@
 4) rode o projeto
 
 ### Técnologias utilizadas
-Flutter
+Flutter, API - Google API, SqLite
 
 ### Desenvolvido por:
 Ana Nicole Massaneiro, Dandi Teoa e Matheus Augusto de Moraes Ribeiro
