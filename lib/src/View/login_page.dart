@@ -117,6 +117,7 @@ class _LoginPageState extends State<LoginPage> {
 
   void _authenticate(user, senha) {
     var api = apiLogin();
+
     api.login(user, senha).then((response) {
       setState(() {
         if (response.statusCode == 200) {

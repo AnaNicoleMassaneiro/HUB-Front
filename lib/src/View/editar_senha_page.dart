@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hub/src/Api/api_user.dart';
+import 'package:hub/src/Validations/form_field_validations.dart';
 
 import 'Components/modal_message.dart';
 
@@ -15,6 +16,7 @@ class EditarSenhaPage extends StatefulWidget {
 class _EditarSenhaPageState extends State<EditarSenhaPage> {
   TextEditingController novaSenha = TextEditingController();
   TextEditingController confNovaSenha = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -42,34 +44,17 @@ class _EditarSenhaPageState extends State<EditarSenhaPage> {
                     const EdgeInsets.symmetric(horizontal: 25, vertical: 50),
                 child: Column(
                   children: <Widget>[
+                    Form(key: _formKey, child: updateSenhaForm()),
                     Column(
                       children: [
                         Padding(
                           padding: const EdgeInsets.only(top: 5),
-                          child: TextField(
-                            controller: novaSenha,
-                            obscureText: true,
-                            decoration: const InputDecoration(
-                                border: OutlineInputBorder(),
-                                hintText: 'Nova senha'),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 5),
-                          child: TextField(
-                            controller: confNovaSenha,
-                            obscureText: true,
-                            decoration: const InputDecoration(
-                                border: OutlineInputBorder(),
-                                hintText: 'Confirmar nova senha'),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 5),
                           child: ElevatedButton(
                               onPressed: () {
-                                _salvar(widget.idUser, novaSenha.text,
-                                    confNovaSenha.text);
+                                if (_formKey.currentState!.validate()) {
+                                  _salvar(widget.idUser, novaSenha.text,
+                                      confNovaSenha.text);
+                                }
                               },
                               child: Container(
                                 width: MediaQuery.of(context).size.width,
@@ -94,18 +79,63 @@ class _EditarSenhaPageState extends State<EditarSenhaPage> {
         ));
   }
 
+  Widget updateSenhaForm() {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(top: 5),
+          child: TextFormField(
+            validator: (value) {
+              var ret = validatePassword(value!);
+              if (ret != null) {
+                return ret;
+              } else {
+                if (confNovaSenha.text.trim().isEmpty) {
+                  return null;
+                }
+                if (value.compareTo(confNovaSenha.text) == 0) {
+                  return null;
+                } else {
+                  return "Senhas não coincidem!";
+                }
+              }
+            },
+            controller: novaSenha,
+            obscureText: true,
+            decoration: const InputDecoration(
+                border: OutlineInputBorder(), hintText: 'Nova senha'),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 5),
+          child: TextFormField(
+            validator: (value) => validatePassword(value!),
+            controller: confNovaSenha,
+            obscureText: true,
+            decoration: const InputDecoration(
+                border: OutlineInputBorder(), hintText: 'Confirmar nova senha'),
+          ),
+        )
+      ],
+    );
+  }
+
   void _salvar(id, senha, confSenha) {
     var api = ApiUser();
     api.updatePassword(id, senha, confSenha).then((response) {
       if (response.statusCode == 200) {
-        customMessageModal(context, 'Sucesso',
-            'Sucesso ao alterar senha de usuario', 'Fechar');
+        Navigator.of(context).pop();
+        customMessageModal(
+            context, 'Sucesso', 'Senha alterada com sucesso!', 'Fechar');
 
         novaSenha.clear();
         confNovaSenha.clear();
       } else {
         customMessageModal(
-            context, 'Erro', 'Erro ao alterar senha do usuario', 'Fechar');
+            context,
+            'Erro',
+            'Ocorreu um erro ao alterar a senha do usuario: ' + response.body,
+            'Fechar');
       }
     });
   }

@@ -111,6 +111,26 @@ class _PerfilPageState extends State<PerfilPage> {
                   ),
                 )),
           ),
+          Padding(
+              padding: const EdgeInsets.only(top: 5),
+              child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                EditarSenhaPage(idUser: usuario.id)));
+                  },
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    padding: const EdgeInsets.symmetric(vertical: 15),
+                    alignment: Alignment.center,
+                    color: const Color(0xFFFBC02D),
+                    child: const Text(
+                      "Editar Senha",
+                      style: TextStyle(fontSize: 20, color: Colors.black),
+                    ),
+                  ))),
           isVendedor
               ? Column(
                   children: [
@@ -170,39 +190,36 @@ class _PerfilPageState extends State<PerfilPage> {
                     ElevatedButton(
                         onPressed: () {
                           showDialog(
-                            context: context,
-                            builder: (context) {
-                              return AlertDialog(
-                                title: Text(
-                                    isSellerAtivo
-                                    ? 'Tem certeza que deseja inativar sua conta?'
-                                : 'Tem certeza que deseja reativar sua conta?'),
-                                content: Text(
-                                  isSellerAtivo
-                                    ? 'Outros usuários não poderão ver seu perfil ou'
-                                        ' seus produtos caso você realize essa ação. '
-                                        'Você ainda poderá logar no Aplicativo e pode '
-                                        'ativar sua conta novamente quando desejar.'
-                                    : 'Outros usuários voltarão a visualizar seu perfil e seus produtos listados.'
-                                ),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () {
-                                      updateStatus(!isSellerAtivo, isSellerOpen);
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: const Text('Inativar'),
-                                  ),
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: const Text('Cancelar'),
-                                  ),
-                                ],
-                              );
-                            }
-                          );
+                              context: context,
+                              builder: (context) {
+                                return AlertDialog(
+                                  title: Text(isSellerAtivo
+                                      ? 'Tem certeza que deseja inativar sua conta?'
+                                      : 'Tem certeza que deseja reativar sua conta?'),
+                                  content: Text(isSellerAtivo
+                                      ? 'Outros usuários não poderão ver seu perfil ou'
+                                          ' seus produtos caso você realize essa ação. '
+                                          'Você ainda poderá logar no Aplicativo e pode '
+                                          'ativar sua conta novamente quando desejar.'
+                                      : 'Outros usuários voltarão a visualizar seu perfil e seus produtos listados.'),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        updateStatus(
+                                            !isSellerAtivo, isSellerOpen);
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: const Text('Inativar'),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: const Text('Cancelar'),
+                                    ),
+                                  ],
+                                );
+                              });
                         },
                         child: Container(
                           width: MediaQuery.of(context).size.width,
@@ -212,7 +229,7 @@ class _PerfilPageState extends State<PerfilPage> {
                           child: Text(
                             isSellerAtivo
                                 ? "Inativar minha conta"
-                            : "Reativar minha conta",
+                                : "Reativar minha conta",
                             style: const TextStyle(
                                 fontSize: 20, color: Colors.black),
                           ),
@@ -228,8 +245,8 @@ class _PerfilPageState extends State<PerfilPage> {
   void updateStatus(bool isAtivo, bool isOpen) async {
     var api = ApiVendedores();
 
-    var response = await api.updateSellerStatus(
-        userData.idVendedor!, isAtivo, isOpen);
+    var response =
+        await api.updateSellerStatus(userData.idVendedor!, isAtivo, isOpen);
 
     if (response.statusCode == 200) {
       setState(() {
