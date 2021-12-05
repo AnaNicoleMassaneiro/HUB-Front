@@ -7,12 +7,14 @@ import 'package:http/http.dart' as http;
 class api_product {
   Future<List<Map<String, dynamic>>> searchAll() async {
     final response = await http.get(Uri.parse(Endpoints.searchProductAll));
-  
+
     if (response.statusCode == 200) {
       return List<Map<String, dynamic>>.from(
           json.decode(response.body)["produtos"]);
+    } else if (response.statusCode == 404) {
+      return <Map<String, dynamic>>[];
     } else {
-      throw Exception('Failed to create MeusProdutos.');
+      throw Exception('Houve um erro ao buscar todos os produtos.');
     }
   }
 
@@ -29,8 +31,10 @@ class api_product {
     if (response.statusCode == 200) {
       return List<Map<String, dynamic>>.from(
           json.decode(response.body)["produtos"]);
+    } else if (response.statusCode == 404) {
+      return <Map<String, dynamic>>[];
     } else {
-      throw Exception('Failed to create MeusProdutos.');
+      throw Exception('Houve um erro ao buscar os produtos do vendedor.');
     }
   }
 
