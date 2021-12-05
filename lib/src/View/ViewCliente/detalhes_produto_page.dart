@@ -10,9 +10,9 @@ import '../Components/entry_fields.dart';
 import '../../../src/Validations/form_field_validations.dart';
 
 class DetalhesProdutoPage extends StatefulWidget {
-  DetalhesProdutoPage({Key? key, required this.produto}) : super(key: key);
+  const DetalhesProdutoPage({Key? key, required this.produto}) : super(key: key);
 
-  MeusProdutos produto;
+  final MeusProdutos produto;
 
   @override
   _DetalhesProdutoPageState createState() => _DetalhesProdutoPageState();
