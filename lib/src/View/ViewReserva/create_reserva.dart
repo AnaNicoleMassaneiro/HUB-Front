@@ -85,13 +85,6 @@ class _CreateReservaPageState extends State<CreateReserva> {
                       Form(key: _reservaFormKey, child: (_quantidadeWidget())),
                       _submitButton(),
                       const SizedBox(height: 20),
-                      Container(
-                        padding: const EdgeInsets.symmetric(vertical: 10),
-                        alignment: Alignment.centerRight,
-                        child: const Text('Esqueceu a senha?',
-                            style: TextStyle(
-                                fontSize: 14, fontWeight: FontWeight.w500)),
-                      ),
                     ],
                   ),
                 ),
