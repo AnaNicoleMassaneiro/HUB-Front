@@ -47,8 +47,9 @@ class _ClientePageState extends State<ClientePage> {
                 ListTile(
                   title: const Text('Perfil'),
                   onTap: () {
+                    const page = PerfilPage();
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => PerfilPage()));
+                        MaterialPageRoute(builder: (context) => page));
                   },
                 ),
                 ListTile(
@@ -64,8 +65,8 @@ class _ClientePageState extends State<ClientePage> {
                 ListTile(
                   title: const Text('Logout'),
                   onTap: () {
-                    userData.clearAllData();
                     userDataSqlite.deleteUserData(userData.idUser!);
+                    userData.clearAllData();
                     Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(
