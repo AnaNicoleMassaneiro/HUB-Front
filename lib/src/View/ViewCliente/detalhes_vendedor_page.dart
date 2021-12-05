@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -17,9 +18,10 @@ import '../../../src/Validations/form_field_validations.dart';
 import 'detalhes_produto_page.dart';
 
 class DetalhesVendedorPage extends StatefulWidget {
-  DetalhesVendedorPage({Key? key, required this.vendedor}) : super(key: key);
+  const DetalhesVendedorPage({Key? key, required this.idVendedor})
+      : super(key: key);
 
-  Vendedores vendedor;
+  final int idVendedor;
 
   @override
   _DetalhesVendedorPageState createState() => _DetalhesVendedorPageState();
@@ -27,10 +29,16 @@ class DetalhesVendedorPage extends StatefulWidget {
 
 class _DetalhesVendedorPageState extends State<DetalhesVendedorPage> {
   late final String texto;
+  late Vendedores vendedor;
   TextEditingController controller = TextEditingController();
-  List<MeusProdutos> produtos = <MeusProdutos>[];
-  List<FormaDePagamento> payment = <FormaDePagamento>[];
+  late List<MeusProdutos> produtos = <MeusProdutos>[];
+  late List<FormaDePagamento> payment = <FormaDePagamento>[];
   bool isFavorite = false;
+
+  late Future<List<Map<String, dynamic>>> futureProducts;
+  late Future<Map<String, dynamic>> futureSeller;
+  late Future<bool> futureIsFavorite;
+  late Future<List<Map<String, dynamic>>> futurePayment;
 
   final _avaliaFormKey = GlobalKey<FormState>();
 
@@ -41,258 +49,282 @@ class _DetalhesVendedorPageState extends State<DetalhesVendedorPage> {
   @override
   void initState() {
     super.initState();
-    searchSellerProducts();
-    isSellerFavorite();
-    getPaymentModes();
   }
 
   @override
   Widget build(BuildContext context) {
+    futureProducts = searchSellerProducts();
+    futureSeller = getSeller();
+    futureIsFavorite = isSellerFavorite();
+    futurePayment = getPaymentModes();
+
     return Scaffold(
         appBar: AppBar(
             title: const Text('Detalhes do Vendedor'),
-            backgroundColor: Colors.orange),
+            backgroundColor: Colors.amber),
         body: SafeArea(
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              const Padding(padding: EdgeInsets.only(bottom: 25)),
-              Text(
-                widget.vendedor.name.toString(),
-                style:
-                    const TextStyle(fontWeight: FontWeight.w700, fontSize: 24),
-              ),
-              widget.vendedor.telefone == null ||
-                      widget.vendedor.telefone!.isEmpty
-                  ? Container()
-                  : Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Icon(Icons.phone,
-                            size: 20, color: Colors.black54),
-                        const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 10)),
-                        Text(
-                          widget.vendedor.telefone!,
-                          style: const TextStyle(
-                              fontWeight: FontWeight.w100, fontSize: 14),
-                        ),
-                      ],
-                    ),
-              const Padding(padding: EdgeInsets.only(bottom: 15)),
-              payment.isEmpty
-                  ? Column()
-                  : Column(
-                      mainAxisSize: MainAxisSize.max,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        const Text("Formas de pagamento aceitas: ",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w100, fontSize: 16)),
-                        const Padding(padding: EdgeInsets.only(bottom: 5)),
-                        GridView.builder(
-                          gridDelegate:
-                              const SliverGridDelegateWithMaxCrossAxisExtent(
-                                  maxCrossAxisExtent: 180,
-                                  mainAxisSpacing: 5,
-                                  mainAxisExtent: 75),
-                          shrinkWrap: true,
-                          itemCount: payment.length,
-                          itemBuilder: (context, i) {
-                            return Card(
-                              child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Image.asset(
-                                      payment[i].icone,
-                                      height: 35,
-                                      fit: BoxFit.contain,
-                                    ),
-                                    Text(payment[i].descricao)
-                                  ]),
-                            );
-                          },
-                          padding: const EdgeInsets.all(5),
-                        ),
-                      ],
-                    ),
-              const Text("Nota",
-                  style: TextStyle(fontWeight: FontWeight.w100, fontSize: 16)),
-              GestureDetector(
-                child: RatingBar.builder(
-                  initialRating: widget.vendedor.noteApp == null
-                      ? 0
-                      : ((widget.vendedor.noteApp! / 0.5).truncateToDouble()) /
-                          2,
-                  direction: Axis.horizontal,
-                  ignoreGestures: true,
-                  allowHalfRating: true,
-                  itemCount: 5,
-                  itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-                  itemBuilder: (context, _) => const Icon(
-                    Icons.star,
-                    color: Colors.amber,
+            child: FutureBuilder(
+                future: Future.wait([
+                  futureProducts,
+                  futureSeller,
+                  futureIsFavorite,
+                  futurePayment
+                ]),
+                builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
+                  if (!snapshot.hasData) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else {
+                    produtos.clear();
+                    for (var p in snapshot.data![0]) {
+                      produtos.add(MeusProdutos.fromJson(p));
+                    }
+
+                    vendedor = Vendedores.fromJson(snapshot.data![1]);
+                    isFavorite = snapshot.data![2];
+
+                    payment.clear();
+                    for (var p in snapshot.data![3]) {
+                      payment.add(FormaDePagamento.fromJson(p));
+                    }
+
+                    return pageBody();
+                  }
+                })));
+    //child: pageBody()));
+  }
+
+  Widget pageBody() {
+    return Column(
+      mainAxisSize: MainAxisSize.max,
+      children: [
+        const Padding(padding: EdgeInsets.only(bottom: 25)),
+        Text(
+          vendedor.name.toString(),
+          style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 24),
+        ),
+        vendedor.telefone == null || vendedor.telefone!.isEmpty
+            ? Container()
+            : Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.phone, size: 20, color: Colors.black54),
+                  const Padding(padding: EdgeInsets.symmetric(horizontal: 10)),
+                  Text(
+                    vendedor.telefone!,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.w100, fontSize: 14),
                   ),
-                  onRatingUpdate: (double value) {},
-                ),
-                behavior: HitTestBehavior.opaque,
-                onTap: () {
-                  openRatingsModal();
-                },
+                ],
               ),
-              const Padding(padding: EdgeInsets.only(bottom: 25)),
-              Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-                ElevatedButton(
-                    onPressed: () => showDialog(
-                        context: context,
-                        builder: (BuildContext context) => AlertDialog(
-                              scrollable: true,
-                              title: const Text("Avaliar Vendedor"),
-                              content: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Form(
-                                      key: _avaliaFormKey,
-                                      child: Column(
-                                        children: [
-                                          RatingBar.builder(
-                                            initialRating: 0,
-                                            minRating: 0,
-                                            direction: Axis.horizontal,
-                                            allowHalfRating: false,
-                                            itemCount: 5,
-                                            itemPadding:
-                                                const EdgeInsets.symmetric(
-                                                    horizontal: 4.0),
-                                            itemBuilder: (context, _) =>
-                                                const Icon(
-                                              Icons.star,
-                                              color: Colors.amber,
-                                            ),
-                                            onRatingUpdate: (double value) {
-                                              ratingValue = value.toInt();
-                                            },
-                                          ),
-                                          entryFieldValidation("Título",
-                                              ratingTitle, validateRatingTitle,
-                                              placeholder: ""),
-                                          textAreaEntryFieldValidation(
-                                              "Descrição",
-                                              ratingDescription,
-                                              validateRatingTitle,
-                                              8),
-                                        ],
-                                      ),
-                                    ),
-                                  ]),
-                              actions: <Widget>[
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                    ratingTitle.clear();
-                                    ratingDescription.clear();
-                                    ratingValue = 0;
-                                  },
-                                  child: const Text('Cancelar'),
-                                ),
-                                TextButton(
-                                  onPressed: () {
-                                    if (_avaliaFormKey.currentState!
-                                        .validate()) {
-                                      insertRating();
-                                    }
-                                  },
-                                  child: const Text('OK'),
-                                ),
-                              ],
-                            )),
-                    child: Container(
-                      width: (MediaQuery.of(context).size.width - 100) / 2,
-                      padding: const EdgeInsets.symmetric(vertical: 15),
-                      alignment: Alignment.center,
-                      child: const Text(
-                        "Avaliar",
-                        style: TextStyle(fontSize: 20, color: Colors.white),
-                      ),
-                    )),
-                ElevatedButton(
-                    onPressed: () {
-                      addOrRemoveFromFavorites();
+        const Padding(padding: EdgeInsets.only(bottom: 15)),
+        payment.isEmpty
+            ? Column()
+            : Column(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const Text("Formas de pagamento aceitas: ",
+                      style:
+                          TextStyle(fontWeight: FontWeight.w100, fontSize: 16)),
+                  const Padding(padding: EdgeInsets.only(bottom: 5)),
+                  GridView.builder(
+                    gridDelegate:
+                        const SliverGridDelegateWithMaxCrossAxisExtent(
+                            maxCrossAxisExtent: 180,
+                            mainAxisSpacing: 5,
+                            mainAxisExtent: 75),
+                    shrinkWrap: true,
+                    itemCount: payment.length,
+                    itemBuilder: (context, i) {
+                      return Card(
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                payment[i].icone,
+                                height: 35,
+                                fit: BoxFit.contain,
+                              ),
+                              Text(payment[i].descricao)
+                            ]),
+                      );
                     },
-                    child: Container(
-                      width: (MediaQuery.of(context).size.width - 100) / 2,
-                      padding: const EdgeInsets.symmetric(vertical: 15),
-                      alignment: Alignment.center,
-                      child: Text(
-                        isFavorite ? "- Favoritos" : "+ Favoritos",
-                        style:
-                            const TextStyle(fontSize: 20, color: Colors.white),
-                      ),
-                    )),
-              ]),
-              const Padding(padding: EdgeInsets.symmetric(vertical: 10)),
-              produtos.isNotEmpty
-                  ? const Text(
-                      "Produtos deste vendedor: ",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 18,
-                      ),
-                    )
-                  : const Text(
-                      "Este vendedor ainda não possui produtos cadastrados.",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w300,
-                        fontSize: 18,
-                      ),
-                    ),
-              const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
-              produtos.isNotEmpty
-                  ? Expanded(
-                      child: ListView.builder(
-                      itemCount: produtos.length,
-                      itemBuilder: (context, i) {
-                        return Card(
-                          child: ListTile(
-                            title: Text(produtos[i].nome),
-                            trailing: Wrap(
-                              spacing: 12,
+                    padding: const EdgeInsets.all(5),
+                  ),
+                ],
+              ),
+        const Text("Nota",
+            style: TextStyle(fontWeight: FontWeight.w100, fontSize: 16)),
+        GestureDetector(
+          child: RatingBar.builder(
+            initialRating: vendedor.noteApp == null
+                ? 0
+                : ((vendedor.noteApp! / 0.5).truncateToDouble()) / 2,
+            direction: Axis.horizontal,
+            ignoreGestures: true,
+            allowHalfRating: true,
+            itemCount: 5,
+            itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+            itemBuilder: (context, _) => const Icon(
+              Icons.star,
+              color: Colors.amber,
+            ),
+            onRatingUpdate: (double value) {},
+          ),
+          behavior: HitTestBehavior.opaque,
+          onTap: () {
+            openRatingsModal();
+          },
+        ),
+        const Padding(padding: EdgeInsets.only(bottom: 25)),
+        Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+          ElevatedButton(
+              onPressed: () => showDialog(
+                  context: context,
+                  builder: (BuildContext context) => AlertDialog(
+                        scrollable: true,
+                        title: const Text("Avaliar Vendedor"),
+                        content:
+                            Column(mainAxisSize: MainAxisSize.min, children: [
+                          Form(
+                            key: _avaliaFormKey,
+                            child: Column(
                               children: [
-                                IconButton(
-                                  icon: const Icon(Icons.visibility),
-                                  onPressed: () {
-                                    Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    DetalhesProdutoPage(
-                                                        produto: produtos[i])))
-                                        .then((value) {
-                                      setState(() {
-                                        searchSellerProducts();
-                                      });
-                                    });
+                                RatingBar.builder(
+                                  initialRating: 0,
+                                  minRating: 0,
+                                  direction: Axis.horizontal,
+                                  allowHalfRating: false,
+                                  itemCount: 5,
+                                  itemPadding: const EdgeInsets.symmetric(
+                                      horizontal: 4.0),
+                                  itemBuilder: (context, _) => const Icon(
+                                    Icons.star,
+                                    color: Colors.amber,
+                                  ),
+                                  onRatingUpdate: (double value) {
+                                    ratingValue = value.toInt();
                                   },
-                                )
+                                ),
+                                entryFieldValidation(
+                                    "Título", ratingTitle, validateRatingTitle,
+                                    placeholder: ""),
+                                textAreaEntryFieldValidation("Descrição",
+                                    ratingDescription, validateRatingTitle, 8),
                               ],
                             ),
                           ),
-                          margin: const EdgeInsets.all(0.0),
-                        );
-                      },
-                    ))
-                  : Container(),
-            ],
-          ),
-        ));
+                        ]),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                              ratingTitle.clear();
+                              ratingDescription.clear();
+                              ratingValue = 0;
+                            },
+                            child: const Text('Cancelar'),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              if (_avaliaFormKey.currentState!.validate()) {
+                                insertRating();
+                              }
+                            },
+                            child: const Text('OK'),
+                          ),
+                        ],
+                      )),
+              child: Container(
+                width: (MediaQuery.of(context).size.width - 100) / 2,
+                padding: const EdgeInsets.symmetric(vertical: 15),
+                alignment: Alignment.center,
+                child: const Text(
+                  "Avaliar",
+                  style: TextStyle(fontSize: 20, color: Colors.white),
+                ),
+              )),
+          ElevatedButton(
+              onPressed: () {
+                addOrRemoveFromFavorites();
+              },
+              child: Container(
+                width: (MediaQuery.of(context).size.width - 100) / 2,
+                padding: const EdgeInsets.symmetric(vertical: 15),
+                alignment: Alignment.center,
+                child: Text(
+                  isFavorite ? "- Favoritos" : "+ Favoritos",
+                  style: const TextStyle(fontSize: 20, color: Colors.white),
+                ),
+              )),
+        ]),
+        const Padding(padding: EdgeInsets.symmetric(vertical: 10)),
+        produtos.isNotEmpty
+            ? const Text(
+                "Produtos deste vendedor: ",
+                style: TextStyle(
+                  fontWeight: FontWeight.w600,
+                  fontSize: 18,
+                ),
+              )
+            : const Text(
+                "Este vendedor ainda não possui produtos cadastrados.",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontWeight: FontWeight.w300,
+                  fontSize: 18,
+                ),
+              ),
+        const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+        produtos.isNotEmpty
+            ? Expanded(
+                child: ListView.builder(
+                itemCount: produtos.length,
+                itemBuilder: (context, i) {
+                  return Card(
+                    child: ListTile(
+                      title: Text(produtos[i].nome),
+                      trailing: Wrap(
+                        spacing: 12,
+                        children: [
+                          IconButton(
+                            icon: const Icon(Icons.visibility),
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => DetalhesProdutoPage(
+                                          produto: produtos[i]))).then(
+                                  (v) async {
+                                setState(() {});
+                              });
+                            },
+                          )
+                        ],
+                      ),
+                    ),
+                    margin: const EdgeInsets.all(0.0),
+                  );
+                },
+              ))
+            : Container(),
+      ],
+    );
+  }
+
+  Future<Map<String, dynamic>> getSeller() async {
+    var api = ApiVendedores();
+
+    return api.searchById(widget.idVendedor);
   }
 
   void insertRating() {
     var api = ApiRating();
     api
-        .insertRating(0, userData.idCliente!, widget.vendedor.id, ratingValue,
+        .insertRating(0, userData.idCliente!, vendedor.id, ratingValue,
             ratingTitle.text, ratingDescription.text, 2)
         .then((response) {
       ratingDescription.text = "";
@@ -313,28 +345,19 @@ class _DetalhesVendedorPageState extends State<DetalhesVendedorPage> {
     });
   }
 
-  void searchSellerProducts() {
+  Future<List<Map<String, dynamic>>> searchSellerProducts() async {
     var api = api_product();
-
     produtos.clear();
 
-    api.search(widget.vendedor.id).then((response) {
-      for (var p in response) {
-        setState(() {
-          produtos.add(MeusProdutos.fromJson(p));
-        });
-      }
-    });
+    print("starting search vendedor page at " + DateTime.now().toString());
+    return api.search(widget.idVendedor);
   }
 
-  void getPaymentModes() {
+  Future<List<Map<String, dynamic>>> getPaymentModes() async {
     var api = ApiVendedores();
+    payment.clear();
 
-    api.getFormasDePagamentoBySeller(widget.vendedor.id).then((response) {
-      for (var f in response) {
-        payment.add(FormaDePagamento.fromJson(f));
-      }
-    });
+    return api.getFormasDePagamentoBySeller(widget.idVendedor);
   }
 
   void openRatingsModal() async {
@@ -342,7 +365,7 @@ class _DetalhesVendedorPageState extends State<DetalhesVendedorPage> {
 
     List<Avaliacao> ratings = [];
 
-    var ret = await api.getSellerRatings(widget.vendedor.id);
+    var ret = await api.getSellerRatings(vendedor.id);
 
     for (var r in ret) {
       ratings.add(Avaliacao.fromJson(r));
@@ -413,15 +436,10 @@ class _DetalhesVendedorPageState extends State<DetalhesVendedorPage> {
             ));
   }
 
-  void isSellerFavorite() async {
+  Future<bool> isSellerFavorite() async {
     var api = ApiVendedores();
 
-    var response =
-        await api.isFavorite(userData.idCliente!, widget.vendedor.id);
-
-    setState(() {
-      isFavorite = response;
-    });
+    return api.isFavorite(userData.idCliente!, widget.idVendedor);
   }
 
   void addOrRemoveFromFavorites() async {
@@ -430,11 +448,10 @@ class _DetalhesVendedorPageState extends State<DetalhesVendedorPage> {
     Response response;
 
     if (isFavorite) {
-      response = await api.removeFromFavorites(
-          widget.vendedor.id, userData.idCliente!);
-    } else {
       response =
-          await api.addToFavorites(widget.vendedor.id, userData.idCliente!);
+          await api.removeFromFavorites(vendedor.id, userData.idCliente!);
+    } else {
+      response = await api.addToFavorites(vendedor.id, userData.idCliente!);
     }
 
     if (response.statusCode == 200) {

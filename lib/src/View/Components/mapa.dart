@@ -52,7 +52,7 @@ class _MapComponentState extends State<MapComponent> {
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
-                            DetalhesVendedorPage(vendedor: m)))),
+                            DetalhesVendedorPage(idVendedor: m.id)))),
           ));
         }
 

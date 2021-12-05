@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hub/src/Api/api_vendores.dart';
@@ -104,7 +102,7 @@ class _ListaVendedoresPageState extends State<ListaVendedoresPage> {
                                     MaterialPageRoute(
                                       builder: (context) =>
                                         DetalhesVendedorPage(
-                                          vendedor: listaVendedores[i],
+                                          idVendedor: listaVendedores[i].id,
                                         )
                                     )
                                   ).then((value) {
@@ -139,7 +137,7 @@ class _ListaVendedoresPageState extends State<ListaVendedoresPage> {
                                     MaterialPageRoute(
                                       builder: (context) =>
                                         DetalhesVendedorPage(
-                                          vendedor: listaVendedores[i],
+                                          idVendedor: listaVendedores[i].id,
                                         )
                                     )
                                   ).then((value) {

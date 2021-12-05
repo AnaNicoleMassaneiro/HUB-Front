@@ -79,13 +79,16 @@ class _MeusFavoritosPageState extends State<MeusFavoritosPage> {
             ),
           ]),
           favoritos.isEmpty
-              ? const Text(
-                  "Você ainda não adicionou vendedores aos seus favoritos.",
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w300,
-                  ),
-                )
+              ? const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 10),
+                  child: Text(
+                    "Você ainda não adicionou vendedores aos seus favoritos.",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w300,
+                    ),
+                  ))
               : Expanded(
                   child: _searchResult.isNotEmpty || controller.text.isNotEmpty
                       ? ListView.builder(
@@ -105,7 +108,8 @@ class _MeusFavoritosPageState extends State<MeusFavoritosPage> {
                                             MaterialPageRoute(
                                                 builder: (context) =>
                                                     DetalhesVendedorPage(
-                                                      vendedor: favoritos[i],
+                                                      idVendedor:
+                                                          favoritos[i].id,
                                                     ))).then((value) {
                                           setState(() {
                                             buscaFavoritos();
@@ -139,7 +143,8 @@ class _MeusFavoritosPageState extends State<MeusFavoritosPage> {
                                             MaterialPageRoute(
                                                 builder: (context) =>
                                                     DetalhesVendedorPage(
-                                                      vendedor: favoritos[i],
+                                                      idVendedor:
+                                                          favoritos[i].id,
                                                     ))).then((value) {
                                           setState(() {
                                             buscaFavoritos();
