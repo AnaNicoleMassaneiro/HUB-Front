@@ -53,6 +53,8 @@ class ApiRating {
     if (response.statusCode == 200) {
       return List<Map<String, dynamic>>.from(
           json.decode(response.body)["avaliacoes"]);
+    } else if (response.statusCode == 404) {
+      return <Map<String, dynamic>>[];
     } else {
       throw Exception('Failed to get product avaliations.');
     }
