@@ -49,229 +49,244 @@ class _DetalhesVendedorPageState extends State<DetalhesVendedorPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Detalhes do Vendedor'),
-        backgroundColor: Colors.orange
-      ),
-      body: SafeArea(
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            const Padding(padding: EdgeInsets.only(bottom: 25)),
-            Text(
-              widget.vendedor.name.toString(),
-              style: const TextStyle(
-                fontWeight: FontWeight.w700, fontSize: 24
+        appBar: AppBar(
+            title: const Text('Detalhes do Vendedor'),
+            backgroundColor: Colors.orange),
+        body: SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              const Padding(padding: EdgeInsets.only(bottom: 25)),
+              Text(
+                widget.vendedor.name.toString(),
+                style:
+                    const TextStyle(fontWeight: FontWeight.w700, fontSize: 24),
               ),
-            ),
-            const Padding(
-              padding: EdgeInsets.only(bottom: 25)
-            ),
-            payment.isEmpty
-            ? Column()
-            : Column(
-              mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const Text("Formas de pagamento aceitas: ",
-                    style: TextStyle(fontWeight: FontWeight.w100, fontSize: 16)
-                ),
-                const Padding(
-                    padding: EdgeInsets.only(bottom: 5)
-                ),
-                GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                    maxCrossAxisExtent: 180,
-                    mainAxisSpacing: 5,
-                    mainAxisExtent: 75
+              widget.vendedor.telefone == null ||
+                      widget.vendedor.telefone!.isEmpty
+                  ? Container()
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(Icons.phone,
+                            size: 20, color: Colors.black54),
+                        const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 10)),
+                        Text(
+                          widget.vendedor.telefone!,
+                          style: const TextStyle(
+                              fontWeight: FontWeight.w100, fontSize: 14),
+                        ),
+                      ],
+                    ),
+              const Padding(padding: EdgeInsets.only(bottom: 15)),
+              payment.isEmpty
+                  ? Column()
+                  : Column(
+                      mainAxisSize: MainAxisSize.max,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const Text("Formas de pagamento aceitas: ",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w100, fontSize: 16)),
+                        const Padding(padding: EdgeInsets.only(bottom: 5)),
+                        GridView.builder(
+                          gridDelegate:
+                              const SliverGridDelegateWithMaxCrossAxisExtent(
+                                  maxCrossAxisExtent: 180,
+                                  mainAxisSpacing: 5,
+                                  mainAxisExtent: 75),
+                          shrinkWrap: true,
+                          itemCount: payment.length,
+                          itemBuilder: (context, i) {
+                            return Card(
+                              child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Image.asset(
+                                      payment[i].icone,
+                                      height: 35,
+                                      fit: BoxFit.contain,
+                                    ),
+                                    Text(payment[i].descricao)
+                                  ]),
+                            );
+                          },
+                          padding: const EdgeInsets.all(5),
+                        ),
+                      ],
+                    ),
+              const Text("Nota",
+                  style: TextStyle(fontWeight: FontWeight.w100, fontSize: 16)),
+              GestureDetector(
+                child: RatingBar.builder(
+                  initialRating: widget.vendedor.noteApp == null
+                      ? 0
+                      : ((widget.vendedor.noteApp! / 0.5).truncateToDouble()) /
+                          2,
+                  direction: Axis.horizontal,
+                  ignoreGestures: true,
+                  allowHalfRating: true,
+                  itemCount: 5,
+                  itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+                  itemBuilder: (context, _) => const Icon(
+                    Icons.star,
+                    color: Colors.amber,
                   ),
-                  shrinkWrap: true,
-                  itemCount: payment.length,
-                  itemBuilder: (context, i) {
-                    return Card(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset(
-                            payment[i].icone,
-                            height: 35,
-                            fit: BoxFit.contain,
-                          ),
-                          Text(
-                            payment[i].descricao
-                          )
-                        ]
-                      ),
-                    );
-                  },
-                  padding: const EdgeInsets.all(5),
+                  onRatingUpdate: (double value) {},
                 ),
-              ],
-            ),
-            const Text("Nota",
-              style: TextStyle(fontWeight: FontWeight.w100, fontSize: 16)
-            ),
-            GestureDetector(
-              child: RatingBar.builder(
-                initialRating: widget.vendedor.noteApp == null
-                  ? 0
-                  : ((widget.vendedor.noteApp! / 0.5).truncateToDouble()) / 2,
-                direction: Axis.horizontal,
-                ignoreGestures: true,
-                allowHalfRating: true,
-                itemCount: 5,
-                itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-                itemBuilder: (context, _) => const Icon(
-                  Icons.star,
-                  color: Colors.amber,
-                ),
-                onRatingUpdate: (double value) {},
+                behavior: HitTestBehavior.opaque,
+                onTap: () {
+                  openRatingsModal();
+                },
               ),
-              behavior: HitTestBehavior.opaque,
-              onTap: () {
-                openRatingsModal();
-              },
-            ),
-            const Padding(padding: EdgeInsets.only(bottom: 25)),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children:[
+              const Padding(padding: EdgeInsets.only(bottom: 25)),
+              Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
                 ElevatedButton(
                     onPressed: () => showDialog(
                         context: context,
                         builder: (BuildContext context) => AlertDialog(
-                          title: const Text("Avaliar Vendedor"),
-                          content: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Form(
-                                  key: _avaliaFormKey,
-                                  child: Column(
-                                    children: [
-                                      RatingBar.builder(
-                                        initialRating: 0,
-                                        minRating: 0,
-                                        direction: Axis.horizontal,
-                                        allowHalfRating: false,
-                                        itemCount: 5,
-                                        itemPadding:
-                                        const EdgeInsets.symmetric(horizontal: 4.0),
-                                        itemBuilder: (context, _) =>
-                                        const Icon(
-                                          Icons.star,
-                                          color: Colors.amber,
-                                        ),
-                                        onRatingUpdate: (double value) {
-                                          ratingValue = value.toInt();
-                                        },
+                              scrollable: true,
+                              title: const Text("Avaliar Vendedor"),
+                              content: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Form(
+                                      key: _avaliaFormKey,
+                                      child: Column(
+                                        children: [
+                                          RatingBar.builder(
+                                            initialRating: 0,
+                                            minRating: 0,
+                                            direction: Axis.horizontal,
+                                            allowHalfRating: false,
+                                            itemCount: 5,
+                                            itemPadding:
+                                                const EdgeInsets.symmetric(
+                                                    horizontal: 4.0),
+                                            itemBuilder: (context, _) =>
+                                                const Icon(
+                                              Icons.star,
+                                              color: Colors.amber,
+                                            ),
+                                            onRatingUpdate: (double value) {
+                                              ratingValue = value.toInt();
+                                            },
+                                          ),
+                                          entryFieldValidation("Título",
+                                              ratingTitle, validateRatingTitle,
+                                              placeholder: ""),
+                                          textAreaEntryFieldValidation(
+                                              "Descrição",
+                                              ratingDescription,
+                                              validateRatingTitle,
+                                              8),
+                                        ],
                                       ),
-                                      entryFieldValidation("Título",
-                                          ratingTitle, validateRatingTitle,
-                                          placeholder: ""),
-                                      textAreaEntryFieldValidation(
-                                          "Descrição",
-                                          ratingDescription,
-                                          validateRatingTitle,
-                                          8
-                                      ),
-                                    ],
-                                  ),
+                                    ),
+                                  ]),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                    ratingTitle.clear();
+                                    ratingDescription.clear();
+                                    ratingValue = 0;
+                                  },
+                                  child: const Text('Cancelar'),
                                 ),
-                              ]
-                          ),
-                          actions: <Widget>[
-                            TextButton(
-                              onPressed: () => Navigator.pop(context),
-                              child: const Text('Cancelar'),
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                if (_avaliaFormKey.currentState!.validate()) {
-                                  insertRating();
-                                }
-                              },
-                              child: const Text('OK'),
-                            ),
-                          ],
-                        )
-                    ),
+                                TextButton(
+                                  onPressed: () {
+                                    if (_avaliaFormKey.currentState!
+                                        .validate()) {
+                                      insertRating();
+                                    }
+                                  },
+                                  child: const Text('OK'),
+                                ),
+                              ],
+                            )),
                     child: Container(
-                      width: (MediaQuery.of(context).size.width - 100)/2,
+                      width: (MediaQuery.of(context).size.width - 100) / 2,
                       padding: const EdgeInsets.symmetric(vertical: 15),
                       alignment: Alignment.center,
                       child: const Text(
                         "Avaliar",
                         style: TextStyle(fontSize: 20, color: Colors.white),
                       ),
-                    )
-                ),
+                    )),
                 ElevatedButton(
-                  onPressed: () {
-                    addOrRemoveFromFavorites();
-                  },
-                  child: Container(
-                    width: (MediaQuery.of(context).size.width - 100)/2,
-                    padding: const EdgeInsets.symmetric(vertical: 15),
-                    alignment: Alignment.center,
-                    child: Text(
-                      isFavorite
-                      ? "- Favoritos"
-                      : "+ Favoritos",
-                      style: const TextStyle(fontSize: 20, color: Colors.white),
-                    ),
-                  )
-                ),
-              ]
-            ),
-            const Padding(padding: EdgeInsets.symmetric(vertical: 10)),
-            const Text(
-              "Produtos deste vendedor: ",
-              style: TextStyle(
-                fontWeight: FontWeight.w300,
-                fontSize: 18,
-              ),
-            ),
-            const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
-            Expanded(
-              child: ListView.builder(
-                itemCount: produtos.length,
-                itemBuilder: (context, i) {
-                  return Card(
-                    child: ListTile(
-                      title: Text(produtos[i].nome),
-                      trailing: Wrap(
-                        spacing: 12,
-                        children: [
-                          IconButton(
-                            icon: const Icon(Icons.visibility),
-                            onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => DetalhesProdutoPage(
-                                    produto: produtos[i]
-                                  )
-                                )
-                              ).then((value) {
-                                setState(() {
-                                  searchSellerProducts();
-                                });
-                              });
-                            },
-                          )
-                        ],
+                    onPressed: () {
+                      addOrRemoveFromFavorites();
+                    },
+                    child: Container(
+                      width: (MediaQuery.of(context).size.width - 100) / 2,
+                      padding: const EdgeInsets.symmetric(vertical: 15),
+                      alignment: Alignment.center,
+                      child: Text(
+                        isFavorite ? "- Favoritos" : "+ Favoritos",
+                        style:
+                            const TextStyle(fontSize: 20, color: Colors.white),
+                      ),
+                    )),
+              ]),
+              const Padding(padding: EdgeInsets.symmetric(vertical: 10)),
+              produtos.isNotEmpty
+                  ? const Text(
+                      "Produtos deste vendedor: ",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 18,
+                      ),
+                    )
+                  : const Text(
+                      "Este vendedor ainda não possui produtos cadastrados.",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w300,
+                        fontSize: 18,
                       ),
                     ),
-                    margin: const EdgeInsets.all(0.0),
-                  );
-                },
-              )
-            ),
-          ],
-        ),
-      )
-    );
+              const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+              produtos.isNotEmpty
+                  ? Expanded(
+                      child: ListView.builder(
+                      itemCount: produtos.length,
+                      itemBuilder: (context, i) {
+                        return Card(
+                          child: ListTile(
+                            title: Text(produtos[i].nome),
+                            trailing: Wrap(
+                              spacing: 12,
+                              children: [
+                                IconButton(
+                                  icon: const Icon(Icons.visibility),
+                                  onPressed: () {
+                                    Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    DetalhesProdutoPage(
+                                                        produto: produtos[i])))
+                                        .then((value) {
+                                      setState(() {
+                                        searchSellerProducts();
+                                      });
+                                    });
+                                  },
+                                )
+                              ],
+                            ),
+                          ),
+                          margin: const EdgeInsets.all(0.0),
+                        );
+                      },
+                    ))
+                  : Container(),
+            ],
+          ),
+        ));
   }
 
   void insertRating() {
@@ -312,11 +327,11 @@ class _DetalhesVendedorPageState extends State<DetalhesVendedorPage> {
     });
   }
 
-  void getPaymentModes(){
+  void getPaymentModes() {
     var api = ApiVendedores();
 
     api.getFormasDePagamentoBySeller(widget.vendedor.id).then((response) {
-      for (var f in response){
+      for (var f in response) {
         payment.add(FormaDePagamento.fromJson(f));
       }
     });
@@ -329,82 +344,80 @@ class _DetalhesVendedorPageState extends State<DetalhesVendedorPage> {
 
     var ret = await api.getSellerRatings(widget.vendedor.id);
 
-    for (var r in ret){
+    for (var r in ret) {
       ratings.add(Avaliacao.fromJson(r));
     }
 
     showDialog(
         context: context,
-        builder: (BuildContext context) =>  AlertDialog(
-          title: const Text("Avaliações do Vendedor:"),
-          content: SizedBox(
-            height: 500,
-            width: 300,
-            child:
-            ratings.isEmpty
-                ? const Text(
-                "Ainda não existem avaliações para este vendedor."
-            )
-                : ListView.builder(
-              itemCount: ratings.length,
-              itemBuilder: (context, i) {
-                return Card(
-                    child: Column(
-                      children: [
-                        Text(ratings[i].titulo),
-                        const Padding(
-                            padding: EdgeInsets.symmetric(vertical: 10)
-                        ),
-                        RatingBar.builder(
-                          initialRating: double.parse(ratings[i].nota.toString()),
-                          direction: Axis.horizontal,
-                          ignoreGestures: true,
-                          allowHalfRating: true,
-                          itemCount: 5,
-                          itemPadding: const EdgeInsets.symmetric(horizontal: 4.0),
-                          itemBuilder: (context, _) => const Icon(
-                            Icons.star,
-                            color: Colors.amber,
-                          ),
-                          onRatingUpdate: (double value) {},
-                        ),
-                        const Padding(
-                            padding: EdgeInsets.symmetric(vertical: 10)
-                        ),
-                        Text(ratings[i].descricao),
-                        const Padding(
-                          padding: EdgeInsets.symmetric(vertical: 5)
-                        ),
-                        Text(
-                          "Por " +
-                            ratings[i].nome +
-                            ", em " +
-                            ratings[i].dataCriacao.day.toString() + "/" +
-                            ratings[i].dataCriacao.month.toString() + "/" +
-                            ratings[i].dataCriacao.year.toString() + " as " +
-                            ratings[i].dataCriacao.hour.toString() + ":" +
-                            ratings[i].dataCriacao.minute.toString()
-                        )
-                      ],
-                    )
-                );
-              },
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('Voltar'),
-            ),
-          ],
-        )
-    );
+        builder: (BuildContext context) => AlertDialog(
+              title: const Text("Avaliações do Vendedor:"),
+              content: SizedBox(
+                height: 500,
+                width: 300,
+                child: ratings.isEmpty
+                    ? const Text(
+                        "Ainda não existem avaliações para este vendedor.")
+                    : ListView.builder(
+                        itemCount: ratings.length,
+                        itemBuilder: (context, i) {
+                          return Card(
+                              child: Column(
+                            children: [
+                              Text(ratings[i].titulo),
+                              const Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 10)),
+                              RatingBar.builder(
+                                initialRating:
+                                    double.parse(ratings[i].nota.toString()),
+                                direction: Axis.horizontal,
+                                ignoreGestures: true,
+                                allowHalfRating: true,
+                                itemCount: 5,
+                                itemPadding:
+                                    const EdgeInsets.symmetric(horizontal: 4.0),
+                                itemBuilder: (context, _) => const Icon(
+                                  Icons.star,
+                                  color: Colors.amber,
+                                ),
+                                onRatingUpdate: (double value) {},
+                              ),
+                              const Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 10)),
+                              Text(ratings[i].descricao),
+                              const Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 5)),
+                              Text("Por " +
+                                  ratings[i].nome +
+                                  ", em " +
+                                  ratings[i].dataCriacao.day.toString() +
+                                  "/" +
+                                  ratings[i].dataCriacao.month.toString() +
+                                  "/" +
+                                  ratings[i].dataCriacao.year.toString() +
+                                  " as " +
+                                  ratings[i].dataCriacao.hour.toString() +
+                                  ":" +
+                                  ratings[i].dataCriacao.minute.toString())
+                            ],
+                          ));
+                        },
+                      ),
+              ),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('Voltar'),
+                ),
+              ],
+            ));
   }
 
   void isSellerFavorite() async {
     var api = ApiVendedores();
 
-    var response = await api.isFavorite(userData.idCliente!, widget.vendedor.id);
+    var response =
+        await api.isFavorite(userData.idCliente!, widget.vendedor.id);
 
     setState(() {
       isFavorite = response;
@@ -416,32 +429,29 @@ class _DetalhesVendedorPageState extends State<DetalhesVendedorPage> {
 
     Response response;
 
-    if (isFavorite){
-      response = await api.removeFromFavorites(widget.vendedor.id, userData.idCliente!);
-    }
-    else{
-      response = await api.addToFavorites(widget.vendedor.id, userData.idCliente!);
+    if (isFavorite) {
+      response = await api.removeFromFavorites(
+          widget.vendedor.id, userData.idCliente!);
+    } else {
+      response =
+          await api.addToFavorites(widget.vendedor.id, userData.idCliente!);
     }
 
-    if (response.statusCode == 200){
+    if (response.statusCode == 200) {
       setState(() {
         isFavorite = !isFavorite;
       });
 
-      customMessageModal(context,
-        "Sucesso",
-        isFavorite
-          ? "Vendedor adicionado aos favoritos."
-          : "Vendedor removido dos favoritos.",
-        "Fechar"
-      );
-    }
-    else {
-      customMessageModal(context,
-        "Ops, um erro ocorreu.",
-        jsonDecode(response.body)["msg"],
-        "Fechar"
-      );
+      customMessageModal(
+          context,
+          "Sucesso",
+          isFavorite
+              ? "Vendedor adicionado aos favoritos."
+              : "Vendedor removido dos favoritos.",
+          "Fechar");
+    } else {
+      customMessageModal(context, "Ops, um erro ocorreu.",
+          jsonDecode(response.body)["msg"], "Fechar");
     }
   }
 }
