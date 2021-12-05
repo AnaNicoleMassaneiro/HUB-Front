@@ -56,7 +56,7 @@ Widget entryFieldValidation(String title, TextEditingController controllerTxt, F
           obscureText: isPassword,
           decoration: InputDecoration(
               border: InputBorder.none,
-              fillColor: const Color(0xfff3f3f4),
+              fillColor: Colors.black12,
               labelText: placeholder.trim() == "" ? null : placeholder,
               filled: true
           ),
@@ -92,7 +92,7 @@ Widget textAreaEntryFieldValidation(
           controller: controllerTxt,
           decoration: InputDecoration(
               border: InputBorder.none,
-              fillColor: const Color(0xfff3f3f4),
+              fillColor: Colors.black12,
               labelText: placeholder,
               filled: true
           ),
