@@ -6,6 +6,7 @@ void customMessageModal(
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
+        scrollable: true,
         title: Text(title),
         content: Text(innerText),
         actions: <Widget>[
