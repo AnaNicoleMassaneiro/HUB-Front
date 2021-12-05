@@ -9,7 +9,7 @@ class User {
   double? noteApp;
   String email;
   String grr;
-  String telefone;
+  String? telefone;
   String lastLogon;
   String createdOn;
   String? activation_code;
