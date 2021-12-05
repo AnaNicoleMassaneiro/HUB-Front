@@ -4,7 +4,6 @@ import 'package:hub/src/Api/api_user.dart';
 import 'Class/User.dart';
 import 'Class/user_data.dart';
 import 'Components/modal_message.dart';
-import 'editar_senha_page.dart';
 
 class EditarNomePage extends StatefulWidget {
   const EditarNomePage({Key? key, required this.usuario}) : super(key: key);
@@ -24,7 +23,7 @@ class _EditarNomePageState extends State<EditarNomePage> {
     super.initState();
 
     controller.text = widget.usuario.name;
-    controllerTel.text = widget.usuario.telefone;
+    controllerTel.text = widget.usuario.telefone ?? "";
   }
 
   @override
@@ -37,7 +36,7 @@ class _EditarNomePageState extends State<EditarNomePage> {
                 gradient: LinearGradient(
                     begin: Alignment.centerLeft,
                     end: Alignment.centerRight,
-                    colors: [Color(0xFFFFD600), Color(0xFFFBC02D)]),
+                    colors: [Colors.amber, Colors.amber]),
               ),
             )),
         body: buildContainer());
@@ -86,7 +85,7 @@ class _EditarNomePageState extends State<EditarNomePage> {
                 ElevatedButton(
                     onPressed: () {
                       _salvar(
-                          userData.idVendedor!, controller.text, controllerTel.text);
+                          userData.idUser!, controller.text, controllerTel.text);
                     },
                     child: Container(
                       width: MediaQuery
@@ -113,13 +112,16 @@ class _EditarNomePageState extends State<EditarNomePage> {
     var api = ApiUser();
     api.updateUserName(id, name, phone).then((response) {
       if (response.statusCode == 200) {
-        Navigator.of(context).pop();
+        Navigator.of(context).pop(controller.text);
 
         customMessageModal(
-            context, 'Sucesso', 'Nome do usuário alterado com sucesso.', 'Fechar');
+            context, 'Sucesso', 'Dados do usuário atualizados com sucesso.',
+            'Fechar');
       } else {
         customMessageModal(
-            context, 'Erro', 'Erro ao alterar nome do usuario', 'Fechar');
+            context,
+            'Erro', 'Erro ao atualizar dados do usuario: ' + response.body,
+            'Fechar');
       }
     });
   }
