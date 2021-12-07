@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hub/src/util/hub_colors.dart';
 
 Widget linkedLabel(BuildContext context, String text1, String text2,
     Widget target) {
@@ -24,7 +25,7 @@ Widget linkedLabel(BuildContext context, String text1, String text2,
           Text(
             text2,
             style: const TextStyle(
-                color: Color(0xFFFBC02D),
+                color: primary,
                 fontSize: 13,
                 fontWeight: FontWeight.w600),
           ),
@@ -44,7 +45,7 @@ Widget defaultTitle(BuildContext context, String title) {
           textStyle: Theme.of(context).textTheme.headline1,
           fontSize: 30,
           fontWeight: FontWeight.w700,
-          color: const Color(0xFFFBC02D),
+          color: hubColors.primary,
         ),
       ));
 }
