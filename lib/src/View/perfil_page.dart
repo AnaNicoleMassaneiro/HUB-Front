@@ -17,8 +17,6 @@ class PerfilPage extends StatefulWidget {
 }
 
 class _PerfilPageState extends State<PerfilPage> {
-  late final int? idUser;
-  late final bool isVendedor;
   TextEditingController controller = TextEditingController();
   late User usuario;
   late bool isSellerAtivo;
@@ -28,9 +26,6 @@ class _PerfilPageState extends State<PerfilPage> {
 
   @override
   void initState() {
-    idUser = userData.idUser;
-    isVendedor = userData.idVendedor != null && userData.idVendedor! > 0;
-
     super.initState();
   }
 
@@ -49,7 +44,7 @@ class _PerfilPageState extends State<PerfilPage> {
                   child: CircularProgressIndicator(),
                 );
               } else {
-                if (isVendedor) {
+                if (userData.isVendedor!) {
                   usuario = User.fromJson(snapshot.data!["user"]);
                   isSellerAtivo = snapshot.data!["isAtivo"];
                   isSellerOpen = snapshot.data!["isOpen"];
@@ -86,7 +81,7 @@ class _PerfilPageState extends State<PerfilPage> {
                                               usuario: usuario))).then(
                                       (v) async {
                                     var ret = await getUserData();
-                                    User updated = isVendedor
+                                    User updated = userData.isVendedor!
                                         ? User.fromJson(ret["user"])
                                         : User.fromJson(ret);
                                     setState(() {
@@ -130,7 +125,7 @@ class _PerfilPageState extends State<PerfilPage> {
                                           fontSize: 20, color: Colors.black),
                                     ),
                                   ))),
-                          isVendedor
+                          userData.isVendedor!
                               ? Column(
                                   children: [
                                     Padding(
@@ -216,8 +211,9 @@ class _PerfilPageState extends State<PerfilPage> {
                                                         Navigator.of(context)
                                                             .pop();
                                                       },
-                                                      child: const Text(
-                                                          'Inativar'),
+                                                      child: Text(isSellerAtivo
+                                                          ? 'Inativar'
+                                                          : 'Reativar'),
                                                     ),
                                                     TextButton(
                                                       onPressed: () {
@@ -260,12 +256,12 @@ class _PerfilPageState extends State<PerfilPage> {
   }
 
   Future<Map<String, dynamic>> getUserData() async {
-    if (isVendedor) {
+    if (userData.isVendedor!) {
       var api = ApiVendedores();
       return api.searchById(userData.idVendedor!);
     } else {
       var api = ApiUser();
-      return api.searchId(idUser);
+      return api.searchId(userData.idUser);
     }
   }
 

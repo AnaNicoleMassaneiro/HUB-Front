@@ -30,7 +30,7 @@ class Reservas {
         idProduto: json['produto']['id'],
         produto: MeusProdutos.fromJson(json['produto']),
         status: json['statusReserva'],
-        dataCriacao: DateTime.parse(json['dataCriacao']),
+        dataCriacao: DateTime.parse(json['dataCriacao']).toLocal(),
         quantidadeDesejada: json['quantidadeDesejada'],
         localizacaoLat: double.parse(json['latitude'].toString()),
         localizacaoLon: double.parse(json['longitude'].toString())

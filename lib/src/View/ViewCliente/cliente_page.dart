@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hub/src/SQLite/user_data_sqlite.dart';
+import 'package:hub/src/View/Components/modal_message.dart';
+import 'package:hub/src/View/vendedor_page.dart';
 import 'package:location/location.dart';
 
 import '../Components/mapa.dart';
@@ -11,9 +13,8 @@ import 'minhas_reservas_page.dart';
 import '../Class/user_data.dart';
 
 class ClientePage extends StatefulWidget {
-  ClientePage({Key? key, required this.title}) : super(key: key);
+  ClientePage({Key? key}) : super(key: key);
 
-  final String title;
   final int idCliente = userData.idCliente!;
   final int idUser = userData.idUser!;
 
@@ -62,10 +63,41 @@ class _ClientePageState extends State<ClientePage> {
                     );
                   },
                 ),
+                userData.isVendedor!
+                ? ListTile(
+                  title: const Text('Alternar perfil'),
+                  trailing: IconButton(
+                    onPressed: () {
+                      customMessageModal(
+                          context,
+                          "Alternar perfil",
+                          "Alterne entre seu perfil de comprador e vendedor. "
+                              "No primeiro você pode buscar vendedores e "
+                              "produtos. No segundo, você pode atualizar os "
+                              "dados de seus produtos e cuidar da sua "
+                              "loja virtual.",
+                          "Ok");
+                    },
+                    icon: const Icon(
+                      Icons.info_outline,
+                      size: 24,
+                    ),
+                  ),
+                  onTap: () {
+                    userData.isVendedorProfileActive = true;
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => VendedorPage()),
+                            (r) => false
+                    );
+                  },
+                )
+                : Container(),
                 ListTile(
                   title: const Text('Logout'),
                   onTap: () {
-                    userDataSqlite.deleteUserData(userData.idUser!);
+                    userDataSqlite.deleteUserData();
                     userData.clearAllData();
                     Navigator.pushAndRemoveUntil(
                         context,
@@ -84,11 +116,11 @@ class _ClientePageState extends State<ClientePage> {
           // ignore: prefer_const_literals_to_create_immutables
           items: [
             const BottomNavigationBarItem(
-                icon: Icon(Icons.person), label: "Localização"),
+                icon: Icon(Icons.location_on_outlined), label: "Perto de mim"),
             const BottomNavigationBarItem(
-                icon: Icon(Icons.person), label: "Buscar"),
+                icon: Icon(Icons.search_outlined), label: "Buscar"),
             const BottomNavigationBarItem(
-                icon: Icon(Icons.person), label: "Minhas Reservas")
+                icon: Icon(Icons.shopping_cart_outlined), label: "Minhas Reservas")
           ],
         ));
   }

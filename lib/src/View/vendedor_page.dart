@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:hub/src/SQLite/user_data_sqlite.dart';
+import 'package:hub/src/View/Components/modal_message.dart';
+import 'package:hub/src/View/ViewCliente/cliente_page.dart';
 import 'package:hub/src/View/ViewVendedor/minhas_reservas_page.dart';
 import 'package:hub/src/View/perfil_page.dart';
 import 'package:hub/src/View/welcome_page.dart';
-import 'Components/mapa.dart';
 import 'ViewProduto/cadastrar_produto_page.dart';
 import 'ViewProduto/meus_produtos_page.dart';
 import './Class/user_data.dart';
 
 class VendedorPage extends StatefulWidget {
-  VendedorPage({Key? key, required this.title}) : super(key: key);
+  VendedorPage({Key? key}) : super(key: key);
 
-  final String title;
   final int idVendedor = userData.idVendedor!;
   final int idUser = userData.idUser!;
 
@@ -23,14 +23,14 @@ class _VendedorPageState extends State<VendedorPage> {
   final TextEditingController user = TextEditingController();
   final TextEditingController senha = TextEditingController();
   late Map<String, double> userLocation;
-  int _indiceAtual = 1;
+  int _indiceAtual = 0;
 
   @override
   Widget build(BuildContext context) {
     final List<Widget> _telas = [
-      const MapComponent(),
       MeusProdutosPage(),
       const MinhasReservasPage(),
+      Container(),
     ];
 
     return Scaffold(
@@ -46,31 +46,61 @@ class _VendedorPageState extends State<VendedorPage> {
             )),
         drawer: Drawer(
             child: ListView(
-              children: [
-                ListTile(
-                  title: const Text('Minha conta'),
-                  onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => const PerfilPage()));
-                  },
+          children: [
+            ListTile(
+              title: const Text('Minha conta'),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const PerfilPage()));
+              },
+            ),
+            ListTile(
+              title: const Text('Alternar perfil'),
+              trailing: IconButton(
+                onPressed: () {
+                  customMessageModal(
+                      context,
+                      "Alternar perfil",
+                      "Alterne entre seu perfil de comprador e vendedor. "
+                          "No primeiro você pode buscar vendedores e "
+                          "produtos. No segundo, você pode atualizar os "
+                          "dados de seus produtos e cuidar da sua "
+                          "loja virtual.",
+                      "Ok");
+                },
+                icon: const Icon(
+                  Icons.info_outline,
+                  size: 24,
                 ),
-                ListTile(
-                  title: const Text('Logout'),
-                  onTap: () {
-                    userDataSqlite.deleteUserData(userData.idUser!);
-                    userData.clearAllData();
-                    Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const WelcomePage(title: '')),
-                        (route) => false);
-                  },
-                ),
-              ],
-            )
-        ),
+              ),
+              onTap: () {
+                userData.isVendedorProfileActive = false;
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ClientePage()),
+                    (r) => false
+                );
+              },
+            ),
+            ListTile(
+              title: const Text('Logout'),
+              onTap: () {
+                userDataSqlite.deleteUserData();
+                userData.clearAllData();
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const WelcomePage(title: '')),
+                    (route) => false);
+              },
+            ),
+          ],
+        )),
         body: _telas[_indiceAtual],
-        floatingActionButton: _indiceAtual == 1
+        floatingActionButton: _indiceAtual == 0
             ? FloatingActionButton(
                 onPressed: () {
                   Navigator.push(
@@ -93,11 +123,11 @@ class _VendedorPageState extends State<VendedorPage> {
           // ignore: prefer_const_literals_to_create_immutables
           items: [
             const BottomNavigationBarItem(
-                icon: Icon(Icons.person), label: "Localização"),
+                icon: Icon(Icons.shopping_cart_outlined), label: "Meus Produtos"),
             const BottomNavigationBarItem(
-                icon: Icon(Icons.person), label: "Meus Produtos"),
+                icon: Icon(Icons.attach_money_sharp), label: "Minhas Reservas"),
             const BottomNavigationBarItem(
-                icon: Icon(Icons.person), label: "Minhas Reservas")
+                icon: Icon(Icons.bar_chart), label: "Relatórios"),
           ],
         ));
   }
