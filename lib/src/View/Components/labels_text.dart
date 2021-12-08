@@ -24,8 +24,8 @@ Widget linkedLabel(BuildContext context, String text1, String text2,
           ),
           Text(
             text2,
-            style: const TextStyle(
-                color: primary,
+            style: TextStyle(
+                color: hubColors.primary,
                 fontSize: 13,
                 fontWeight: FontWeight.w600),
           ),

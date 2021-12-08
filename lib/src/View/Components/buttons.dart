@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hub/src/util/hub_colors.dart';
 
 Widget defaultBackButton(BuildContext context) {
   return InkWell(
@@ -59,12 +60,13 @@ Widget submitButtonBorder(BuildContext context, String text, Widget target) {
       padding: const EdgeInsets.symmetric(vertical: 13),
       alignment: Alignment.center,
       decoration: BoxDecoration(
-        borderRadius: const BorderRadius.all(Radius.circular(5)),
-        border: Border.all(color: Colors.white, width: 2),
+        borderRadius: const BorderRadius.all(Radius.circular(29)),
+        border: Border.all(color: hubColors.dark, width: 2),
+        color: hubColors.dark,
       ),
       child: Text(
         text,
-        style: const TextStyle(fontSize: 20, color: Colors.white),
+        style: TextStyle(fontSize: 20, color: hubColors.white),
       ),
     ),
   );

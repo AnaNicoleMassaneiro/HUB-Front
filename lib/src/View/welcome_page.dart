@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hub/src/View/login_page.dart';
 import 'package:hub/src/View/signup_page.dart';
+import 'package:hub/src/util/hub_colors.dart';
 
 import 'Components/labels_text.dart';
 import 'Components/buttons.dart';
@@ -31,15 +32,15 @@ class _WelcomePageState extends State<WelcomePage> {
                     blurRadius: 5,
                     spreadRadius: 2)
               ],
-              gradient: const LinearGradient(
+              gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
-                  colors: [Color(0xFFFBC02D), Color(0xFFFBC02D)])),
+                  colors: [hubColors.primary, hubColors.yellowExtraLight])),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              defaultTitleWhite(this.context, "HUB UFPR"),
+              Image.asset("assets/darklogo.png", width: 200, height: 200),
               const SizedBox(
                 height: 80,
               ),
