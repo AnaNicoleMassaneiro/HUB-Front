@@ -12,7 +12,8 @@ class UserDataSqlite {
           'CREATE TABLE userData ('
             'idUser INTEGER PRIMARY KEY, '
             'idVendedor INTEGER, '
-            'idCliente INTEGER, '
+            'idCliente INTEGER,'
+            'isVendedor TEXT, '
             'locationLat FLOAT, '
             'locationLon FLOAT, '
             'token TEXT)'
@@ -55,7 +56,7 @@ class UserDataSqlite {
     );
   }
 
-  Future<void> deleteUserData(int id) async {
+  Future<void> deleteUserData() async {
     final db = await database;
 
     await db.delete(

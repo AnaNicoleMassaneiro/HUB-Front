@@ -19,6 +19,8 @@ class MyApp extends StatelessWidget {
       userData.idUser = ret["idUser"];
       userData.idVendedor = ret["idVendedor"];
       userData.idCliente = ret["idCliente"];
+      userData.isVendedor = ret["isVendedor"] == "true" ? true : false;
+      userData.isVendedorProfileActive = userData.isVendedor;
       userData.curLocationLat = ret["locationLat"];
       userData.curLocationLon = ret["locationLon"];
       userData.token = ret["token"];
@@ -45,9 +47,9 @@ class MyApp extends StatelessWidget {
           ? const WelcomePage(
               title: '',
             )
-          : userData.idVendedor == null
-              ? ClientePage(title: '')
-              : VendedorPage(title: ''),
+          : userData.isVendedor!
+              ? VendedorPage()
+              : ClientePage(),
     );
   }
 }

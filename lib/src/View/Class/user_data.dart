@@ -4,6 +4,8 @@ class UserData {
   int? idVendedor;
   int? idCliente;
   int? idUser;
+  bool? isVendedor;
+  bool? isVendedorProfileActive;
   double? curLocationLat;
   double? curLocationLon;
   String? token;
@@ -17,8 +19,10 @@ class UserData {
       'idVendedor': idVendedor,
       'idCliente': idCliente,
       'idUser': idUser,
+      'isVendedor': isVendedor.toString(),
       'locationLat': curLocationLat,
-      'locationLon': curLocationLon
+      'locationLon': curLocationLon,
+      'token': token,
     };
   }
 
@@ -26,6 +30,8 @@ class UserData {
     idVendedor = null;
     idUser = null;
     idCliente = null;
+    isVendedor = null;
+    isVendedorProfileActive = null;
     curLocationLon = null;
     curLocationLon = null;
     token = null;

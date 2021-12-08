@@ -43,8 +43,8 @@ class _LoginPageState extends State<LoginPage> {
         padding: const EdgeInsets.symmetric(vertical: 15),
         alignment: Alignment.center,
         decoration: const BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(5)),
-            color: Colors.transparent,
+          borderRadius: BorderRadius.all(Radius.circular(5)),
+          color: Colors.transparent,
         ),
         child: const Text(
           'Login',
@@ -121,38 +121,32 @@ class _LoginPageState extends State<LoginPage> {
     api.login(user, senha).then((response) {
       setState(() {
         if (response.statusCode == 200) {
-          final trataDados = jsonDecode(response.body).cast<String, dynamic>();
+          final user = jsonDecode(response.body).cast<String, dynamic>();
 
-          userData.idUser = trataDados["user"]["id"];
-          userData.token = trataDados["token"];
+          userData.idUser = user["user"]["id"];
+          userData.idCliente = user["idCliente"];
+          userData.isVendedor = user["user"]["isVendedor"];
+          userData.token = user["token"];
 
-          if (trataDados["user"]["isVendedor"]) {
-            userData.idVendedor = trataDados["idVendedor"];
+          if (userData.isVendedor!) {
+            userData.idVendedor = user["idVendedor"];
+            userData.isVendedorProfileActive = true;
 
             userDataSqlite.insertUserData(userData.toMap());
 
             Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => VendedorPage(
-                        title: ''
-                    )
-                ),
-                    (r) => false
-            );
+                    builder: (context) => VendedorPage()),
+                (r) => false);
           } else {
-            userData.idCliente = trataDados["idCliente"];
+            userData.isVendedorProfileActive = false;
             userDataSqlite.insertUserData(userData.toMap());
 
             Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ClientePage(
-                  title: ''
-                )
-              ),
-              (r) => false
-            );
+                context,
+                MaterialPageRoute(builder: (context) => ClientePage()),
+                (r) => false);
           }
         } else {
           customMessageModal(

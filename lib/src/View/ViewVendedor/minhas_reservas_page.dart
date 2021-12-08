@@ -20,7 +20,7 @@ class _ListaProdutosPageState extends State<MinhasReservasPage> {
 
     var api = ApiReservations();
     api.getBySeller(userData.idVendedor!).then((response) {
-      for (var reserva in response){
+      for (var reserva in response) {
         setState(() {
           setState(() {
             reservas.add(Reservas.fromJson(reserva));
@@ -43,132 +43,144 @@ class _ListaProdutosPageState extends State<MinhasReservasPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: SizedBox(
-          child: Stack(
-            children: <Widget>[
-              Column(
-                children: [
-                  Expanded(
-                    child: reservas.isNotEmpty
+      child: Stack(
+        children: <Widget>[
+          Column(
+            children: [
+              Expanded(
+                  child: reservas.isNotEmpty
                       ? ListView.builder(
-                        itemCount: reservas.length,
-                        itemBuilder: (context, i){
-                          return Row(
-                            children: [
-                              reservas[i].produto.imagem == null
-                              ? Image.asset(
-                                  "assets/product-icon.png",
-                                  height: 100,
-                                  fit: BoxFit.scaleDown,
-                                )
-                              : Image.memory(
-                                reservas[i].produto.imagem!,
-                                height: 100,
-                                fit: BoxFit.scaleDown,
-                              ),
-                              Column(
+                          itemCount: reservas.length,
+                          itemBuilder: (context, i) {
+                            return Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Row(
+                                  reservas[i].produto.imagem == null
+                                      ? Image.asset(
+                                          "assets/product-icon.png",
+                                          height: 100,
+                                          fit: BoxFit.scaleDown,
+                                        )
+                                      : Image.memory(
+                                          reservas[i].produto.imagem!,
+                                          height: 100,
+                                          fit: BoxFit.scaleDown,
+                                        ),
+                                  Column(
                                     children: [
-                                      Text(
-                                        reservas[i].produto.nome + " x" + reservas[i].quantidadeDesejada.toString()
-                                      )
-                                    ]
+                                      Row(children: [
+                                        Text(reservas[i].produto.nome +
+                                            " x" +
+                                            reservas[i]
+                                                .quantidadeDesejada
+                                                .toString())
+                                      ]),
+                                      Row(children: [
+                                        Text("Criada em " +
+                                            reservas[i]
+                                                .dataCriacao
+                                                .day
+                                                .toString()
+                                                .padLeft(2, '0') +
+                                            "/" +
+                                            reservas[i]
+                                                .dataCriacao
+                                                .month
+                                                .toString()
+                                                .padLeft(2, '0') +
+                                            "/" +
+                                            reservas[i]
+                                                .dataCriacao
+                                                .year
+                                                .toString() +
+                                            ", " +
+                                            reservas[i]
+                                                .dataCriacao
+                                                .hour
+                                                .toString()
+                                                .padLeft(2, '0') +
+                                            ":" +
+                                            reservas[i]
+                                                .dataCriacao
+                                                .minute
+                                                .toString()
+                                                .padLeft(2, '0'))
+                                      ]),
+                                      Row(children: [
+                                        Text(reservas[i].status),
+                                      ])
+                                    ],
                                   ),
-                                  Row(
-                                    children: [
-                                      Text("Criada em " +
-                                          reservas[i].dataCriacao.day.toString() + "/" +
-                                          reservas[i].dataCriacao.month.toString() + "/" +
-                                          reservas[i].dataCriacao.year.toString() + ", " +
-                                          reservas[i].dataCriacao.hour.toString() + ":" +
-                                          reservas[i].dataCriacao.minute.toString()
-                                      )
-                                    ]
-                                  ),
-                                  Row(
-                                    children: [
-                                      Text(reservas[i].status),
-                                    ]
-                                  )
-                                ],
-                              ),
-                              reservas[i].status == "PENDENTE"
-                              ? Expanded( child: ElevatedButton(
-                                onPressed: (){
-                                  confirmCancelReservation(reservas[i].id);
-                                },
-                                child: const Text(
-                                  "Confirmar"
-                                )
-                              ))
-                              : Row()
-                            ]
-                          );
-                        })
+                                  reservas[i].status == "PENDENTE"
+                                      ? Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 5),
+                                          child: ElevatedButton(
+                                              onPressed: () {
+                                                confirmCancelReservation(
+                                                    reservas[i].id);
+                                              },
+                                              child: const Text("Confirmar")))
+                                      : Row()
+                                ]);
+                          })
                       : const Center(
-                        child: Text(
+                          child: Text(
                           "Ainda não existem reservas para seus produtos.",
-                          style: TextStyle(
-                            fontSize: 16
-                          ),
-                        )
-                      )
-                  ),
-                ],
-              ),
+                          style: TextStyle(fontSize: 16),
+                        ))),
             ],
           ),
-        ));
+        ],
+      ),
+    ));
   }
 
-  void confirmCancelReservation(int id){
+  void confirmCancelReservation(int id) {
     showDialog(
-      context: context,
-      builder: (BuildContext context){
-        return AlertDialog(
-          content: const Text(
-            'Tem certeza que deseja confirmar essa reserva? '
-            'Isso indica que o comprador foi até você e a venda foi efetuada. '
-            'Esta ação não pode ser desfeita.'
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                cancelReservation(id);
-              },
-              child: const Text('Sim'),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('Não'),
-            ),
-          ],
-        );
-      }
-    );
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            content: const Text(
+                'Tem certeza que deseja confirmar essa reserva? '
+                'Isso indica que o comprador foi até você e a venda foi efetuada. '
+                'Esta ação não pode ser desfeita.'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  cancelReservation(id);
+                },
+                child: const Text('Sim'),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('Não'),
+              ),
+            ],
+          );
+        });
   }
 
-  void cancelReservation(int id){
+  void cancelReservation(int id) {
     final api = ApiReservations();
     api.confirmReservation(id).then((response) {
-      if (response.statusCode == 200){
+      if (response.statusCode == 200) {
         buscaReservas();
 
         Navigator.of(context).pop();
 
-
-        customMessageModal(context, '', 'Reserva confirmada com sucesso.', 'Fechar');
-      }
-      else {
+        customMessageModal(
+            context, '', 'Reserva confirmada com sucesso.', 'Fechar');
+      } else {
         Navigator.of(context).pop();
         customMessageModal(
             context,
             '',
-            'Houve um erro ao confirmar a reserva. Tente novamente mais tarde.'
-            , 'Fechar'
-        );
+            'Houve um erro ao confirmar a reserva. Tente novamente mais tarde.',
+            'Fechar');
       }
     });
   }
