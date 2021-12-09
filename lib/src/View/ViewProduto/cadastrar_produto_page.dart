@@ -116,6 +116,7 @@ class _CadastrarProdutoPageState extends State<CadastrarProdutoPage> {
                       height: 20,
                     ),
                     _submitButton(),
+                    const Padding(padding: EdgeInsets.symmetric(vertical: 10))
                   ],
                 ),
               ),

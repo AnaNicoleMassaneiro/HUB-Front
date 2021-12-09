@@ -10,8 +10,7 @@ import 'editar_produto_page.dart';
 import '../Class/user_data.dart';
 
 class MeusProdutosPage extends StatefulWidget {
-  MeusProdutosPage({Key? key})
-      : super(key: key);
+  MeusProdutosPage({Key? key}) : super(key: key);
   final int idVendedor = userData.idVendedor!;
   final int idUser = userData.idUser!;
 
@@ -73,83 +72,97 @@ class _MeusProdutosPageState extends State<MeusProdutosPage> {
           ),
         ),
         Expanded(
-          child: _searchResult.isNotEmpty || controller.text.isNotEmpty
-              ? ListView.builder(
-                  itemCount: _searchResult.length,
-                  itemBuilder: (context, i) {
-                    return Card(
-                      child: ListTile(
-                        title: Text(_searchResult[i].nome),
-                        trailing: Wrap(
-                          spacing: 12,
-                          children: [
-                            IconButton(
-                              icon: const Icon(Icons.remove_red_eye_rounded),
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => EditarProdutoPage(
-                                      produto: _searchResult[i],
-                                    )
-                                  )
-                                ).then((value) {
-                                  buscaProdutos();
-                                  onSearchTextChanged(controller.text);
-                                });
-                              },
-                            ),
-                            IconButton(
-                              icon: const Icon(Icons.delete),
-                              onPressed: () {
-                                verificaDeletarProduto(_searchResult[i].id);
-                              },
-                            ),
-                          ],
-                        ),
-                      ),
-                      margin: const EdgeInsets.all(0.0),
-                    );
-                  },
+          child: listaProdutos.isEmpty ||
+                  (controller.text.isNotEmpty && _searchResult.isEmpty)
+              ? Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: const [
+                    Text("Parece que não há nenhum produto por aqui...",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w200,
+                          fontStyle: FontStyle.italic,
+                        ))
+                  ],
                 )
-              : ListView.builder(
-                  itemCount: listaProdutos.length,
-                  itemBuilder: (context, i) {
-                    return Card(
-                      child: ListTile(
-                        // leading:  CircleAvatar(backgroundImage:  NetworkImage(listaProdutos[index].profileUrl,),),
-                        title: Text(listaProdutos[i].nome),
-                        trailing: Wrap(
-                          spacing: 12,
-                          children: [
-                            IconButton(
-                              icon: const Icon(Icons.remove_red_eye_rounded),
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => EditarProdutoPage(
-                                      produto: listaProdutos[i]
-                                    )
-                                  )
-                                ).then((value) {
-                                  buscaProdutos();
-                                });
-                              },
+              : _searchResult.isNotEmpty || controller.text.isNotEmpty
+                  ? ListView.builder(
+                      itemCount: _searchResult.length,
+                      itemBuilder: (context, i) {
+                        return Card(
+                          child: ListTile(
+                            title: Text(_searchResult[i].nome),
+                            trailing: Wrap(
+                              spacing: 12,
+                              children: [
+                                IconButton(
+                                  icon:
+                                      const Icon(Icons.remove_red_eye_rounded),
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                EditarProdutoPage(
+                                                  produto: _searchResult[i],
+                                                ))).then((value) {
+                                      buscaProdutos();
+                                      onSearchTextChanged(controller.text);
+                                    });
+                                  },
+                                ),
+                                IconButton(
+                                  icon: const Icon(Icons.delete),
+                                  onPressed: () {
+                                    verificaDeletarProduto(_searchResult[i].id);
+                                  },
+                                ),
+                              ],
                             ),
-                            IconButton(
-                              icon: const Icon(Icons.delete),
-                              onPressed: () {
-                                verificaDeletarProduto(listaProdutos[i].id);
-                              },
+                          ),
+                          margin: const EdgeInsets.all(0.0),
+                        );
+                      },
+                    )
+                  : ListView.builder(
+                      itemCount: listaProdutos.length,
+                      itemBuilder: (context, i) {
+                        return Card(
+                          child: ListTile(
+                            // leading:  CircleAvatar(backgroundImage:  NetworkImage(listaProdutos[index].profileUrl,),),
+                            title: Text(listaProdutos[i].nome),
+                            trailing: Wrap(
+                              spacing: 12,
+                              children: [
+                                IconButton(
+                                  icon:
+                                      const Icon(Icons.remove_red_eye_rounded),
+                                  onPressed: () {
+                                    Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    EditarProdutoPage(
+                                                        produto:
+                                                            listaProdutos[i])))
+                                        .then((value) {
+                                      buscaProdutos();
+                                    });
+                                  },
+                                ),
+                                IconButton(
+                                  icon: const Icon(Icons.delete),
+                                  onPressed: () {
+                                    verificaDeletarProduto(listaProdutos[i].id);
+                                  },
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                      ),
-                      margin: const EdgeInsets.all(0.0),
-                    );
-                  },
-                ),
+                          ),
+                          margin: const EdgeInsets.all(0.0),
+                        );
+                      },
+                    ),
         ),
       ],
     );
