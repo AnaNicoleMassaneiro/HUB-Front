@@ -4,6 +4,7 @@ import 'package:hub/src/Api/api_rating.dart';
 import 'package:hub/src/View/Class/avaliacao.dart';
 import 'package:hub/src/View/Class/user_data.dart';
 import 'package:hub/src/View/Components/modal_message.dart';
+import 'package:hub/src/View/ViewCliente/detalhes_vendedor_page.dart';
 import '../Class/meus_produtos.dart';
 import '../ViewReserva/create_reserva.dart';
 import '../Components/entry_fields.dart';
@@ -209,6 +210,24 @@ class _DetalhesProdutoPageState extends State<DetalhesProdutoPage> {
                   style: TextStyle(fontSize: 20, color: Colors.white),
                 ),
               )),
+          const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
+          ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            DetalhesVendedorPage(idVendedor: widget.produto.idVendedor)));
+              },
+              child: Container(
+                width: MediaQuery.of(context).size.width - 100,
+                padding: const EdgeInsets.symmetric(vertical: 15),
+                alignment: Alignment.center,
+                child: const Text(
+                  "Mais deste Vendedor",
+                  style: TextStyle(fontSize: 20, color: Colors.white),
+                ),
+              ))
         ],
       ),
     );
