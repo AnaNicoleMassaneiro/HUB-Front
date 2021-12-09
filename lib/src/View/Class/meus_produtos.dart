@@ -10,6 +10,7 @@ class MeusProdutos {
   late String descricao;
   late int quantidadeDisponivel;
   late Uint8List? imagem;
+  late int idVendedor;
 
   MeusProdutos(
       {required this.id,
@@ -19,6 +20,7 @@ class MeusProdutos {
       this.nota,
       required this.descricao,
       required this.quantidadeDisponivel,
+      required this.idVendedor,
       this.imagem});
 
   factory MeusProdutos.fromJson(Map<String, dynamic> produto) {
@@ -30,9 +32,8 @@ class MeusProdutos {
         nota: double.parse(produto['notaProduto'].toString()),
         preco: double.parse(produto["preco"].toString()),
         quantidadeDisponivel: produto["quantidadeDisponivel"],
-        imagem: produto["imagem"] == null ?
-        null :
-        base64.decode(produto["imagem"])
-    );
+        imagem:
+            produto["imagem"] == null ? null : base64.decode(produto["imagem"]),
+        idVendedor: produto["idVendedor"]);
   }
 }
