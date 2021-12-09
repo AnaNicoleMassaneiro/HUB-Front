@@ -9,6 +9,7 @@ import 'package:hub/src/View/Class/meus_produtos.dart';
 import 'package:hub/src/View/Class/user_data.dart';
 import 'package:hub/src/View/Components/entry_fields.dart';
 import 'package:hub/src/View/Components/modal_message.dart';
+import 'package:hub/src/util/hub_colors.dart';
 import 'package:image_picker/image_picker.dart';
 
 class EditarProdutoPage extends StatefulWidget {
@@ -50,16 +51,22 @@ class _EditarProdutoPageState extends State<EditarProdutoPage> {
   Widget _submitButton() {
     return ElevatedButton(
         onPressed: () {
-          _updateProduct(
-              idProduto.text,
-              double.parse(precoText.text.replaceAll(",", ".")),
-              nomeText.text,
-              descricaoText.text,
-              int.parse(qtdDisponivelText.text),
-              selectedImage,
-              isRemoveImage,
-              widget.produto.imagem,
-              widget.produto.isAtivo!);
+          if (_formKey.currentState!.validate()) {
+            _updateProduct(
+                idProduto.text,
+                double.parse(precoText.text.replaceAll(",", ".")),
+                nomeText.text,
+                descricaoText.text,
+                int.parse(qtdDisponivelText.text
+                    .replaceAll(",", "")
+                    .replaceAll(".", "")
+                    .replaceAll(" ", "")
+                ),
+                selectedImage,
+                isRemoveImage,
+                widget.produto.imagem,
+                widget.produto.isAtivo!);
+          }
         },
         child: Container(
           width: MediaQuery.of(context).size.width,
@@ -67,7 +74,7 @@ class _EditarProdutoPageState extends State<EditarProdutoPage> {
           alignment: Alignment.center,
           child: const Text(
             "Salvar alterações",
-            style: TextStyle(fontSize: 20, color: Colors.white),
+            style: TextStyle(fontSize: 20, color: Colors.black),
           ),
         ));
   }
@@ -75,16 +82,16 @@ class _EditarProdutoPageState extends State<EditarProdutoPage> {
   Widget _cadastroForm() {
     return Column(
       children: <Widget>[
-        entryFieldValidation("Nome", nomeText, validateName,
+        entryFieldValidation("Nome", nomeText, validateProductName,
             placeholder: '', enabled: isEditing),
         entryFieldValidation("Preço", precoText, validateNumber,
             enabled: isEditing,
             placeholder: '',
             keyboard: TextInputType.number),
-        entryFieldValidation("Descrição", descricaoText, validateName,
+        entryFieldValidation("Descrição", descricaoText, validateDescription,
             placeholder: '', enabled: isEditing),
         entryFieldValidation(
-            "Quantidade Disponível", qtdDisponivelText, validateName,
+            "Quantidade Disponível", qtdDisponivelText, validateQuantity,
             placeholder: '',
             keyboard: TextInputType.number,
             enabled: isEditing),
@@ -134,11 +141,12 @@ class _EditarProdutoPageState extends State<EditarProdutoPage> {
                       qtdDisponivelText.text =
                           widget.produto.quantidadeDisponivel.toString(),
                       idProduto.text = widget.produto.id.toString(),
-                      isRemoveImage = false
+                      isRemoveImage = false,
+                      _formKey.currentState!.validate(),
                     });
               })
           : FloatingActionButton(
-              backgroundColor: Colors.black,
+              backgroundColor: hubColors.primary,
               child: const Icon(Icons.create),
               onPressed: () {
                 setState(() => {isEditing = true});
@@ -157,6 +165,7 @@ class _EditarProdutoPageState extends State<EditarProdutoPage> {
                         ? Column()
                         : _showImage(widget.produto.imagem, selectedImage),
                     Form(
+                      autovalidateMode: AutovalidateMode.disabled,
                       key: _formKey,
                       child: _cadastroForm(),
                     ),
@@ -170,11 +179,10 @@ class _EditarProdutoPageState extends State<EditarProdutoPage> {
                                     padding: const EdgeInsets.symmetric(
                                         vertical: 15),
                                     alignment: Alignment.center,
-                                    color: const Color(0xFFFBC02D),
                                     child: const Text(
                                       "Adicionar imagem",
                                       style: TextStyle(
-                                          fontSize: 20, color: Colors.white),
+                                          fontSize: 20, color: Colors.black),
                                     ),
                                   )),
                               const SizedBox(
@@ -189,11 +197,10 @@ class _EditarProdutoPageState extends State<EditarProdutoPage> {
                                     padding: const EdgeInsets.symmetric(
                                         vertical: 15),
                                     alignment: Alignment.center,
-                                    color: (Colors.black),
                                     child: const Text(
                                       "Remover imagem",
                                       style: TextStyle(
-                                          fontSize: 20, color: Colors.white),
+                                          fontSize: 20, color: Colors.black),
                                     ),
                                   )),
                               const SizedBox(

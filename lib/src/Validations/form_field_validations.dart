@@ -63,7 +63,7 @@ String? validateNumber(String name){
 
 String? validateRatingTitle(String title){
   if (title.trim().isEmpty) {
-    return "Preencha o título da avaliação!";
+    return "Preencha o título da avaliação.";
   } else {
     return null;
   }
@@ -71,8 +71,41 @@ String? validateRatingTitle(String title){
 
 String? validateRatingDescription(String desc){
   if (desc.trim().isEmpty) {
-    return "Preencha a descrição da avaliação!";
+    return "Preencha a descrição da avaliação.";
   } else {
     return null;
   }
+}
+String? validateProductName(String desc){
+  if (desc.trim().isEmpty) {
+    return "Preencha o nome do produto.";
+  } else {
+    return null;
+  }
+}
+
+String? validateDescription(String desc){
+  if (desc.trim().isEmpty) {
+    return "Preencha a descrição do produto.";
+  } else {
+    return null;
+  }
+}
+
+String? validateQuantity(String qt){
+  if (qt.trim().isEmpty) {
+    return "Preencha a quantidade disponível.";
+  }
+  try {
+    if (int.parse(qt
+        .replaceAll(",", "")
+        .replaceAll(".", "")
+        .replaceAll(" ", "")) < 0) {
+      return "Preencha a quantidade disponível.";
+    }
+  }
+  catch(ex) {
+    return "Preencha a quantidade disponível.";
+  }
+  return null;
 }
