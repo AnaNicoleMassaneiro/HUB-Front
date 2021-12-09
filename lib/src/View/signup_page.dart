@@ -2,11 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
-import 'package:hub/src/Widget/bezier_container.dart';
 import 'package:hub/src/View/login_page.dart';
+import 'package:hub/src/util/hub_colors.dart';
 
 import '../Api/api_register.dart';
-import '../Widget/bezier_container.dart';
 
 import 'Components/modal_message.dart';
 import 'Components/buttons.dart';
@@ -90,9 +89,9 @@ class _SignUpPageState extends State<SignUpPage> {
           decoration: const BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(5)),
           ),
-          child: const Text(
+          child: Text(
             "Registrar",
-            style: TextStyle(fontSize: 20, color: Colors.white),
+            style: TextStyle(fontSize: 20, color: hubColors.dark),
           ),
         ));
   }
@@ -132,11 +131,6 @@ class _SignUpPageState extends State<SignUpPage> {
         height: height,
         child: Stack(
           children: <Widget>[
-            Positioned(
-              top: -MediaQuery.of(context).size.height * .15,
-              right: -MediaQuery.of(context).size.width * .4,
-              child: const BezierContainer(),
-            ),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: SingleChildScrollView(
@@ -144,20 +138,18 @@ class _SignUpPageState extends State<SignUpPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    SizedBox(height: height * .2),
-                    defaultTitle(this.context, "HUB UFPR"),
-                    const SizedBox(
-                      height: 50,
-                    ),
+                    SizedBox(height: height * .1),
+                    Image.asset("assets/yellowlogo.png", width: 200, height: 200),
+                    const SizedBox(height: 10),
                     Form(
                       key: _formKey,
                       child: _emailPasswordWidget(),
                     ),
                     const SizedBox(
-                      height: 20,
+                      height: 10,
                     ),
                     _submitButton(),
-                    SizedBox(height: height * .14),
+                    SizedBox(height: height * .1),
                     linkedLabel(
                         this.context,
                         'Já tem uma conta?',
