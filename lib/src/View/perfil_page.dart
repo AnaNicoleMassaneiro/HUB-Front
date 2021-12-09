@@ -159,9 +159,10 @@ class _PerfilPageState extends State<PerfilPage> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        const Text(
-                                          "Status da Minha Loja",
-                                          style: TextStyle(
+                                        Text(isSellerOpen
+                                            ? "Status da Minha Loja  (Aberta)"
+                                            : "Status da Minha Loja  (Fechada)",
+                                          style: const TextStyle(
                                               fontSize: 16,
                                               fontWeight: FontWeight.bold),
                                         ),
