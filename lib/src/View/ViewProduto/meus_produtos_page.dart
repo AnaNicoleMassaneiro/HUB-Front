@@ -220,6 +220,11 @@ class _MeusProdutosPageState extends State<MeusProdutosPage> {
       });
       customMessageModal(
           context, "Sucesso!", "Produto excluido com sucesso", "OK");
+    } else if (ret.statusCode == 409) {
+      customMessageModal(context, "Falha ao excluir produto: ",
+          "Este produto já está presente em reservas e/ou avaliações. "
+              "Não é mais possível deletá-lo. Você pode inativá-lo se não "
+              "quiser que outros usuários possam vê-lo.", "Fechar");
     } else {
       customMessageModal(context, "Falha ao excluir produto: ",
           jsonDecode(ret.body)["msg"], "Fechar");
