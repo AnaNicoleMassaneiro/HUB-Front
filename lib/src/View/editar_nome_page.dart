@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:hub/src/Api/api_user.dart';
 
@@ -47,10 +49,10 @@ class _EditarNomePageState extends State<EditarNomePage> {
     return Container(
         child: SafeArea(
             child: Column(
-              children: [
-                tela(),
-              ],
-            )));
+      children: [
+        tela(),
+      ],
+    )));
   }
 
   tela() {
@@ -84,14 +86,11 @@ class _EditarNomePageState extends State<EditarNomePage> {
                 ),
                 ElevatedButton(
                     onPressed: () {
-                      _salvar(
-                          userData.idUser!, controller.text, controllerTel.text);
+                      _salvar(userData.idUser!, controller.text,
+                          controllerTel.text);
                     },
                     child: Container(
-                      width: MediaQuery
-                          .of(context)
-                          .size
-                          .width,
+                      width: MediaQuery.of(context).size.width,
                       padding: const EdgeInsets.symmetric(vertical: 15),
                       alignment: Alignment.center,
                       color: const Color(0xFFFBC02D),
@@ -114,13 +113,14 @@ class _EditarNomePageState extends State<EditarNomePage> {
       if (response.statusCode == 200) {
         Navigator.of(context).pop(controller.text);
 
-        customMessageModal(
-            context, 'Sucesso', 'Dados do usuário atualizados com sucesso.',
-            'Fechar');
+        customMessageModal(context, 'Sucesso',
+            'Dados do usuário atualizados com sucesso.', 'Fechar');
       } else {
         customMessageModal(
             context,
-            'Erro', 'Erro ao atualizar dados do usuario: ' + response.body,
+            'Erro',
+            'Erro ao atualizar dados do usuario: ' +
+                jsonDecode(response.body)["msg"],
             'Fechar');
       }
     });
