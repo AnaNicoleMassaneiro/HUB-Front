@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hub/src/Api/api_user.dart';
 import 'package:hub/src/Validations/form_field_validations.dart';
+import 'package:hub/src/util/hub_colors.dart';
 
 import 'Components/modal_message.dart';
 
@@ -29,12 +30,7 @@ class _EditarSenhaPageState extends State<EditarSenhaPage> {
         appBar: AppBar(
             title: const Text('Alterar Senha'),
             flexibleSpace: Container(
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
-                    colors: [Color(0xFFFFD600), Color(0xFFFBC02D)]),
-              ),
+              decoration: hubColors.appBarGradient(),
             )),
         body: SafeArea(
           child: Column(

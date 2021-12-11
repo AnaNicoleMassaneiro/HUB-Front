@@ -5,6 +5,7 @@ import 'package:hub/src/View/Class/vendedores.dart';
 import 'package:hub/src/View/ViewCliente/detalhes_vendedor_page.dart';
 
 import 'package:hub/src/util/contains_case_insensitive.dart';
+import 'package:hub/src/util/hub_colors.dart';
 
 class ListaVendedoresPage extends StatefulWidget {
   const ListaVendedoresPage({Key? key}) : super(key: key);
@@ -46,12 +47,7 @@ class _ListaVendedoresPageState extends State<ListaVendedoresPage> {
         appBar: AppBar(
             title: const Text('Buscar Vendedores'),
             flexibleSpace: Container(
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
-                    colors: [Color(0xFFFBC02D), Color(0xFFFBC02D)]),
-              ),
+              decoration: hubColors.appBarGradient(),
             )
         ),
         body: SizedBox(
@@ -67,7 +63,7 @@ class _ListaVendedoresPageState extends State<ListaVendedoresPage> {
                         title: TextField(
                           controller: controller,
                           decoration: const InputDecoration(
-                              hintText: 'Buscar vendedores',
+                              hintText: 'Buscar Vendedores',
                               border: InputBorder.none),
                           onChanged: onSearchTextChanged,
                         ),

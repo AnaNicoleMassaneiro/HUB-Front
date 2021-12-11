@@ -6,6 +6,7 @@ import 'package:hub/src/View/Class/vendedores.dart';
 import 'package:hub/src/View/ViewCliente/detalhes_vendedor_page.dart';
 
 import 'package:hub/src/util/contains_case_insensitive.dart';
+import 'package:hub/src/util/hub_colors.dart';
 
 class MeusFavoritosPage extends StatefulWidget {
   const MeusFavoritosPage({Key? key}) : super(key: key);
@@ -46,12 +47,7 @@ class _MeusFavoritosPageState extends State<MeusFavoritosPage> {
       appBar: AppBar(
           title: const Text('Meus Favoritos'),
           flexibleSpace: Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,
-                  colors: [Color(0xFFFBC02D), Color(0xFFFBC02D)]),
-            ),
+            decoration: hubColors.appBarGradient(),
           )),
       body: Column(
         children: [

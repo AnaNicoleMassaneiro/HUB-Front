@@ -39,12 +39,7 @@ class _VendedorPageState extends State<VendedorPage> {
             title: Text('Área do vendedor',
                 style: TextStyle(color: hubColors.dark)),
             flexibleSpace: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
-                    colors: [hubColors.primary, hubColors.yellowExtraLight]),
-              ),
+              decoration: hubColors.appBarGradient(),
             )),
         drawer: Drawer(
             child: ListView(

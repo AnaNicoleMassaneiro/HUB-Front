@@ -121,12 +121,7 @@ class _EditarProdutoPageState extends State<EditarProdutoPage> {
           title: Text('Editar Produto',
               style: TextStyle(color: hubColors.dark)),
           flexibleSpace: Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,
-                  colors: [hubColors.primary, hubColors.yellowExtraLight]),
-            ),
+            decoration: hubColors.appBarGradient(),
           )),
       floatingActionButton: isEditing
           ? FloatingActionButton(

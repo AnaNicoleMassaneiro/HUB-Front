@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hub/src/Api/api_product.dart';
 import 'package:hub/src/View/Components/modal_message.dart';
+import 'package:hub/src/util/hub_colors.dart';
 import '../Class/meus_produtos.dart';
 import 'detalhes_produto_page.dart';
 
@@ -46,16 +47,10 @@ class _ListaProdutosPageState extends State<ListaProdutosPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            title: const Text('Buscar Produto'),
+            title: const Text('Buscar Produtos'),
             flexibleSpace: Container(
-              decoration: const BoxDecoration(
-              gradient: LinearGradient(
-            begin: Alignment.centerLeft,
-            end: Alignment.centerRight,
-            colors: [Color(0xFFFBC02D), Color(0xFFFBC02D)]),
-          ),
-        )
-      ),
+              decoration: hubColors.appBarGradient()),
+        ),
         body: SizedBox(
           child: Stack(
             children: <Widget>[

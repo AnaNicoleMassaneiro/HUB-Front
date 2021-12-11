@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hub/src/View/Class/meus_produtos.dart';
 import 'package:hub/src/View/Components/modal_message.dart';
+import 'package:hub/src/util/hub_colors.dart';
 import '../Components/entry_fields.dart';
 import '../../Api/api_reservations.dart';
 import '../Class/user_data.dart';
@@ -66,9 +67,9 @@ class _CreateReservaPageState extends State<CreateReserva> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            title: const Text('Detalhes do Produto'),
+            title: const Text('Reservar Produto'),
             flexibleSpace: Container(
-              color: const Color(0xFFFBC02D)
+              decoration: hubColors.appBarGradient(),
             ),
         ),
         body: SizedBox(

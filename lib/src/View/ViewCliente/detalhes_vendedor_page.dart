@@ -13,6 +13,7 @@ import 'package:hub/src/View/Class/meus_produtos.dart';
 import 'package:hub/src/View/Class/user_data.dart';
 import 'package:hub/src/View/Class/vendedores.dart';
 import 'package:hub/src/View/Components/modal_message.dart';
+import 'package:hub/src/util/hub_colors.dart';
 import '../Components/entry_fields.dart';
 import '../../../src/Validations/form_field_validations.dart';
 import 'detalhes_produto_page.dart';
@@ -61,7 +62,7 @@ class _DetalhesVendedorPageState extends State<DetalhesVendedorPage> {
     return Scaffold(
         appBar: AppBar(
             title: const Text('Detalhes do Vendedor'),
-            backgroundColor: Colors.amber),
+            flexibleSpace: Container(decoration: hubColors.appBarGradient())),
         body: SafeArea(
             child: FutureBuilder(
                 future: Future.wait([

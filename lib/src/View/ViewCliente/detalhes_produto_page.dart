@@ -5,6 +5,7 @@ import 'package:hub/src/View/Class/avaliacao.dart';
 import 'package:hub/src/View/Class/user_data.dart';
 import 'package:hub/src/View/Components/modal_message.dart';
 import 'package:hub/src/View/ViewCliente/detalhes_vendedor_page.dart';
+import 'package:hub/src/util/hub_colors.dart';
 import '../Class/meus_produtos.dart';
 import '../ViewReserva/create_reserva.dart';
 import '../Components/entry_fields.dart';
@@ -39,12 +40,7 @@ class _DetalhesProdutoPageState extends State<DetalhesProdutoPage> {
         appBar: AppBar(
             title: const Text('Detalhes do Produto'),
             flexibleSpace: Container(
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
-                    colors: [Color(0xFFFBC02D), Color(0xFFFBC02D)]),
-              ),
+              decoration: hubColors.appBarGradient(),
             )),
         body: SafeArea(
           child: ListView(

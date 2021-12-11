@@ -7,6 +7,7 @@ import 'package:hub/src/Api/api_vendores.dart';
 import 'package:hub/src/View/Class/forma_de_pagamento.dart';
 import 'package:hub/src/View/Class/user_data.dart';
 import 'package:hub/src/View/Components/modal_message.dart';
+import 'package:hub/src/util/hub_colors.dart';
 
 class MinhasFormasDePagamentoPage extends StatefulWidget {
   const MinhasFormasDePagamentoPage({Key? key}) : super(key: key);
@@ -67,12 +68,7 @@ class _MinhasFormasDePagamentoPageState
         appBar: AppBar(
             title: const Text('Minhas Formas de Pagamento'),
             flexibleSpace: Container(
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
-                    colors: [Color(0xFFFFD600), Color(0xFFFBC02D)]),
-              ),
+              decoration: hubColors.appBarGradient(),
             )),
         body: SizedBox(
           child: Stack(

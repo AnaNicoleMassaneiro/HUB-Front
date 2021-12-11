@@ -76,12 +76,7 @@ class _CadastrarProdutoPageState extends State<CadastrarProdutoPage> {
           title: Text('Cadastrar Produto',
               style: TextStyle(color: hubColors.dark)),
           flexibleSpace: Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,
-                  colors: [hubColors.primary, hubColors.yellowExtraLight]),
-            ),
+            decoration: hubColors.appBarGradient(),
           )
       ),
       body: SizedBox(

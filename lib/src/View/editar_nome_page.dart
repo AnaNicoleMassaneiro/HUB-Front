@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:hub/src/Api/api_user.dart';
+import 'package:hub/src/util/hub_colors.dart';
 
 import 'Class/User.dart';
 import 'Class/user_data.dart';
@@ -34,12 +35,7 @@ class _EditarNomePageState extends State<EditarNomePage> {
         appBar: AppBar(
             title: const Text('Editar Perfil'),
             flexibleSpace: Container(
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
-                    colors: [Colors.amber, Colors.amber]),
-              ),
+              decoration: hubColors.appBarGradient()
             )),
         body: buildContainer());
   }

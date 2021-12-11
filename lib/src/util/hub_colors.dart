@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:flutter/material.dart';
 import 'package:hub/src/util/hex_color.dart';
 
 class HubColors {
@@ -13,6 +14,15 @@ class HubColors {
   Color brown = HexColor("#937636"); //off-white
   Color lightBrown = HexColor("#ae8f49"); //off-white
   Color lightGreyTextbox = HexColor("#f2f2f0"); //textInput background
+
+  Decoration appBarGradient() {
+    return BoxDecoration(
+      gradient: LinearGradient(
+          begin: Alignment.centerLeft,
+          end: Alignment.centerRight,
+          colors: [hubColors.primary, hubColors.yellowExtraLight]),
+    );
+  }
 
 
   factory HubColors () {
