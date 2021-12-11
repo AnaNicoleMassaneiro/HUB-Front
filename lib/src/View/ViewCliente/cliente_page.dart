@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hub/src/SQLite/user_data_sqlite.dart';
 import 'package:hub/src/View/Components/modal_message.dart';
 import 'package:hub/src/View/vendedor_page.dart';
+import 'package:hub/src/util/hub_colors.dart';
 import 'package:location/location.dart';
 
 import '../Components/mapa.dart';
@@ -40,8 +41,16 @@ class _ClientePageState extends State<ClientePage> {
 
     return Scaffold(
         appBar: AppBar(
-            title: const Text('Área do cliente'),
-            backgroundColor: const Color(0xFFFBC02D)),
+            title: Text('Área do cliente',
+                style: TextStyle(color: hubColors.dark)),
+            flexibleSpace: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                    colors: [hubColors.primary, hubColors.yellowExtraLight]),
+              ),
+            )),
         drawer: Drawer(
             child: ListView(
               children: [
