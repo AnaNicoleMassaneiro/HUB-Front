@@ -61,6 +61,7 @@ class _LoginPageState extends State<LoginPage> {
             placeholder: ''),
         entryFieldValidation("Senha", senha, validatePassword,
             isPassword: true, placeholder: ''),
+        const Padding(padding: EdgeInsets.symmetric(vertical: 10)),
       ],
     );
   }
@@ -93,7 +94,6 @@ class _LoginPageState extends State<LoginPage> {
                         style: TextStyle(
                             fontSize: 14, fontWeight: FontWeight.w500, color: hubColors.dark)),
                   ),
-                  SizedBox(height: height * .055),
                   linkedLabel(
                       this.context,
                       "Não tem uma conta?",

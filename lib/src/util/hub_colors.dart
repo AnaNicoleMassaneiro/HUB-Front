@@ -12,6 +12,7 @@ class HubColors {
   Color white = HexColor("#f8eaca"); //off-white
   Color brown = HexColor("#937636"); //off-white
   Color lightBrown = HexColor("#ae8f49"); //off-white
+  Color lightGreyTextbox = HexColor("#f2f2f0"); //textInput background
 
 
   factory HubColors () {

@@ -46,28 +46,38 @@ class _SignUpPageState extends State<SignUpPage> {
           const SizedBox(
             height: 10,
           ),
-          TextFormField(
-            validator: (value) {
-              var ret = validatePassword(value!);
-              if (ret != null) {
-                return ret;
-              } else {
-                if (confirmaSenha.text.trim().isEmpty) {
-                  return null;
-                }
-                if (value.compareTo(confirmaSenha.text) == 0) {
-                  return null;
+          Container(
+            decoration: BoxDecoration(
+              color: hubColors.lightGreyTextbox,
+              border: Border.all(
+                  color: hubColors.yellowExtraLight,// set border color
+                  width: 2),   // set border width
+              borderRadius: const BorderRadius.all(
+                  Radius.circular(5.0)), // set rounded corner radius
+            ),
+            child: TextFormField(
+              validator: (value) {
+                var ret = validatePassword(value!);
+                if (ret != null) {
+                  return ret;
                 } else {
-                  return "Senhas não coincidem!";
+                  if (confirmaSenha.text.trim().isEmpty) {
+                    return null;
+                  }
+                  if (value.compareTo(confirmaSenha.text) == 0) {
+                    return null;
+                  } else {
+                    return "Senhas não coincidem!";
+                  }
                 }
-              }
-            },
-            controller: senha,
-            obscureText: true,
-            decoration: const InputDecoration(
+              },
+              controller: senha,
+              obscureText: true,
+              decoration: const InputDecoration(
                 border: InputBorder.none,
-                fillColor: Color(0xfff3f3f4),
-                filled: true),
+                labelText: null,
+              ),
+            )
           )
         ],
       ),
@@ -149,7 +159,6 @@ class _SignUpPageState extends State<SignUpPage> {
                       height: 10,
                     ),
                     _submitButton(),
-                    SizedBox(height: height * .1),
                     linkedLabel(
                         this.context,
                         'Já tem uma conta?',

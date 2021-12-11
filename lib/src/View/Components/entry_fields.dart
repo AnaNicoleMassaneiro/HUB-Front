@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hub/src/util/hub_colors.dart';
 
 Widget simpleEntryField(String title, TextEditingController controllertxt,
     {String? placeholder, bool isPassword = false, TextInputType keyboard = TextInputType.text}) {
@@ -47,21 +48,30 @@ Widget entryFieldValidation(String title, TextEditingController controllerTxt, F
         const SizedBox(
           height: 10,
         ),
-        TextFormField(
-          validator: (value) {
-            return validation(value.toString());
-          },
-          enabled: enabled,
-          controller: controllerTxt,
-          obscureText: isPassword,
-          decoration: InputDecoration(
-              border: InputBorder.none,
-              fillColor: Colors.black12,
-              labelText: placeholder.trim() == "" ? null : placeholder,
-              filled: true
+        Container(
+          decoration: BoxDecoration(
+            color: hubColors.lightGreyTextbox,
+            border: Border.all(
+                color: hubColors.yellowExtraLight,// set border color
+                width: 2),   // set border width
+            borderRadius: const BorderRadius.all(
+                Radius.circular(5.0)), // set rounded corner radius
           ),
-          keyboardType: keyboard,
-        )
+          child: TextFormField(
+            validator: (value) {
+              return validation(value.toString());
+            },
+            enabled: enabled,
+            controller: controllerTxt,
+            obscureText: isPassword,
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              labelText: placeholder.trim() == "" ? null : placeholder,
+              contentPadding: const EdgeInsets.symmetric(horizontal: 15),
+            ),
+            keyboardType: keyboard,
+          ),
+        ),
       ],
     ),
   );
@@ -83,18 +93,28 @@ Widget textAreaEntryFieldValidation(
         const SizedBox(
           height: 10,
         ),
-        TextFormField(
-          validator: (value) {
-            return validation(value.toString());
-          },
-          maxLines: maxLines,
-          enabled: enabled,
-          controller: controllerTxt,
-          decoration: InputDecoration(
-              border: InputBorder.none,
-              fillColor: Colors.black12,
-              labelText: placeholder,
-              filled: true
+        Container(
+          child: TextFormField(
+            validator: (value) {
+              return validation(value.toString());
+            },
+            maxLines: maxLines,
+            enabled: enabled,
+            controller: controllerTxt,
+            decoration: InputDecoration(
+              contentPadding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                border: InputBorder.none,
+                fillColor: Colors.black12,
+                labelText: placeholder,
+            ),
+          ),
+          decoration: BoxDecoration(
+              border: Border.all(
+                  color: hubColors.yellowExtraLight,// set border color
+                  width: 2),   // set border width
+              borderRadius: const BorderRadius.all(
+                  Radius.circular(5.0)),
+              color: hubColors.lightGreyTextbox
           ),
         )
       ],
