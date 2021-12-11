@@ -5,6 +5,7 @@ import 'package:hub/src/Api/api_vendores.dart';
 import 'package:hub/src/View/Components/modal_message.dart';
 import 'package:hub/src/View/ViewVendedor/minhas_formas_de_pagamento.dart';
 import 'package:hub/src/View/editar_senha_page.dart';
+import 'package:hub/src/util/hub_colors.dart';
 import '../View/Class/user_data.dart';
 import 'Class/User.dart';
 import 'editar_nome_page.dart';
@@ -34,8 +35,17 @@ class _PerfilPageState extends State<PerfilPage> {
     futureUser = getUserData();
 
     return Scaffold(
-        appBar:
-            AppBar(title: const Text('Perfil'), backgroundColor: Colors.amber),
+        appBar: AppBar(
+            title: Text('Perfil',
+                style: TextStyle(color: hubColors.dark)),
+            flexibleSpace: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                    colors: [hubColors.primary, hubColors.yellowExtraLight]),
+              ),
+            )),
         body: FutureBuilder(
             future: futureUser,
             builder: (context, AsyncSnapshot<Map<String, dynamic>> snapshot) {

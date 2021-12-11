@@ -73,7 +73,8 @@ class _CadastrarProdutoPageState extends State<CadastrarProdutoPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: const Text('Cadastrar Produto'),
+          title: Text('Cadastrar Produto',
+              style: TextStyle(color: hubColors.dark)),
           flexibleSpace: Container(
             decoration: BoxDecoration(
               gradient: LinearGradient(

@@ -72,9 +72,9 @@ class _EditarProdutoPageState extends State<EditarProdutoPage> {
           width: MediaQuery.of(context).size.width,
           padding: const EdgeInsets.symmetric(vertical: 15),
           alignment: Alignment.center,
-          child: const Text(
+          child: Text(
             "Salvar alterações",
-            style: TextStyle(fontSize: 20, color: Colors.black),
+            style: TextStyle(fontSize: 20, color: hubColors.dark),
           ),
         ));
   }
@@ -118,18 +118,19 @@ class _EditarProdutoPageState extends State<EditarProdutoPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: const Text('Editar Produto'),
+          title: Text('Editar Produto',
+              style: TextStyle(color: hubColors.dark)),
           flexibleSpace: Container(
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               gradient: LinearGradient(
                   begin: Alignment.centerLeft,
                   end: Alignment.centerRight,
-                  colors: [Color(0xFFFBC02D), Color(0xFFFBC02D)]),
+                  colors: [hubColors.primary, hubColors.yellowExtraLight]),
             ),
           )),
       floatingActionButton: isEditing
           ? FloatingActionButton(
-              backgroundColor: Colors.red,
+              backgroundColor: hubColors.white,
               child: const Icon(Icons.cancel_sharp),
               onPressed: () {
                 setState(() => {
@@ -179,10 +180,10 @@ class _EditarProdutoPageState extends State<EditarProdutoPage> {
                                     padding: const EdgeInsets.symmetric(
                                         vertical: 15),
                                     alignment: Alignment.center,
-                                    child: const Text(
+                                    child: Text(
                                       "Adicionar imagem",
                                       style: TextStyle(
-                                          fontSize: 20, color: Colors.black),
+                                          fontSize: 20, color: hubColors.dark),
                                     ),
                                   )),
                               const SizedBox(
@@ -197,10 +198,10 @@ class _EditarProdutoPageState extends State<EditarProdutoPage> {
                                     padding: const EdgeInsets.symmetric(
                                         vertical: 15),
                                     alignment: Alignment.center,
-                                    child: const Text(
+                                    child: Text(
                                       "Remover imagem",
                                       style: TextStyle(
-                                          fontSize: 20, color: Colors.black),
+                                          fontSize: 20, color: hubColors.dark),
                                     ),
                                   )),
                               const SizedBox(
