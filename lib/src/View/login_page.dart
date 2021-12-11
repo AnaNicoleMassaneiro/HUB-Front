@@ -2,10 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:hub/src/SQLite/user_data_sqlite.dart';
+import 'package:hub/src/util/hub_colors.dart';
 
 import './Class/user_data.dart';
 import '../Api/api_login.dart';
-import '../Widget/bezier_container.dart';
 
 import 'vendedor_page.dart';
 import 'ViewCliente/cliente_page.dart';
@@ -46,9 +46,9 @@ class _LoginPageState extends State<LoginPage> {
           borderRadius: BorderRadius.all(Radius.circular(5)),
           color: Colors.transparent,
         ),
-        child: const Text(
+        child: Text(
           'Login',
-          style: TextStyle(fontSize: 20, color: Colors.black),
+          style: TextStyle(fontSize: 20, color: hubColors.dark),
         ),
       ),
     );
@@ -73,10 +73,6 @@ class _LoginPageState extends State<LoginPage> {
       height: height,
       child: Stack(
         children: <Widget>[
-          Positioned(
-              top: -height * .15,
-              right: -MediaQuery.of(context).size.width * .4,
-              child: const BezierContainer()),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: SingleChildScrollView(
@@ -85,17 +81,17 @@ class _LoginPageState extends State<LoginPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   SizedBox(height: height * .2),
-                  defaultTitle(this.context, "HUB UFPR"),
-                  const SizedBox(height: 50),
+                  Image.asset("assets/yellowlogo.png", width: 200, height: 200),
+                  const SizedBox(height: 40),
                   Form(key: _loginFormKey, child: (_userPasswordWidget())),
                   _submitButton(),
                   const SizedBox(height: 20),
                   Container(
                     padding: const EdgeInsets.symmetric(vertical: 10),
                     alignment: Alignment.centerRight,
-                    child: const Text('Esqueceu a senha?',
+                    child: Text('Esqueceu a senha?',
                         style: TextStyle(
-                            fontSize: 14, fontWeight: FontWeight.w500)),
+                            fontSize: 14, fontWeight: FontWeight.w500, color: hubColors.dark)),
                   ),
                   SizedBox(height: height * .055),
                   linkedLabel(
