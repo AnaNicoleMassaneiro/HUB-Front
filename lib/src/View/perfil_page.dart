@@ -63,13 +63,49 @@ class _PerfilPageState extends State<PerfilPage> {
                 }
 
                 return SafeArea(
-                    child: Column(
-                  children: [
-                    Padding(
+                    child: Padding(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 25, vertical: 50),
+                          horizontal: 25, vertical: 15),
                       child: Column(
-                        children: <Widget>[
+                        children: [
+                          userData.isVendedor!
+                          ? Row(
+                            children: [
+                              const Padding(padding: EdgeInsets.all(10)),
+                              Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(isSellerOpen
+                                      ? "Status da Minha Loja  (Aberta)"
+                                      : "Status da Minha Loja  (Fechada)",
+                                    style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Switch(
+                                    value: isSellerOpen,
+                                    onChanged: (bool v) {
+                                      updateStatus(isSellerAtivo, v);
+                                    },
+                                  ),
+                                  IconButton(
+                                    icon: const Icon(Icons.info_outline),
+                                    onPressed: () {
+                                      customMessageModal(
+                                          context,
+                                          "Status da Loja",
+                                          "Outros usuários só podem ver seus produtos enquanto "
+                                              "sua loja estiver ‘Aberta’. Mude seu status "
+                                              "para ‘Fechada’ quando não estiver mais "
+                                              "vendendo nenhum produto no momento.",
+                                          "Fechar");
+                                    },
+                                  )
+                                ],
+                              ),
+                            ],
+                          ): Container(),
                           Text('Nome ' + usuario.name),
                           Text('Email ' + usuario.email),
                           Text('GRR ' + usuario.grr),
@@ -81,7 +117,7 @@ class _PerfilPageState extends State<PerfilPage> {
                                 Text(usuario.telefone ?? "---------------"),
                               ]),
                           Padding(
-                            padding: const EdgeInsets.only(top: 5),
+                            padding: const EdgeInsets.only(top: 15),
                             child: ElevatedButton(
                                 onPressed: () {
                                   Navigator.push(
@@ -165,39 +201,6 @@ class _PerfilPageState extends State<PerfilPage> {
                                           )),
                                     ),
                                     const Padding(padding: EdgeInsets.all(10)),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(isSellerOpen
-                                            ? "Status da Minha Loja  (Aberta)"
-                                            : "Status da Minha Loja  (Fechada)",
-                                          style: const TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        Switch(
-                                          value: isSellerOpen,
-                                          onChanged: (bool v) {
-                                            updateStatus(isSellerAtivo, v);
-                                          },
-                                        ),
-                                        IconButton(
-                                          icon: const Icon(Icons.info_outline),
-                                          onPressed: () {
-                                            customMessageModal(
-                                                context,
-                                                "Status da Loja",
-                                                "Outros usuários só podem ver seus produtos enquanto "
-                                                    "sua loja estiver ‘Aberta’. Mude seu status "
-                                                    "para ‘Fechada’ quando não estiver mais "
-                                                    "vendendo nenhum produto no momento.",
-                                                "Fechar");
-                                          },
-                                        )
-                                      ],
-                                    ),
-                                    const Padding(padding: EdgeInsets.all(10)),
                                     ElevatedButton(
                                         onPressed: () {
                                           showDialog(
@@ -260,8 +263,7 @@ class _PerfilPageState extends State<PerfilPage> {
                         ],
                       ),
                     ),
-                  ],
-                ));
+              );
               }
             }));
   }
