@@ -1,6 +1,6 @@
 class Endpoints {
-  //static const host = "https://hubufpr.herokuapp.com/"; // ENDPOINT HEROKU
-  static const host = "http://192.168.1.2:5000/"; // ENDPOINT LOCAL
+  static const host = "https://hubufpr.herokuapp.com/"; // ENDPOINT HEROKU
+  //static const host = "http://192.168.1.2:5000/"; // ENDPOINT LOCAL
 
   // USER
   static const create = host + "api/User/create";

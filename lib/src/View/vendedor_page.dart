@@ -5,6 +5,7 @@ import 'package:hub/src/View/ViewCliente/cliente_page.dart';
 import 'package:hub/src/View/ViewVendedor/minhas_reservas_page.dart';
 import 'package:hub/src/View/perfil_page.dart';
 import 'package:hub/src/View/welcome_page.dart';
+import 'package:hub/src/util/hub_colors.dart';
 import 'ViewProduto/cadastrar_produto_page.dart';
 import 'ViewProduto/meus_produtos_page.dart';
 import './Class/user_data.dart';
@@ -35,13 +36,14 @@ class _VendedorPageState extends State<VendedorPage> {
 
     return Scaffold(
         appBar: AppBar(
-            title: const Text('Área do vendedor'),
+            title: Text('Área do vendedor',
+                style: TextStyle(color: hubColors.dark)),
             flexibleSpace: Container(
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 gradient: LinearGradient(
                     begin: Alignment.centerLeft,
                     end: Alignment.centerRight,
-                    colors: [Color(0xFFFBC02D), Color(0xFFFBC02D)]),
+                    colors: [hubColors.primary, hubColors.yellowExtraLight]),
               ),
             )),
         drawer: Drawer(
@@ -114,7 +116,7 @@ class _VendedorPageState extends State<VendedorPage> {
                   });
                 },
                 child: const Icon(Icons.plus_one),
-                backgroundColor: const Color(0xFFFBC02D),
+                backgroundColor: hubColors.primary,
               )
             : Column(),
         bottomNavigationBar: BottomNavigationBar(

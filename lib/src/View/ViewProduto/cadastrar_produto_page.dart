@@ -6,6 +6,7 @@ import 'package:hub/src/Api/api_product.dart';
 import 'package:hub/src/Validations/form_field_validations.dart';
 import 'package:hub/src/View/Components/entry_fields.dart';
 import 'package:hub/src/View/Components/modal_message.dart';
+import 'package:hub/src/util/hub_colors.dart';
 import 'package:image_picker/image_picker.dart';
 
 class CadastrarProdutoPage extends StatefulWidget {
@@ -46,9 +47,9 @@ class _CadastrarProdutoPageState extends State<CadastrarProdutoPage> {
           width: MediaQuery.of(context).size.width,
           padding: const EdgeInsets.symmetric(vertical: 15),
           alignment: Alignment.center,
-          child: const Text(
+          child: Text(
             "Cadastrar",
-            style: TextStyle(fontSize: 20, color: Colors.white),
+            style: TextStyle(fontSize: 20, color: hubColors.dark),
           ),
         ));
   }
@@ -74,11 +75,11 @@ class _CadastrarProdutoPageState extends State<CadastrarProdutoPage> {
       appBar: AppBar(
           title: const Text('Cadastrar Produto'),
           flexibleSpace: Container(
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               gradient: LinearGradient(
                   begin: Alignment.centerLeft,
                   end: Alignment.centerRight,
-                  colors: [Color(0xFFFBC02D), Color(0xFFFBC02D)]),
+                  colors: [hubColors.primary, hubColors.yellowExtraLight]),
             ),
           )
       ),
@@ -106,10 +107,10 @@ class _CadastrarProdutoPageState extends State<CadastrarProdutoPage> {
                           width: MediaQuery.of(context).size.width,
                           padding: const EdgeInsets.symmetric(vertical: 15),
                           alignment: Alignment.center,
-                          color: const Color(0xFFFBC02D),
-                          child: const Text(
+                          color: Colors.transparent,
+                          child: Text(
                             "Adicionar imagem",
-                            style: TextStyle(fontSize: 20, color: Colors.black),
+                            style: TextStyle(fontSize: 20, color: hubColors.dark),
                           ),
                         )),
                     const SizedBox(
@@ -174,7 +175,7 @@ class _CadastrarProdutoPageState extends State<CadastrarProdutoPage> {
       return Image.file(File(pf.path), height: 250, width: 250, fit: BoxFit.cover);
     }
     else {
-      return Image.asset("assets/product-icon.png", width: 200, height: 200);
+      return Image.asset("assets/upload-icon.png", width: 200, height: 200);
     }
   }
 }
