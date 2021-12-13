@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:hub/src/Api/api_user.dart';
 import 'package:hub/src/Api/api_vendores.dart';
@@ -90,8 +91,8 @@ class _PerfilPageState extends State<PerfilPage> {
                                               context,
                                               "Status da Loja",
                                               "Outros usuários só podem ver seus produtos enquanto "
-                                                  "sua loja estiver ‘Aberta’. Mude seu status "
-                                                  "para ‘Fechada’ quando não estiver mais "
+                                                  "sua loja estiver \"Aberta\". Mude seu status "
+                                                  "para \"Fechada\" quando não estiver mais "
                                                   "vendendo nenhum produto no momento.",
                                               "Fechar");
                                         },
@@ -108,7 +109,7 @@ class _PerfilPageState extends State<PerfilPage> {
                           usuario.name,
                           style: const TextStyle(
                             fontWeight: FontWeight.w300,
-                            fontSize: 20,
+                            fontSize: 20
                           ),
                         ),
                         Text(usuario.email, style: profileDetails()),
@@ -127,7 +128,7 @@ class _PerfilPageState extends State<PerfilPage> {
                               ),
                             ]),
                         Padding(
-                          padding: const EdgeInsets.only(top: 15),
+                          padding: const EdgeInsets.only(top: 60),
                           child: ElevatedButton(
                               onPressed: () {
                                 Navigator.push(
@@ -149,15 +150,15 @@ class _PerfilPageState extends State<PerfilPage> {
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 15),
                                 alignment: Alignment.center,
-                                child: const Text(
+                                child: Text(
                                   "Editar Perfil",
                                   style: TextStyle(
-                                      fontSize: 20, color: Colors.black),
+                                      fontSize: 20, color: hubColors.dark),
                                 ),
                               )),
                         ),
                         Padding(
-                            padding: const EdgeInsets.only(top: 5),
+                            padding: const EdgeInsets.only(top: 10),
                             child: ElevatedButton(
                                 onPressed: () {
                                   final page =
@@ -172,17 +173,17 @@ class _PerfilPageState extends State<PerfilPage> {
                                   padding:
                                       const EdgeInsets.symmetric(vertical: 15),
                                   alignment: Alignment.center,
-                                  child: const Text(
+                                  child: Text(
                                     "Editar Senha",
                                     style: TextStyle(
-                                        fontSize: 20, color: Colors.black),
+                                        fontSize: 20, color: hubColors.dark),
                                   ),
                                 ))),
                         userData.isVendedor!
                             ? Column(
                                 children: [
                                   Padding(
-                                    padding: const EdgeInsets.only(top: 5),
+                                    padding: const EdgeInsets.only(top: 10),
                                     child: ElevatedButton(
                                         onPressed: () {
                                           Navigator.push(
@@ -197,15 +198,15 @@ class _PerfilPageState extends State<PerfilPage> {
                                           padding: const EdgeInsets.symmetric(
                                               vertical: 15),
                                           alignment: Alignment.center,
-                                          child: const Text(
+                                          child: Text(
                                             "Formas de Pagamento",
                                             style: TextStyle(
                                                 fontSize: 20,
-                                                color: Colors.black),
+                                                color: hubColors.dark),
                                           ),
                                         )),
                                   ),
-                                  const Padding(padding: EdgeInsets.all(10)),
+                                  const Padding(padding: EdgeInsets.all(20)),
                                   ElevatedButton(
                                       onPressed: () {
                                         showDialog(
@@ -256,9 +257,9 @@ class _PerfilPageState extends State<PerfilPage> {
                                           isSellerAtivo
                                               ? "Inativar minha conta"
                                               : "Reativar minha conta",
-                                          style: const TextStyle(
+                                          style: TextStyle(
                                               fontSize: 20,
-                                              color: Colors.black),
+                                              color: hubColors.dark),
                                         ),
                                       ))
                                 ],
