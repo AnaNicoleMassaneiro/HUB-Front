@@ -143,6 +143,7 @@ class _CadastrarProdutoPageState extends State<CadastrarProdutoPage> {
       if (source != null) {
         // ignore: deprecated_member_use
         selectedImage = await ImagePicker().getImage(source: source);
+        setState((){});
       }
     });
   }
