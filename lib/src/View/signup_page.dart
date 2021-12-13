@@ -74,6 +74,7 @@ class _SignUpPageState extends State<SignUpPage> {
               controller: senha,
               obscureText: true,
               decoration: const InputDecoration(
+                contentPadding: EdgeInsets.symmetric(horizontal: 15),
                 border: InputBorder.none,
                 labelText: null,
               ),
