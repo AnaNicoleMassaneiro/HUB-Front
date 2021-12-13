@@ -64,16 +64,15 @@ class _PerfilPageState extends State<PerfilPage> {
                       children: [
                         userData.isVendedor!
                             ? Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  const Padding(padding: EdgeInsets.all(10)),
                                   Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
                                         isSellerOpen
-                                            ? "Status da Minha Loja  (Aberta)"
-                                            : "Status da Minha Loja  (Fechada)",
+                                          ? "Status da Minha Loja (Aberta)"
+                                          : "Status da Minha Loja (Fechada)",
                                         style: const TextStyle(
                                             fontSize: 16,
                                             fontWeight: FontWeight.bold),
@@ -102,6 +101,9 @@ class _PerfilPageState extends State<PerfilPage> {
                                 ],
                               )
                             : Container(),
+                        const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 10)
+                        ),
                         Text(
                           usuario.name,
                           style: const TextStyle(
@@ -116,10 +118,13 @@ class _PerfilPageState extends State<PerfilPage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               const Icon(Icons.phone, size: 20),
-                              Text(usuario.telefone == null ||
-                                      usuario.telefone!.trim().isEmpty
-                                  ? "---------------"
-                                  : usuario.telefone!, style: profileDetails(),),
+                              Text(
+                                usuario.telefone == null ||
+                                        usuario.telefone!.trim().isEmpty
+                                    ? "---------------"
+                                    : usuario.telefone!,
+                                style: profileDetails(),
+                              ),
                             ]),
                         Padding(
                           padding: const EdgeInsets.only(top: 15),
@@ -294,11 +299,8 @@ class _PerfilPageState extends State<PerfilPage> {
     }
   }
 
-  TextStyle profileDetails(){
+  TextStyle profileDetails() {
     return const TextStyle(
-      fontSize: 14,
-      fontWeight: FontWeight.w100,
-      fontStyle: FontStyle.italic
-    );
+        fontSize: 14, fontWeight: FontWeight.w100, fontStyle: FontStyle.italic);
   }
 }
