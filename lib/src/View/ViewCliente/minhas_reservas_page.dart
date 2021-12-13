@@ -56,78 +56,112 @@ class _ListaProdutosPageState extends State<MinhasReservasPage> {
                       ? ListView.builder(
                           itemCount: reservas.length,
                           itemBuilder: (context, i) {
-                            return Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  reservas[i].produto.imagem == null
-                                      ? Image.asset(
-                                          "assets/product-icon.png",
-                                          height: 100,
-                                          fit: BoxFit.scaleDown,
-                                        )
-                                      : Image.memory(
-                                          reservas[i].produto.imagem!,
-                                          height: 100,
-                                          fit: BoxFit.scaleDown,
-                                        ),
-                                  Column(
-                                    children: [
-                                      Row(children: [
-                                        Text(reservas[i].produto.nome +
-                                            " x" +
-                                            reservas[i]
-                                                .quantidadeDesejada
-                                                .toString())
-                                      ]),
-                                      Row(children: [
-                                        Text("Criada em " +
-                                            reservas[i]
-                                                .dataCriacao
-                                                .day
-                                                .toString()
-                                                .padLeft(2, '0') +
-                                            "/" +
-                                            reservas[i]
-                                                .dataCriacao
-                                                .month
-                                                .toString()
-                                                .padLeft(2, '0') +
-                                            "/" +
-                                            reservas[i]
-                                                .dataCriacao
-                                                .year
-                                                .toString() +
-                                            ", " +
-                                            reservas[i]
-                                                .dataCriacao
-                                                .hour
-                                                .toString()
-                                                .padLeft(2, '0') +
-                                            ":" +
-                                            reservas[i]
-                                                .dataCriacao
-                                                .minute
-                                                .toString()
-                                                .padLeft(2, '0'))
-                                      ]),
-                                      Row(children: [
-                                        Text(reservas[i].status),
-                                      ])
-                                    ],
-                                  ),
-                                  reservas[i].status == "PENDENTE"
-                                      ? Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 5),
-                                          child: ElevatedButton(
-                                              onPressed: () {
-                                                confirmCancelReservation(
-                                                    reservas[i].id);
-                                              },
-                                              child: const Text("Cancelar")))
-                                      : Row()
-                                ]);
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 5),
+                              child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    reservas[i].produto.imagem == null
+                                        ? Image.asset(
+                                            "assets/product-icon.png",
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.25,
+                                            fit: BoxFit.scaleDown,
+                                          )
+                                        : Image.memory(
+                                            reservas[i].produto.imagem!,
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.25,
+                                            fit: BoxFit.scaleDown),
+                                    SizedBox(
+                                      child: Column(
+                                        children: [
+                                          Row(
+                                              children: [
+                                                Flexible(
+                                                  child: Text(
+                                                    reservas[i].produto.nome +
+                                                        " x " +
+                                                        reservas[i]
+                                                            .quantidadeDesejada
+                                                            .toString(),
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                ),
+                                              ],
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center),
+                                          Row(
+                                              children: [
+                                                Flexible(
+                                                  child: Text(
+                                                    "Criada em " +
+                                                        reservas[i]
+                                                            .dataCriacao
+                                                            .day
+                                                            .toString()
+                                                            .padLeft(2, '0') +
+                                                        "/" +
+                                                        reservas[i]
+                                                            .dataCriacao
+                                                            .month
+                                                            .toString()
+                                                            .padLeft(2, '0') +
+                                                        "/" +
+                                                        reservas[i]
+                                                            .dataCriacao
+                                                            .year
+                                                            .toString() +
+                                                        ", " +
+                                                        reservas[i]
+                                                            .dataCriacao
+                                                            .hour
+                                                            .toString()
+                                                            .padLeft(2, '0') +
+                                                        ":" +
+                                                        reservas[i]
+                                                            .dataCriacao
+                                                            .minute
+                                                            .toString()
+                                                            .padLeft(2, '0'),
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                )
+                                              ],
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.end),
+                                          Row(
+                                            children: [
+                                              Text(
+                                                reservas[i].status,
+                                              ),
+                                            ],
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                          )
+                                        ],
+                                      ),
+                                      width: MediaQuery.of(context).size.width *
+                                          0.45,
+                                    ),
+                                    reservas[i].status == "PENDENTE"
+                                        ? Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 5),
+                                            child: ElevatedButton(
+                                                onPressed: () {
+                                                  confirmCancelReservation(
+                                                      reservas[i].id);
+                                                },
+                                                child: const Text("Cancelar")))
+                                        : Row()
+                                  ]),
+                            );
                           })
                       : const Center(
                           child: Text(
