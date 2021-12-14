@@ -3,6 +3,7 @@ import 'package:hub/src/SQLite/user_data_sqlite.dart';
 import 'package:hub/src/View/Components/modal_message.dart';
 import 'package:hub/src/View/ViewCliente/cliente_page.dart';
 import 'package:hub/src/View/ViewVendedor/minhas_reservas_page.dart';
+import 'package:hub/src/View/ViewVendedor/relatorios_page.dart';
 import 'package:hub/src/View/perfil_page.dart';
 import 'package:hub/src/View/welcome_page.dart';
 import 'package:hub/src/util/hub_colors.dart';
@@ -31,6 +32,7 @@ class _VendedorPageState extends State<VendedorPage> {
     final List<Widget> _telas = [
       MeusProdutosPage(),
       const MinhasReservasPage(),
+      RelatoriosPage(),
       Container(),
     ];
 
