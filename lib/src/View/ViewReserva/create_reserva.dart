@@ -32,8 +32,8 @@ class _CreateReservaPageState extends State<CreateReserva> {
         width: MediaQuery.of(context).size.width,
         padding: const EdgeInsets.symmetric(vertical: 15),
         alignment: Alignment.center,
-        decoration: BoxDecoration(
-            borderRadius: const BorderRadius.all(Radius.circular(5)),
+        decoration: const BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(5)),
             color: Colors.transparent,
         ),
         child: const Text(
@@ -149,7 +149,6 @@ class _CreateReservaPageState extends State<CreateReserva> {
     api.create(idCliente, idProduto, quantidade, lat, lon)
       .then((response) {
       if (response.statusCode == 200) {
-        Navigator.pop(context);
         Navigator.pop(context);
         Navigator.pop(context);
 
