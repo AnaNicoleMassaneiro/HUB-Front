@@ -3,7 +3,6 @@ import 'package:hub/src/View/login_page.dart';
 import 'package:hub/src/View/signup_page.dart';
 import 'package:hub/src/util/hub_colors.dart';
 
-import 'Components/labels_text.dart';
 import 'Components/buttons.dart';
 
 class WelcomePage extends StatefulWidget {
