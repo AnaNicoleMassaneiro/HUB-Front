@@ -32,7 +32,7 @@ class _VendedorPageState extends State<VendedorPage> {
     final List<Widget> _telas = [
       MeusProdutosPage(),
       const MinhasReservasPage(),
-      RelatoriosPage(),
+      const RelatoriosPage(),
       Container(),
     ];
 
