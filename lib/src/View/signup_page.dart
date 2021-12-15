@@ -30,6 +30,7 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController grr = TextEditingController();
   final TextEditingController confirmaSenha = TextEditingController();
   bool isChecked = false;
+  bool _loading = false;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -47,64 +48,66 @@ class _SignUpPageState extends State<SignUpPage> {
             height: 10,
           ),
           Container(
-            decoration: BoxDecoration(
-              color: hubColors.lightGreyTextbox,
-              border: Border.all(
-                  color: hubColors.yellowExtraLight,// set border color
-                  width: 2),   // set border width
-              borderRadius: const BorderRadius.all(
-                  Radius.circular(5.0)), // set rounded corner radius
-            ),
-            child: TextFormField(
-              validator: (value) {
-                var ret = validatePassword(value!);
-                if (ret != null) {
-                  return ret;
-                } else {
-                  if (confirmaSenha.text.trim().isEmpty) {
-                    return null;
-                  }
-                  if (value.compareTo(confirmaSenha.text) == 0) {
-                    return null;
-                  } else {
-                    return "Senhas não coincidem!";
-                  }
-                }
-              },
-              controller: senha,
-              obscureText: true,
-              decoration: const InputDecoration(
-                contentPadding: EdgeInsets.symmetric(horizontal: 15),
-                border: InputBorder.none,
-                labelText: null,
+              decoration: BoxDecoration(
+                color: hubColors.lightGreyTextbox,
+                border: Border.all(
+                    color: hubColors.yellowExtraLight, // set border color
+                    width: 2), // set border width
+                borderRadius: const BorderRadius.all(
+                    Radius.circular(5.0)), // set rounded corner radius
               ),
-            )
-          )
+              child: TextFormField(
+                validator: (value) {
+                  var ret = validatePassword(value!);
+                  if (ret != null) {
+                    return ret;
+                  } else {
+                    if (confirmaSenha.text.trim().isEmpty) {
+                      return null;
+                    }
+                    if (value.compareTo(confirmaSenha.text) == 0) {
+                      return null;
+                    } else {
+                      return "Senhas não coincidem!";
+                    }
+                  }
+                },
+                controller: senha,
+                obscureText: true,
+                decoration: const InputDecoration(
+                  contentPadding: EdgeInsets.symmetric(horizontal: 15),
+                  border: InputBorder.none,
+                  labelText: null,
+                ),
+              ))
         ],
       ),
     );
   }
 
   Widget _submitButton() {
-    return ElevatedButton(
-        onPressed: () {
-          if (_formKey.currentState!.validate()) {
-            _registerUser(nome.text, isChecked, senha.text, confirmaSenha.text,
-                grr.text, email.text);
-          }
-        },
-        child: Container(
-          width: MediaQuery.of(context).size.width,
-          padding: const EdgeInsets.symmetric(vertical: 15),
-          alignment: Alignment.center,
-          decoration: const BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(5)),
-          ),
-          child: Text(
-            "Registrar",
-            style: TextStyle(fontSize: 20, color: hubColors.dark),
-          ),
-        ));
+    return !_loading
+        ? ElevatedButton(
+            onPressed: () {
+              if (_formKey.currentState!.validate()) {
+                _registerUser(nome.text, isChecked, senha.text,
+                    confirmaSenha.text, grr.text, email.text);
+                setState(() => _loading = true);
+              }
+            },
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              padding: const EdgeInsets.symmetric(vertical: 15),
+              alignment: Alignment.center,
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(5)),
+              ),
+              child: Text(
+                "Registrar",
+                style: TextStyle(fontSize: 20, color: hubColors.dark),
+              ),
+            ))
+        : const CircularProgressIndicator();
   }
 
   Widget _emailPasswordWidget() {
@@ -150,7 +153,8 @@ class _SignUpPageState extends State<SignUpPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     SizedBox(height: height * .1),
-                    Image.asset("assets/yellowlogo.png", width: 200, height: 200),
+                    Image.asset("assets/yellowlogo.png",
+                        width: 200, height: 200),
                     const SizedBox(height: 10),
                     Form(
                       key: _formKey,
@@ -198,6 +202,8 @@ class _SignUpPageState extends State<SignUpPage> {
           "Seu cadastro foi realizado com sucesso. Agora você já pode efetuar seu login.",
           "OK");
     } else {
+      _loading = false;
+
       customMessageModal(context, "Falha ao cadastrar usuário: ",
           jsonDecode(ret.body)["msg"], "Fechar");
     }
