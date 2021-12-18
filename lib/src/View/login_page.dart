@@ -28,30 +28,34 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController user = TextEditingController();
   final TextEditingController senha = TextEditingController();
+  bool _loading = false;
 
   final _loginFormKey = GlobalKey<FormState>();
 
   Widget _submitButton() {
-    return ElevatedButton(
-      onPressed: () {
-        if (_loginFormKey.currentState!.validate()) {
-          _authenticate(user.text, senha.text);
-        }
-      },
-      child: Container(
-        width: MediaQuery.of(context).size.width,
-        padding: const EdgeInsets.symmetric(vertical: 15),
-        alignment: Alignment.center,
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(5)),
-          color: Colors.transparent,
-        ),
-        child: Text(
-          'Login',
-          style: TextStyle(fontSize: 20, color: hubColors.dark),
-        ),
-      ),
-    );
+    return !_loading
+        ? ElevatedButton(
+            onPressed: () {
+              if (_loginFormKey.currentState!.validate()) {
+                _authenticate(user.text, senha.text);
+              }
+              setState(() => _loading = true);
+            },
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              padding: const EdgeInsets.symmetric(vertical: 15),
+              alignment: Alignment.center,
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(5)),
+                color: Colors.transparent,
+              ),
+              child: Text(
+                'Login',
+                style: TextStyle(fontSize: 20, color: hubColors.dark),
+              ),
+            ),
+          )
+        : const CircularProgressIndicator();
   }
 
   Widget _userPasswordWidget() {
@@ -92,7 +96,9 @@ class _LoginPageState extends State<LoginPage> {
                     alignment: Alignment.centerRight,
                     child: Text('Esqueceu a senha?',
                         style: TextStyle(
-                            fontSize: 14, fontWeight: FontWeight.w500, color: hubColors.dark)),
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: hubColors.dark)),
                   ),
                   linkedLabel(
                       this.context,
@@ -132,8 +138,7 @@ class _LoginPageState extends State<LoginPage> {
 
             Navigator.pushAndRemoveUntil(
                 context,
-                MaterialPageRoute(
-                    builder: (context) => VendedorPage()),
+                MaterialPageRoute(builder: (context) => VendedorPage()),
                 (r) => false);
           } else {
             userData.isVendedorProfileActive = false;
@@ -145,6 +150,7 @@ class _LoginPageState extends State<LoginPage> {
                 (r) => false);
           }
         } else {
+          _loading = false;
           customMessageModal(
               context,
               "Falha ao autenticar: ",
@@ -153,7 +159,15 @@ class _LoginPageState extends State<LoginPage> {
         }
       });
     }, onError: (error) async {
-      setState(() {});
+      _loading = false;
+
+      setState(() {
+        customMessageModal(
+            context,
+            "Falha ao autenticar: ",
+            "Verifique sua conexão com a internet ou entre em contato com o administrador",
+            "Fechar");
+      });
     });
   }
 }
