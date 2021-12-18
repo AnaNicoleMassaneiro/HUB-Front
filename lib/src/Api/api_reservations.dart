@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:hub/src/View/Class/user_data.dart';
 import 'package:hub/src/util/endpoints.dart';
 import 'package:http/http.dart' as http;
 
@@ -9,6 +10,7 @@ class ApiReservations {
       Uri.parse(Endpoints.createReservation),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': userData.token!,
       },
       body: jsonEncode(<String, dynamic>{
         "idCliente": idCliente,
@@ -22,9 +24,13 @@ class ApiReservations {
 
   Future<List<Map<String, dynamic>>> getByCustomer(int id) async {
     final res = await http.get(
-      Uri.parse(
-          Endpoints.getReservationByCustomer + id.toString()),
-    );
+        Uri.parse(
+          Endpoints.getReservationByCustomer + id.toString(),
+        ),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': userData.token!,
+        });
 
     if (res.statusCode == 200) {
       return List<Map<String, dynamic>>.from(json.decode(res.body)["reservas"]);
@@ -35,8 +41,11 @@ class ApiReservations {
 
   Future<List<Map<String, dynamic>>> getBySeller(int id) async {
     final res = await http.get(
-      Uri.parse(Endpoints.getReservationBySeller + id.toString()),
-    );
+        Uri.parse(Endpoints.getReservationBySeller + id.toString()),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': userData.token!,
+        });
 
     if (res.statusCode == 200) {
       return List<Map<String, dynamic>>.from(json.decode(res.body)["reservas"]);
@@ -47,11 +56,19 @@ class ApiReservations {
 
   Future<http.Response> cancelReservation(int id) async {
     return await http.patch(
-        Uri.parse(Endpoints.cancelReservation + id.toString()));
+        Uri.parse(Endpoints.cancelReservation + id.toString()),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': userData.token!,
+        });
   }
 
   Future<http.Response> confirmReservation(int id) async {
     return await http.patch(
-        Uri.parse(Endpoints.confirmReservation + id.toString()));
+        Uri.parse(Endpoints.confirmReservation + id.toString()),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': userData.token!,
+        });
   }
 }

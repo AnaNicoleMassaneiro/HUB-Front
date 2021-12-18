@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:hub/src/View/Class/user_data.dart';
 import 'package:hub/src/util/endpoints.dart';
 import 'package:http/http.dart' as http;
 
@@ -9,7 +10,8 @@ class ApiLocation {
       final uri = Endpoints.updateLocation + idUser.toString();
       final response = await http.patch(Uri.parse(uri),
           headers: <String, String>{
-            'Content-Type': "application/json; charset=UTF-8",
+            'Content-Type': 'application/json; charset=UTF-8',
+            'Authorization': userData.token!
           },
           body:
               jsonEncode(<String, double>{'latitude': lat, 'longitude': lon}));
@@ -26,7 +28,8 @@ class ApiLocation {
 
       final response = await http.post(Uri.parse(uri),
           headers: <String, String>{
-            'Content-Type': "application/json; charset=UTF-8",
+            'Content-Type': 'application/json; charset=UTF-8',
+            'Authorization': userData.token!
           },
           body:
               jsonEncode(<String, double>{'latitude': lat, 'longitude': lon}));

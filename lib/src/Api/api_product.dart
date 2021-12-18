@@ -1,12 +1,17 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:hub/src/View/Class/user_data.dart';
 import 'package:hub/src/util/endpoints.dart';
 import 'package:http/http.dart' as http;
 
 // ignore: camel_case_types
 class api_product {
   Future<List<Map<String, dynamic>>> searchAll() async {
-    final response = await http.get(Uri.parse(Endpoints.searchProductAll));
+    final response = await http
+        .get(Uri.parse(Endpoints.searchProductAll), headers: <String, String>{
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization': userData.token!
+    });
 
     if (response.statusCode == 200) {
       return List<Map<String, dynamic>>.from(
@@ -23,6 +28,7 @@ class api_product {
       Uri.parse(Endpoints.searchProdutoPorVendedor),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': userData.token!
       },
       body: jsonEncode(
           <String, dynamic>{"sellerId": idVendedor, "returnActiveOnly": false}),
@@ -40,8 +46,8 @@ class api_product {
 
   Future<http.StreamedResponse> register(int idVendedor, double preco,
       String nome, String descricao, int qtdDisponivel, File? image) async {
-    var request =
-        http.MultipartRequest('Post', Uri.parse(Endpoints.registerProduct));
+    var request = http.MultipartRequest(
+        'Post', Uri.parse(Endpoints.registerProduct));
 
     request.fields['nome'] = nome;
     request.fields['isAtivo'] = "true";
@@ -49,6 +55,9 @@ class api_product {
     request.fields['descricao'] = descricao;
     request.fields['quantidadeDisponivel'] = qtdDisponivel.toString();
     request.fields['idVendedor'] = idVendedor.toString();
+
+    request.headers['Authorization'] = userData.token!;
+    request.headers['Content-Type'] = 'application/json; charset=UTF-8';
 
     if (image != null) {
       request.files
@@ -79,6 +88,9 @@ class api_product {
     request.fields['isAtivo'] = isAtivo.toString();
     request.fields['isKeepImage'] = isKeepImage.toString();
 
+    request.headers['Authorization'] = userData.token!;
+    request.headers['Content-Type'] = 'application/json; charset=UTF-8';
+
     if (image != null) {
       request.files
           .add(await http.MultipartFile.fromPath('ProductImage', image.path));
@@ -92,6 +104,7 @@ class api_product {
       Uri.parse(Endpoints.deleteProduct + id.toString()),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': userData.token!,
       },
     );
 

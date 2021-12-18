@@ -1,26 +1,31 @@
 import 'dart:convert';
+import 'package:hub/src/View/Class/user_data.dart';
 import 'package:hub/src/util/endpoints.dart';
 import 'package:http/http.dart' as http;
 
 class ApiRating {
   Future<http.Response> insertRating(
-    int idProduto, int idCliente, int idVendedor, int nota,
-    String titulo, String descricao, int tipoAvaliacao
-  ) async {
+      int idProduto,
+      int idCliente,
+      int idVendedor,
+      int nota,
+      String titulo,
+      String descricao,
+      int tipoAvaliacao) async {
     final response = await http.post(Uri.parse(Endpoints.insertRating),
-      headers: <String, String>{
-        'Content-Type': "application/json; charset=UTF-8",
-      },
-      body: jsonEncode(<String, dynamic>{
-        "idProduto": idProduto,
-        "idCliente": idCliente,
-        "idVendedor": idVendedor,
-        "nota": nota,
-        "titulo": titulo,
-        "descricao": descricao,
-        "tipoAvaliacao": tipoAvaliacao
-      })
-    );
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': userData.token!,
+        },
+        body: jsonEncode(<String, dynamic>{
+          "idProduto": idProduto,
+          "idCliente": idCliente,
+          "idVendedor": idVendedor,
+          "nota": nota,
+          "titulo": titulo,
+          "descricao": descricao,
+          "tipoAvaliacao": tipoAvaliacao
+        }));
 
     return response;
   }
@@ -30,14 +35,14 @@ class ApiRating {
       Uri.parse(Endpoints.getProductRatings + idProduct.toString()),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': userData.token!,
       },
     );
 
     if (response.statusCode == 200) {
       return List<Map<String, dynamic>>.from(
           json.decode(response.body)["avaliacoes"]);
-    }
-    else {
+    } else {
       return <Map<String, dynamic>>[];
     }
   }
@@ -47,6 +52,7 @@ class ApiRating {
       Uri.parse(Endpoints.getSellerRatings + idVendedor.toString()),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': userData.token!,
       },
     );
 

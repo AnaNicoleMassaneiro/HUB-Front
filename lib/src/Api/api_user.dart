@@ -1,11 +1,16 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:hub/src/View/Class/user_data.dart';
 import 'package:hub/src/util/endpoints.dart';
 
 class ApiUser {
   Future<Map<String, dynamic>> searchId(int? id) async {
-    final response =
-        await http.get(Uri.parse(Endpoints.buscarUserPorId + id.toString()));
+    final response = await http.get(
+        Uri.parse(Endpoints.buscarUserPorId + id.toString()),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': userData.token!
+        });
 
     if (response.statusCode == 200) {
       return Map<String, dynamic>.from(json.decode(response.body)["user"]);
@@ -19,6 +24,7 @@ class ApiUser {
       Uri.parse(Endpoints.updateUserName + id.toString()),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': userData.token!
       },
       body: jsonEncode(<String, dynamic>{"nome": name, "telefone": phone}),
     );
@@ -29,6 +35,7 @@ class ApiUser {
       Uri.parse(Endpoints.atualizarSenha + id.toString()),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': userData.token!
       },
       body: jsonEncode(<String, dynamic>{
         "newPassword": senha,
