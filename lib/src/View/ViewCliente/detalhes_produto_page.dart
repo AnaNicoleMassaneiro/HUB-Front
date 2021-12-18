@@ -62,6 +62,7 @@ class _DetalhesProdutoPageState extends State<DetalhesProdutoPage> {
                   height: 250, fit: BoxFit.contain)
               : Image.memory(widget.produto.imagem!,
                   height: 250, fit: BoxFit.contain),
+          const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
           const Text("Produto",
               style: TextStyle(fontWeight: FontWeight.w100, fontSize: 16)),
           Padding(

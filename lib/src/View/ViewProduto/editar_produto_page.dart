@@ -151,7 +151,7 @@ class _EditarProdutoPageState extends State<EditarProdutoPage> {
         child: Stack(
           children: <Widget>[
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -206,7 +206,7 @@ class _EditarProdutoPageState extends State<EditarProdutoPage> {
                             ],
                           )
                         : Column(),
-                    const Padding(padding: EdgeInsets.symmetric(vertical: 40)),
+                    const Padding(padding: EdgeInsets.symmetric(vertical: 30)),
                   ],
                 ),
               ),
@@ -232,12 +232,11 @@ class _EditarProdutoPageState extends State<EditarProdutoPage> {
               onPressed: () => Navigator.pop(context, ImageSource.gallery),
             ),
           ]),
-    ).then((source) {
+    ).then((source) async {
       if (source != null) {
-        // ignore: deprecated_member_use
-        setState(() async {
-          selectedImage = await ImagePicker().getImage(source: source);
-        });
+        selectedImage = await ImagePicker().getImage(source: source);
+
+        setState(() {});
       }
     });
   }
@@ -285,13 +284,13 @@ class _EditarProdutoPageState extends State<EditarProdutoPage> {
   Image _showImage(Uint8List? image, PickedFile? pf) {
     if (pf == null) {
       if (image != null) {
-        return Image.memory(image, height: 250, width: 250, fit: BoxFit.cover);
+        return Image.memory(image, height: 250, width: 250, fit: BoxFit.fitWidth);
       } else {
         return Image.asset("assets/product-icon.png", width: 200, height: 200);
       }
     } else {
       return Image.file(File(pf.path),
-          height: 250, width: 250, fit: BoxFit.cover);
+          height: 250, width: 250, fit: BoxFit.fitWidth);
     }
   }
 }
