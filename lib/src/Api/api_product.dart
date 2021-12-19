@@ -44,6 +44,27 @@ class api_product {
     }
   }
 
+  Future<List<Map<String, dynamic>>> searchActiveOnly(int? idVendedor) async {
+    final response = await http.post(
+      Uri.parse(Endpoints.searchProdutoPorVendedor),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': userData.token!
+      },
+      body: jsonEncode(
+          <String, dynamic>{"sellerId": idVendedor, "returnActiveOnly": true}),
+    );
+
+    if (response.statusCode == 200) {
+      return List<Map<String, dynamic>>.from(
+          json.decode(response.body)["produtos"]);
+    } else if (response.statusCode == 404) {
+      return <Map<String, dynamic>>[];
+    } else {
+      throw Exception('Houve um erro ao buscar os produtos do vendedor.');
+    }
+  }
+
   Future<http.StreamedResponse> register(int idVendedor, double preco,
       String nome, String descricao, int qtdDisponivel, File? image) async {
     var request = http.MultipartRequest(

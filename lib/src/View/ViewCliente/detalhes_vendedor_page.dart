@@ -350,8 +350,7 @@ class _DetalhesVendedorPageState extends State<DetalhesVendedorPage> {
     var api = api_product();
     produtos.clear();
 
-    print("starting search vendedor page at " + DateTime.now().toString());
-    return api.search(widget.idVendedor);
+    return api.searchActiveOnly(widget.idVendedor);
   }
 
   Future<List<Map<String, dynamic>>> getPaymentModes() async {
