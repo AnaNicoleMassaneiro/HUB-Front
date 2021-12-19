@@ -11,7 +11,10 @@ import 'package:image_picker/image_picker.dart';
 
 class CadastrarProdutoPage extends StatefulWidget {
   const CadastrarProdutoPage(
-      {Key? key, required this.title, required this.idVendedor, required this.idUser})
+      {Key? key,
+      required this.title,
+      required this.idVendedor,
+      required this.idUser})
       : super(key: key);
 
   final String title;
@@ -31,27 +34,33 @@ class _CadastrarProdutoPageState extends State<CadastrarProdutoPage> {
   PickedFile? selectedImage;
 
   bool isChecked = false;
+  bool _loading = false;
 
   final _formKey = GlobalKey<FormState>();
 
   Widget _submitButton() {
-    return ElevatedButton(
-        onPressed: () {
-          if (_formKey.currentState!.validate()) {
-            _registerProduct(double.parse(preco.text.replaceAll(",", ".")),
-                nome.text, descricao.text, int.parse(qtdDisponivel.text),
-                selectedImage);
-          }
-        },
-        child: Container(
-          width: MediaQuery.of(context).size.width,
-          padding: const EdgeInsets.symmetric(vertical: 15),
-          alignment: Alignment.center,
-          child: Text(
-            "Cadastrar",
-            style: TextStyle(fontSize: 20, color: hubColors.dark),
-          ),
-        ));
+    return !_loading
+        ? ElevatedButton(
+            onPressed: () {
+              if (_formKey.currentState!.validate()) {
+                _registerProduct(
+                    double.parse(preco.text.replaceAll(",", ".")),
+                    nome.text,
+                    descricao.text,
+                    int.parse(qtdDisponivel.text),
+                    selectedImage);
+              }
+            },
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              padding: const EdgeInsets.symmetric(vertical: 15),
+              alignment: Alignment.center,
+              child: Text(
+                "Cadastrar",
+                style: TextStyle(fontSize: 20, color: hubColors.dark),
+              ),
+            ))
+        : const CircularProgressIndicator();
   }
 
   Widget _cadastroForm() {
@@ -77,8 +86,7 @@ class _CadastrarProdutoPageState extends State<CadastrarProdutoPage> {
               style: TextStyle(color: hubColors.dark)),
           flexibleSpace: Container(
             decoration: hubColors.appBarGradient(),
-          )
-      ),
+          )),
       body: SizedBox(
         child: Stack(
           children: <Widget>[
@@ -106,7 +114,8 @@ class _CadastrarProdutoPageState extends State<CadastrarProdutoPage> {
                           color: Colors.transparent,
                           child: Text(
                             "Adicionar imagem",
-                            style: TextStyle(fontSize: 20, color: hubColors.dark),
+                            style:
+                                TextStyle(fontSize: 20, color: hubColors.dark),
                           ),
                         )),
                     const SizedBox(
@@ -143,35 +152,42 @@ class _CadastrarProdutoPageState extends State<CadastrarProdutoPage> {
       if (source != null) {
         // ignore: deprecated_member_use
         selectedImage = await ImagePicker().getImage(source: source);
-        setState((){});
+        setState(() {});
       }
     });
   }
 
-  void _registerProduct(preco, nome, descricao, qtdDisponivel, PickedFile? image) async { 
+  void _registerProduct(
+      preco, nome, descricao, qtdDisponivel, PickedFile? image) async {
+    setState(() => _loading = true);
+
     var api = api_product();
 
     File? upload;
-    image != null ? upload = File.fromUri(Uri.parse(image.path)) : upload = null;
+    image != null
+        ? upload = File.fromUri(Uri.parse(image.path))
+        : upload = null;
 
     var ret = await api.register(
         widget.idVendedor, preco, nome, descricao, qtdDisponivel, upload);
 
     if (ret.statusCode == 200) {
+      _loading = true;
       Navigator.pop(context);
       customMessageModal(
           context, "Sucesso!", "Produto cadastrado com sucesso", "OK");
     } else {
+      _loading = false;
       customMessageModal(context, "Falha ao cadastrar produto: ",
           jsonDecode(await ret.stream.bytesToString())["msg"], "Fechar");
     }
   }
 
   Image _showImage(PickedFile? pf) {
-    if (pf != null){
-      return Image.file(File(pf.path), height: 250, width: 250, fit: BoxFit.cover);
-    }
-    else {
+    if (pf != null) {
+      return Image.file(File(pf.path),
+          height: 250, width: 250, fit: BoxFit.cover);
+    } else {
       return Image.asset("assets/upload-icon.png", width: 200, height: 200);
     }
   }
