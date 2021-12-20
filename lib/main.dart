@@ -24,33 +24,24 @@ void main() async {
   });
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  @override
-  _MyAppState createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
   void initUserData() async {
     var ret = await userDataSqlite.getUserData();
 
     if (ret["idUser"] != null) {
-      setState(() {
-        userData.idUser = ret["idUser"];
-        userData.idVendedor = ret["idVendedor"];
-        userData.idCliente = ret["idCliente"];
-        userData.isVendedor = ret["isVendedor"] == "true" ? true : false;
-        userData.isVendedorProfileActive = userData.isVendedor;
-        userData.curLocationLat = ret["locationLat"];
-        userData.curLocationLon = ret["locationLon"];
-        userData.token = ret["token"];
-      });
+      userData.idUser = ret["idUser"];
+      userData.idVendedor = ret["idVendedor"];
+      userData.idCliente = ret["idCliente"];
+      userData.isVendedor = ret["isVendedor"] == "true" ? true : false;
+      userData.isVendedorProfileActive = userData.isVendedor;
+      userData.curLocationLat = ret["locationLat"];
+      userData.curLocationLon = ret["locationLon"];
+      userData.token = ret["token"];
     }
     else{
-      setState(() {
-        userData.idUser = -1;
-      });
+      userData.idUser = -1;
     }
   }
 
