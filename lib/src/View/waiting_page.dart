@@ -1,11 +1,62 @@
 import 'package:flutter/material.dart';
+import 'package:hub/src/SQLite/user_data_sqlite.dart';
+import 'package:hub/src/View/vendedor_page.dart';
+import 'package:hub/src/View/welcome_page.dart';
 import 'package:hub/src/util/hub_colors.dart';
 
-class WaitingPage extends StatelessWidget {
+import 'Class/user_data.dart';
+import 'ViewCliente/cliente_page.dart';
+
+class WaitingPage extends StatefulWidget {
   const WaitingPage({Key? key}) : super(key: key);
 
   @override
+  _WaitingPageState createState() => _WaitingPageState();
+}
+
+class _WaitingPageState extends State<WaitingPage> {
+  void initUserData(BuildContext context) async {
+    var ret = await userDataSqlite.getUserData();
+
+    if (ret["idUser"] != null) {
+      userData.idUser = ret["idUser"];
+      userData.idVendedor = ret["idVendedor"];
+      userData.idCliente = ret["idCliente"];
+      userData.isVendedor = ret["isVendedor"] == "true" ? true : false;
+      userData.isVendedorProfileActive = userData.isVendedor;
+      userData.curLocationLat = ret["locationLat"];
+      userData.curLocationLon = ret["locationLon"];
+      userData.token = ret["token"];
+
+      if (userData.isVendedor!) {
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (context) => VendedorPage(),
+            ),
+                (r) => false);
+      } else {
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ClientePage(),
+            ),
+                (r) => false);
+      }
+    } else {
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const WelcomePage(),
+          ),
+              (r) => false);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    initUserData(context);
+
     return Scaffold(
         body: SingleChildScrollView(
       child: Container(
