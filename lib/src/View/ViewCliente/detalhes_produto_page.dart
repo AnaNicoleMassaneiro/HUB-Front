@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:hub/src/Api/api_product.dart';
 import 'package:hub/src/Api/api_rating.dart';
 import 'package:hub/src/View/Class/avaliacao.dart';
 import 'package:hub/src/View/Class/user_data.dart';
@@ -12,9 +13,10 @@ import '../Components/entry_fields.dart';
 import '../../../src/Validations/form_field_validations.dart';
 
 class DetalhesProdutoPage extends StatefulWidget {
-  const DetalhesProdutoPage({Key? key, required this.produto}) : super(key: key);
+  const DetalhesProdutoPage({Key? key, required this.idProduto})
+      : super(key: key);
 
-  final MeusProdutos produto;
+  final int idProduto;
 
   @override
   _DetalhesProdutoPageState createState() => _DetalhesProdutoPageState();
@@ -23,6 +25,8 @@ class DetalhesProdutoPage extends StatefulWidget {
 class _DetalhesProdutoPageState extends State<DetalhesProdutoPage> {
   late final String texto;
   TextEditingController controller = TextEditingController();
+  late MeusProdutos produto;
+  late Future<Map<String, dynamic>> futureProduto;
 
   final _avaliaFormKey = GlobalKey<FormState>();
   final TextEditingController ratingTitle = TextEditingController();
@@ -32,6 +36,8 @@ class _DetalhesProdutoPageState extends State<DetalhesProdutoPage> {
   @override
   void initState() {
     super.initState();
+
+    futureProduto = getProductData();
   }
 
   @override
@@ -43,10 +49,23 @@ class _DetalhesProdutoPageState extends State<DetalhesProdutoPage> {
               decoration: hubColors.appBarGradient(),
             )),
         body: SafeArea(
-          child: ListView(
-            children: [
-              header(),
-            ],
+          child: FutureBuilder(
+            future: futureProduto,
+            builder: (context, AsyncSnapshot<Map<String, dynamic>> snapshot) {
+              if (snapshot.hasData) {
+                produto = MeusProdutos.fromJson(snapshot.data!);
+
+                return ListView(
+                  children: [
+                    header(),
+                  ],
+                );
+              } else {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+            },
           ),
         ));
   }
@@ -57,17 +76,16 @@ class _DetalhesProdutoPageState extends State<DetalhesProdutoPage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          widget.produto.imagem == null
+          produto.imagem == null
               ? Image.asset("assets/product-icon.png",
                   height: 250, fit: BoxFit.contain)
-              : Image.memory(widget.produto.imagem!,
-                  height: 250, fit: BoxFit.contain),
+              : Image.memory(produto.imagem!, height: 250, fit: BoxFit.contain),
           const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
           const Text("Produto",
               style: TextStyle(fontWeight: FontWeight.w100, fontSize: 16)),
           Padding(
             padding: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
-            child: Text(widget.produto.nome.toString(),
+            child: Text(produto.nome.toString(),
                 textAlign: TextAlign.center,
                 style:
                     const TextStyle(fontWeight: FontWeight.w700, fontSize: 24)),
@@ -80,9 +98,9 @@ class _DetalhesProdutoPageState extends State<DetalhesProdutoPage> {
                 openRatingsModal();
               },
               child: RatingBar.builder(
-                initialRating: widget.produto.nota == null
+                initialRating: produto.nota == null
                     ? 0
-                    : ((widget.produto.nota! / 0.5).truncateToDouble()) / 2,
+                    : ((produto.nota! / 0.5).truncateToDouble()) / 2,
                 direction: Axis.horizontal,
                 ignoreGestures: true,
                 allowHalfRating: true,
@@ -97,17 +115,13 @@ class _DetalhesProdutoPageState extends State<DetalhesProdutoPage> {
           const Padding(padding: EdgeInsets.only(bottom: 10)),
           const Text("Preço",
               style: TextStyle(fontWeight: FontWeight.w100, fontSize: 16)),
-          Text(
-              'R\$ ' +
-                  widget.produto.preco
-                      .toStringAsFixed(2)
-                      .replaceAll(".", ","),
+          Text('R\$ ' + produto.preco.toStringAsFixed(2).replaceAll(".", ","),
               style:
                   const TextStyle(fontWeight: FontWeight.w700, fontSize: 24)),
           const Padding(padding: EdgeInsets.only(bottom: 10)),
           const Text("Quantidade disponível",
               style: TextStyle(fontWeight: FontWeight.w100, fontSize: 16)),
-          Text(widget.produto.quantidadeDisponivel.toString(),
+          Text(produto.quantidadeDisponivel.toString(),
               style:
                   const TextStyle(fontWeight: FontWeight.w700, fontSize: 24)),
           const Padding(padding: EdgeInsets.only(bottom: 10)),
@@ -115,7 +129,7 @@ class _DetalhesProdutoPageState extends State<DetalhesProdutoPage> {
               style: TextStyle(fontWeight: FontWeight.w100, fontSize: 16)),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 5),
-            child: Text(widget.produto.descricao.toString(),
+            child: Text(produto.descricao.toString(),
                 textAlign: TextAlign.center,
                 style:
                     const TextStyle(fontWeight: FontWeight.w600, fontSize: 18)),
@@ -123,61 +137,72 @@ class _DetalhesProdutoPageState extends State<DetalhesProdutoPage> {
           const Padding(padding: EdgeInsets.symmetric(vertical: 10)),
           ElevatedButton(
               onPressed: () => showDialog(
-                  context: context,
-                  builder: (BuildContext context) => AlertDialog(
-                        scrollable: true,
-                        title: const Text("Avaliar Produto"),
-                        content:
-                            Column(mainAxisSize: MainAxisSize.min, children: [
-                          Form(
-                            key: _avaliaFormKey,
-                            child: Column(
-                              children: [
-                                RatingBar.builder(
-                                  initialRating: 0,
-                                  minRating: 0,
-                                  direction: Axis.horizontal,
-                                  allowHalfRating: false,
-                                  itemCount: 5,
-                                  itemPadding: const EdgeInsets.symmetric(
-                                      horizontal: 4.0),
-                                  itemBuilder: (context, _) => const Icon(
-                                    Icons.star,
-                                    color: Colors.amber,
+                      context: context,
+                      builder: (BuildContext context) => AlertDialog(
+                            scrollable: true,
+                            title: const Text("Avaliar Produto"),
+                            content: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Form(
+                                    key: _avaliaFormKey,
+                                    child: Column(
+                                      children: [
+                                        RatingBar.builder(
+                                          initialRating: 0,
+                                          minRating: 0,
+                                          direction: Axis.horizontal,
+                                          allowHalfRating: false,
+                                          itemCount: 5,
+                                          itemPadding:
+                                              const EdgeInsets.symmetric(
+                                                  horizontal: 4.0),
+                                          itemBuilder: (context, _) =>
+                                              const Icon(
+                                            Icons.star,
+                                            color: Colors.amber,
+                                          ),
+                                          onRatingUpdate: (double value) {
+                                            ratingValue = value.toInt();
+                                          },
+                                        ),
+                                        entryFieldValidation("Título",
+                                            ratingTitle, validateRatingTitle,
+                                            placeholder: ""),
+                                        textAreaEntryFieldValidation(
+                                            "Descrição",
+                                            ratingDescription,
+                                            validateRatingTitle,
+                                            8),
+                                      ],
+                                    ),
                                   ),
-                                  onRatingUpdate: (double value) {
-                                    ratingValue = value.toInt();
-                                  },
-                                ),
-                                entryFieldValidation(
-                                    "Título", ratingTitle, validateRatingTitle,
-                                    placeholder: ""),
-                                textAreaEntryFieldValidation("Descrição",
-                                    ratingDescription, validateRatingTitle, 8),
-                              ],
-                            ),
-                          ),
-                        ]),
-                        actions: <Widget>[
-                          TextButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                              ratingValue = 0;
-                              ratingDescription.clear();
-                              ratingTitle.clear();
-                            },
-                            child: const Text('Cancelar'),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              if (_avaliaFormKey.currentState!.validate()) {
-                                insertRating();
-                              }
-                            },
-                            child: const Text('OK'),
-                          ),
-                        ],
-                      )),
+                                ]),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                  ratingValue = 0;
+                                  ratingDescription.clear();
+                                  ratingTitle.clear();
+                                },
+                                child: const Text('Cancelar'),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  if (_avaliaFormKey.currentState!.validate()) {
+                                    insertRating();
+                                  }
+                                },
+                                child: const Text('OK'),
+                              ),
+                            ],
+                          )).then((value) async {
+                    futureProduto = getProductData();
+
+                    produto = MeusProdutos.fromJson(await futureProduto);
+                    setState(() {});
+                  }),
               child: Container(
                 width: MediaQuery.of(context).size.width - 100,
                 padding: const EdgeInsets.symmetric(vertical: 15),
@@ -189,14 +214,20 @@ class _DetalhesProdutoPageState extends State<DetalhesProdutoPage> {
               )),
           const Padding(padding: EdgeInsets.symmetric(vertical: 5)),
           ElevatedButton(
-              onPressed: widget.produto.quantidadeDisponivel == 0
+              onPressed: produto.quantidadeDisponivel == 0
                   ? null
                   : () {
                       Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  CreateReserva(produto: widget.produto)));
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      CreateReserva(produto: produto)))
+                          .then((value) async {
+                        futureProduto = getProductData();
+
+                        produto = MeusProdutos.fromJson(await futureProduto);
+                        setState(() {});
+                      });
                     },
               child: Container(
                 width: MediaQuery.of(context).size.width - 100,
@@ -211,10 +242,16 @@ class _DetalhesProdutoPageState extends State<DetalhesProdutoPage> {
           ElevatedButton(
               onPressed: () {
                 Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            DetalhesVendedorPage(idVendedor: widget.produto.idVendedor)));
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => DetalhesVendedorPage(
+                                idVendedor: produto.idVendedor)))
+                    .then((value) async {
+                  futureProduto = getProductData();
+
+                  produto = MeusProdutos.fromJson(await futureProduto);
+                  setState(() {});
+                });
               },
               child: Container(
                 width: MediaQuery.of(context).size.width - 100,
@@ -235,7 +272,7 @@ class _DetalhesProdutoPageState extends State<DetalhesProdutoPage> {
 
     List<Avaliacao> ratings = [];
 
-    var ret = await api.getProductRatings(widget.produto.id);
+    var ret = await api.getProductRatings(produto.id);
 
     for (var r in ret) {
       ratings.add(Avaliacao.fromJson(r));
@@ -304,10 +341,16 @@ class _DetalhesProdutoPageState extends State<DetalhesProdutoPage> {
             ));
   }
 
+  Future<Map<String, dynamic>> getProductData() {
+    var api = api_product();
+
+    return api.getById(widget.idProduto);
+  }
+
   void insertRating() {
     var api = ApiRating();
     api
-        .insertRating(widget.produto.id, userData.idCliente!, 0, ratingValue,
+        .insertRating(produto.id, userData.idCliente!, 0, ratingValue,
             ratingTitle.text, ratingDescription.text, 1)
         .then((response) {
       ratingDescription.text = "";
@@ -324,6 +367,7 @@ class _DetalhesProdutoPageState extends State<DetalhesProdutoPage> {
             "Avaliação enviada!",
             "Sua avaliação foi enviada com sucesso. Agradecemos seu feedback!",
             "Fechar");
+        setState(() {});
       }
     });
   }

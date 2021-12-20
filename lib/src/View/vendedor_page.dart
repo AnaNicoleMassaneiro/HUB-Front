@@ -7,7 +7,6 @@ import 'package:hub/src/View/ViewVendedor/relatorios_page.dart';
 import 'package:hub/src/View/perfil_page.dart';
 import 'package:hub/src/View/welcome_page.dart';
 import 'package:hub/src/util/hub_colors.dart';
-import 'ViewProduto/cadastrar_produto_page.dart';
 import 'ViewProduto/meus_produtos_page.dart';
 import './Class/user_data.dart';
 
@@ -92,30 +91,13 @@ class _VendedorPageState extends State<VendedorPage> {
                 Navigator.pushAndRemoveUntil(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const WelcomePage(title: '')),
+                        builder: (context) => const WelcomePage()),
                     (route) => false);
               },
             ),
           ],
         )),
         body: _telas[_indiceAtual],
-        floatingActionButton: _indiceAtual == 0
-            ? FloatingActionButton(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => CadastrarProdutoPage(
-                              title: '',
-                              idVendedor: widget.idVendedor,
-                              idUser: widget.idUser))).then((value) {
-                    setState(() {});
-                  });
-                },
-                child: const Icon(Icons.plus_one),
-                backgroundColor: hubColors.primary,
-              )
-            : Column(),
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: _indiceAtual,
           onTap: onTabTapped,

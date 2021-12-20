@@ -15,73 +15,95 @@ class ListaVendedoresPage extends StatefulWidget {
 }
 
 class _ListaVendedoresPageState extends State<ListaVendedoresPage> {
-  late final String  texto;
-  List<Vendedores> listaVendedores = [];
+  late final String texto;
+  late List<Vendedores> listaVendedores = [];
+  late Future<List<Map<String, dynamic>>> futureVendedores;
   TextEditingController controller = TextEditingController();
   final List<Vendedores> _searchResult = [];
 
-  void buscavendedores() {
+  Future<List<Map<String, dynamic>>> buscavendedores() {
     var api = ApiVendedores();
     listaVendedores.clear();
 
-    api.searchAll().then((response) {
-      for (var vendedores in response) {
-        listaVendedores.add(Vendedores.fromJson(vendedores));
-      }
-      setState(() {});
-    }, onError: (error) async {
-      setState(() {});
-    });
+    return api.searchAll();
   }
 
   @override
   void initState() {
     super.initState();
 
-    buscavendedores();
+    futureVendedores = buscavendedores();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-            title: const Text('Buscar Vendedores'),
-            flexibleSpace: Container(
-              decoration: hubColors.appBarGradient(),
-            )
-        ),
-        body: SizedBox(
-          child: Column(
-            children: <Widget>[
-              Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Card(
-                      child: ListTile(
-                        leading: const Icon(Icons.search),
-                        title: TextField(
-                          controller: controller,
-                          decoration: const InputDecoration(
-                              hintText: 'Buscar Vendedores',
-                              border: InputBorder.none),
-                          onChanged: onSearchTextChanged,
-                        ),
-                        trailing: IconButton(
-                          icon: const Icon(Icons.cancel),
-                          onPressed: () {
-                            controller.clear();
-                            onSearchTextChanged('');
-                          },
-                        ),
-                      ),
-                    ),
+      appBar: AppBar(
+          title: const Text('Buscar Vendedores'),
+          flexibleSpace: Container(
+            decoration: hubColors.appBarGradient(),
+          )),
+      body: FutureBuilder(
+        future: futureVendedores,
+        builder: (context, AsyncSnapshot<List<Map<String, dynamic>>> snapshot) {
+          if (snapshot.hasData) {
+            listaVendedores.clear();
+
+            for (var v in snapshot.data!) {
+              listaVendedores.add(Vendedores.fromJson(v));
+            }
+
+            _searchResult.clear();
+            if (controller.text.trim().isNotEmpty) {
+              for (var v in listaVendedores) {
+                if (containsCaseInsensitive(v.name, controller.text.trim())) {
+                  _searchResult.add(v);
+                }
+              }
+            }
+
+            return pageBody();
+          } else {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        },
+      ),
+    );
+  }
+
+  Widget pageBody() {
+    return SizedBox(
+      child: Column(
+        children: <Widget>[
+          Column(children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Card(
+                child: ListTile(
+                  leading: const Icon(Icons.search),
+                  title: TextField(
+                    controller: controller,
+                    decoration: const InputDecoration(
+                        hintText: 'Buscar Vendedores',
+                        border: InputBorder.none),
+                    onChanged: (v) => setState(() {}),
                   ),
-                ]
+                  trailing: IconButton(
+                    icon: const Icon(Icons.cancel),
+                    onPressed: () {
+                      controller.clear();
+                      setState(() {});
+                    },
+                  ),
+                ),
               ),
-              Expanded(
-                child: _searchResult.isNotEmpty || controller.text.isNotEmpty
-                  ? ListView.builder(
+            ),
+          ]),
+          Expanded(
+            child: _searchResult.isNotEmpty || controller.text.isNotEmpty
+                ? ListView.builder(
                     itemCount: _searchResult.length,
                     itemBuilder: (context, i) {
                       return Card(
@@ -94,18 +116,15 @@ class _ListaVendedoresPageState extends State<ListaVendedoresPage> {
                                 icon: const Icon(Icons.visibility),
                                 onPressed: () {
                                   Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                        DetalhesVendedorPage(
-                                          idVendedor: listaVendedores[i].id,
-                                        )
-                                    )
-                                  ).then((value) {
-                                    setState(() {
-                                      buscavendedores();
-                                      onSearchTextChanged(controller.text);
-                                    });
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              DetalhesVendedorPage(
+                                                idVendedor:
+                                                    listaVendedores[i].id,
+                                              ))).then((value) async {
+                                    futureVendedores = buscavendedores();
+                                    setState(() {});
                                   });
                                 },
                               )
@@ -115,7 +134,7 @@ class _ListaVendedoresPageState extends State<ListaVendedoresPage> {
                       );
                     },
                   )
-                  : ListView.builder(
+                : ListView.builder(
                     itemCount: listaVendedores.length,
                     itemBuilder: (context, i) {
                       return Card(
@@ -129,18 +148,15 @@ class _ListaVendedoresPageState extends State<ListaVendedoresPage> {
                                 icon: const Icon(Icons.visibility),
                                 onPressed: () {
                                   Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                        DetalhesVendedorPage(
-                                          idVendedor: listaVendedores[i].id,
-                                        )
-                                    )
-                                  ).then((value) {
-                                    setState(() {
-                                      buscavendedores();
-                                      onSearchTextChanged(controller.text);
-                                    });
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              DetalhesVendedorPage(
+                                                idVendedor:
+                                                    listaVendedores[i].id,
+                                              ))).then((value) async {
+                                    futureVendedores = buscavendedores();
+                                    setState(() {});
                                   });
                                 },
                               )
@@ -151,27 +167,9 @@ class _ListaVendedoresPageState extends State<ListaVendedoresPage> {
                       );
                     },
                   ),
-                ),
-              ],
-            ),
-        ),
-      );
-  }
-
-  onSearchTextChanged(String text) async {
-    _searchResult.clear();
-
-    if (text.isEmpty) {
-      setState(() {});
-      return;
-    }
-
-    for (var userDetail in listaVendedores) {
-      if (containsCaseInsensitive(userDetail.name, text)) {
-        _searchResult.add(userDetail);
-      }
-    }
-
-    setState(() {});
+          ),
+        ],
+      ),
+    );
   }
 }

@@ -1,8 +1,8 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:hub/src/SQLite/user_data_sqlite.dart';
 import 'package:hub/src/View/Class/vendedores.dart';
 import 'package:hub/src/View/ViewCliente/detalhes_vendedor_page.dart';
 import 'package:location/location.dart';
@@ -20,21 +20,24 @@ class _MapComponentState extends State<MapComponent> {
   late GoogleMapController _controller;
   late LocationData locationData;
   var location = Location();
-  late LatLng _cameraPosition =
-      const LatLng(-25.45648199644755, -49.23578677552287);
+  late LatLng _cameraPosition;
+  late Future<LocationData> futureLocationData;
   late List<Vendedores> vendedores = <Vendedores>[];
   List<Marker> _markers = <Marker>[];
 
-  Future<void> pegaVendedoresProximos(LocationData l) async {
+  Future<void> pegaVendedoresProximos(double lat, double lon) async {
     var api = ApiLocation();
     List<Marker> markers = <Marker>[];
 
-    api.pegaVendedoresProximos(l.latitude, l.longitude).then((response) {
+    api.pegaVendedoresProximos(lat, lon).then((response) {
       if (response == null) {
         throw Exception("Houve um erro ao buscar vendedores próximos!");
       } else if (response.statusCode != 200) {
-        print("Houve um erro ao buscar vendedores próximos " + response.body);
+        throw Exception(
+            "Houve um erro ao buscar vendedores próximos: " + response.body);
       } else {
+        vendedores.clear();
+
         var listaJson = List<Map<String, dynamic>>.from(
             json.decode(response.body)["vendedores"]);
 
@@ -55,62 +58,29 @@ class _MapComponentState extends State<MapComponent> {
                             DetalhesVendedorPage(idVendedor: m.id)))),
           ));
         }
-
-        print("\t\t>>>Atualizando localização... Vendedores próximos");
       }
 
       if (mounted) {
         setState(() {
+          _markers.clear();
           _markers = markers;
-
-          _cameraPosition = LatLng(l.latitude!, l.longitude!);
         });
       }
     });
   }
 
-  void pegarLocalizacao(LocationData l) async {
-    var api = ApiLocation();
-
-    userData.curLocationLat = l.latitude;
-    userData.curLocationLon = l.longitude;
-
-    userDataSqlite.updateUserData(userData.toMap());
-    api
-        .updateCurrentLocation(l.latitude, l.longitude, userData.idUser!)
-        .then((response) {
-      if (response == null) {
-        throw Exception("Houve um erro ao atualizar a localização!");
-      } else if (response.statusCode != 200) {
-        throw Exception(
-            "Houve um erro ao atualizar a localização: " + response.body);
-      } else {
-        print("\t\t>>>Atualizando localização do usuário...");
-      }
-    });
-
-    if (mounted) {
-      setState(() {
-        _cameraPosition = LatLng(l.latitude!, l.longitude!);
-
-        //updateMapPosition(_cameraPosition);
-      });
-    }
-  }
-
   Future<void> onMapCreated(GoogleMapController controller) async {
-    locationData = await location.getLocation();
-
-    pegarLocalizacao(locationData);
-    pegaVendedoresProximos(locationData);
+    pegaVendedoresProximos(userData.curLocationLat!, userData.curLocationLon!);
     _controller = controller;
 
-    location.onLocationChanged.listen((l) {
+    const secs = Duration(seconds: 30);
+    Timer.periodic(secs, (Timer t2) async {
       if (mounted) {
-        locationData = l;
-        pegarLocalizacao(l);
-        pegaVendedoresProximos(l);
-        //updateMapPosition(LatLng(_cameraPosition.latitude, _cameraPosition.longitude));
+        pegaVendedoresProximos(
+            userData.curLocationLat!, userData.curLocationLon!);
+      }
+      else {
+        t2.cancel();
       }
     });
   }
@@ -121,23 +91,43 @@ class _MapComponentState extends State<MapComponent> {
   }
 
   @override
+  void initState() {
+    super.initState();
+
+    futureLocationData = location.getLocation();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: MediaQuery.of(context).size.height,
-      width: MediaQuery.of(context).size.width,
-      child: Stack(
-        children: [
-          GoogleMap(
-            mapToolbarEnabled: false,
-            initialCameraPosition:
-                CameraPosition(target: _cameraPosition, zoom: 16),
-            mapType: MapType.normal,
-            onMapCreated: onMapCreated,
-            myLocationEnabled: true,
-            markers: Set<Marker>.of(_markers),
-          ),
-        ],
-      ),
+    return FutureBuilder(
+      future: futureLocationData,
+      builder: (context, AsyncSnapshot<LocationData> snapshot) {
+        if (snapshot.hasData) {
+          locationData = snapshot.data!;
+          _cameraPosition =
+              LatLng(locationData.latitude!, locationData.longitude!);
+
+          return SizedBox(
+            height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
+            child: Stack(
+              children: [
+                GoogleMap(
+                  mapToolbarEnabled: false,
+                  initialCameraPosition:
+                      CameraPosition(target: _cameraPosition, zoom: 16),
+                  mapType: MapType.normal,
+                  onMapCreated: onMapCreated,
+                  myLocationEnabled: true,
+                  markers: Set<Marker>.of(_markers),
+                ),
+              ],
+            ),
+          );
+        } else {
+          return const Center(child: CircularProgressIndicator());
+        }
+      },
     );
   }
 }

@@ -24,6 +24,9 @@ class _PerfilPageState extends State<PerfilPage> {
   late bool isSellerAtivo;
   late bool isSellerOpen;
 
+  bool _isLoadingStore = false;
+  bool _isLoadingStatus = false;
+
   Future<Map<String, dynamic>>? futureUser;
 
   @override
@@ -61,59 +64,69 @@ class _PerfilPageState extends State<PerfilPage> {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 25, vertical: 15),
-                    child: Column(
+                    child: ListView(
+                      shrinkWrap: true,
                       children: [
                         userData.isVendedor!
                             ? Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  Row(
-                                    children: [
-                                      Text(
-                                        isSellerOpen
-                                          ? "Status da Minha Loja (Aberta)"
-                                          : "Status da Minha Loja (Fechada)",
-                                        style: const TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      Switch(
-                                        value: isSellerOpen,
-                                        onChanged: (bool v) {
-                                          updateStatus(isSellerAtivo, v);
-                                        },
-                                      ),
-                                      IconButton(
-                                        icon: const Icon(Icons.info_outline),
-                                        onPressed: () {
-                                          customMessageModal(
-                                              context,
-                                              "Status da Loja",
-                                              "Outros usuários só podem ver seus produtos enquanto "
-                                                  "sua loja estiver \"Aberta\". Mude seu status "
-                                                  "para \"Fechada\" quando não estiver mais "
-                                                  "vendendo nenhum produto no momento.",
-                                              "Fechar");
-                                        },
-                                      )
-                                    ],
-                                  ),
+                                  _isLoadingStore
+                                      ? const Center(
+                                          heightFactor: 1.5,
+                                          child: CircularProgressIndicator())
+                                      : Row(
+                                          children: [
+                                            Text(
+                                              isSellerOpen
+                                                  ? "Status da Minha Loja (Aberta)"
+                                                  : "Status da Minha Loja (Fechada)",
+                                              style: const TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            Switch(
+                                              value: isSellerOpen,
+                                              onChanged: (bool v) {
+                                                setState(() =>
+                                                    _isLoadingStore = true);
+                                                updateStatus(isSellerAtivo, v);
+                                              },
+                                            ),
+                                            IconButton(
+                                              icon: const Icon(
+                                                  Icons.info_outline),
+                                              onPressed: () {
+                                                customMessageModal(
+                                                    context,
+                                                    "Status da Loja",
+                                                    "Outros usuários só podem ver seus produtos enquanto "
+                                                        "sua loja estiver \"Aberta\". Mude seu status "
+                                                        "para \"Fechada\" quando não estiver mais "
+                                                        "vendendo nenhum produto no momento.",
+                                                    "Fechar");
+                                              },
+                                            )
+                                          ],
+                                        ),
                                 ],
                               )
                             : Container(),
                         const Padding(
-                          padding: EdgeInsets.symmetric(vertical: 10)
-                        ),
+                            padding: EdgeInsets.symmetric(vertical: 10)),
                         Text(
                           usuario.name,
+                          textAlign: TextAlign.center,
                           style: const TextStyle(
-                            fontWeight: FontWeight.w300,
-                            fontSize: 20
-                          ),
+                              fontWeight: FontWeight.w300, fontSize: 20),
                         ),
-                        Text(usuario.email, style: profileDetails()),
-                        Text("GRR" + usuario.grr, style: profileDetails()),
+                        Text(usuario.email,
+                            textAlign: TextAlign.center,
+                            style: profileDetails()),
+                        Text("GRR" + usuario.grr,
+                            textAlign: TextAlign.center,
+                            style: profileDetails()),
                         Row(
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -128,7 +141,7 @@ class _PerfilPageState extends State<PerfilPage> {
                               ),
                             ]),
                         Padding(
-                          padding: const EdgeInsets.only(top: 60),
+                          padding: const EdgeInsets.only(top: 30),
                           child: ElevatedButton(
                               onPressed: () {
                                 Navigator.push(
@@ -207,61 +220,69 @@ class _PerfilPageState extends State<PerfilPage> {
                                         )),
                                   ),
                                   const Padding(padding: EdgeInsets.all(20)),
-                                  ElevatedButton(
-                                      onPressed: () {
-                                        showDialog(
-                                            context: context,
-                                            builder: (context) {
-                                              return AlertDialog(
-                                                title: Text(isSellerAtivo
-                                                    ? 'Tem certeza que deseja inativar sua conta?'
-                                                    : 'Tem certeza que deseja reativar sua conta?'),
-                                                content: Text(isSellerAtivo
-                                                    ? 'Outros usuários não poderão ver seu perfil ou'
-                                                        ' seus produtos caso você realize essa ação. '
-                                                        'Você ainda poderá logar no Aplicativo e pode '
-                                                        'ativar sua conta novamente quando desejar.'
-                                                    : 'Outros usuários voltarão a visualizar seu perfil e seus produtos listados.'),
-                                                actions: [
-                                                  TextButton(
-                                                    onPressed: () {
-                                                      updateStatus(
-                                                          !isSellerAtivo,
-                                                          isSellerOpen);
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                    },
-                                                    child: Text(isSellerAtivo
-                                                        ? 'Inativar'
-                                                        : 'Reativar'),
-                                                  ),
-                                                  TextButton(
-                                                    onPressed: () {
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                    },
-                                                    child:
-                                                        const Text('Cancelar'),
-                                                  ),
-                                                ],
-                                              );
-                                            });
-                                      },
-                                      child: Container(
-                                        width:
-                                            MediaQuery.of(context).size.width,
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 15),
-                                        alignment: Alignment.center,
-                                        child: Text(
-                                          isSellerAtivo
-                                              ? "Inativar minha conta"
-                                              : "Reativar minha conta",
-                                          style: TextStyle(
-                                              fontSize: 20,
-                                              color: hubColors.dark),
-                                        ),
-                                      ))
+                                  _isLoadingStatus
+                                      ? const Center(
+                                          child: CircularProgressIndicator())
+                                      : ElevatedButton(
+                                          onPressed: () {
+                                            showDialog(
+                                                context: context,
+                                                builder: (context) {
+                                                  return AlertDialog(
+                                                    title: Text(isSellerAtivo
+                                                        ? 'Tem certeza que deseja inativar sua conta?'
+                                                        : 'Tem certeza que deseja reativar sua conta?'),
+                                                    content: Text(isSellerAtivo
+                                                        ? 'Outros usuários não poderão ver seu perfil ou'
+                                                            ' seus produtos caso você realize essa ação. '
+                                                            'Você ainda poderá logar no Aplicativo e pode '
+                                                            'ativar sua conta novamente quando desejar.'
+                                                        : 'Outros usuários voltarão a visualizar seu perfil e seus produtos listados.'),
+                                                    actions: [
+                                                      TextButton(
+                                                        onPressed: () {
+                                                          setState(() =>
+                                                              _isLoadingStatus =
+                                                                  true);
+                                                          updateStatus(
+                                                              !isSellerAtivo,
+                                                              isSellerOpen);
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                        },
+                                                        child: Text(
+                                                            isSellerAtivo
+                                                                ? 'Inativar'
+                                                                : 'Reativar'),
+                                                      ),
+                                                      TextButton(
+                                                        onPressed: () {
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                        },
+                                                        child: const Text(
+                                                            'Cancelar'),
+                                                      ),
+                                                    ],
+                                                  );
+                                                });
+                                          },
+                                          child: Container(
+                                            width: MediaQuery.of(context)
+                                                .size
+                                                .width,
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 15),
+                                            alignment: Alignment.center,
+                                            child: Text(
+                                              isSellerAtivo
+                                                  ? "Inativar minha conta"
+                                                  : "Reativar minha conta",
+                                              style: TextStyle(
+                                                  fontSize: 20,
+                                                  color: hubColors.dark),
+                                            ),
+                                          ))
                                 ],
                               )
                             : Container(),
@@ -285,7 +306,6 @@ class _PerfilPageState extends State<PerfilPage> {
 
   void updateStatus(bool isAtivo, bool isOpen) async {
     var api = ApiVendedores();
-
     var response =
         await api.updateSellerStatus(userData.idVendedor!, isAtivo, isOpen);
 
@@ -294,7 +314,18 @@ class _PerfilPageState extends State<PerfilPage> {
         isSellerOpen = isOpen;
         isSellerAtivo = isAtivo;
       });
+
+      Future.delayed(const Duration(seconds: 1)).then((value) {
+        setState(() {
+          _isLoadingStore = false;
+          _isLoadingStatus = false;
+        });
+      });
     } else {
+      setState(() {
+        _isLoadingStore = false;
+        _isLoadingStatus = false;
+      });
       customMessageModal(context, "Erro",
           "Houve um erro ao atualizar o status: " + response.body, "Fechar");
     }

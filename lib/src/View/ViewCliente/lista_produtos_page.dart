@@ -1,9 +1,7 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hub/src/Api/api_product.dart';
-import 'package:hub/src/View/Components/modal_message.dart';
+import 'package:hub/src/util/contains_case_insensitive.dart';
 import 'package:hub/src/util/hub_colors.dart';
 import '../Class/meus_produtos.dart';
 import 'detalhes_produto_page.dart';
@@ -17,218 +15,191 @@ class ListaProdutosPage extends StatefulWidget {
 
 class _ListaProdutosPageState extends State<ListaProdutosPage> {
   late final String texto;
-  List<MeusProdutos> listaProdutos = [];
+  late List<MeusProdutos> listaProdutos = [];
+  late Future<List<Map<String, dynamic>>> futureProdutos;
   TextEditingController controller = TextEditingController();
   final List<MeusProdutos> _searchResult = [];
 
-  void buscaProdutos() {
+  Future<List<Map<String, dynamic>>> buscaProdutos() async {
     var api = api_product();
-    api.searchAll().then((response) {
-      listaProdutos.clear();
 
-      for (var produto in response) {
-        setState(() {
-          listaProdutos.add(MeusProdutos.fromJson(produto));
-        });
-      }
-    }, onError: (error) async {
-      setState(() {});
-    });
+    return api.searchAll();
   }
 
   @override
   void initState() {
     super.initState();
 
-    buscaProdutos();
+    futureProdutos = buscaProdutos();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            title: const Text('Buscar Produtos'),
-            flexibleSpace: Container(
-              decoration: hubColors.appBarGradient()),
+          title: const Text('Buscar Produtos'),
+          flexibleSpace: Container(decoration: hubColors.appBarGradient()),
         ),
-        body: SizedBox(
-          child: Stack(
-            children: <Widget>[
-              Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Card(
-                      child: ListTile(
-                        leading: const Icon(Icons.search),
-                        title: TextField(
-                          controller: controller,
-                          decoration: const InputDecoration(
-                              hintText: 'Buscar Produtos',
-                              border: InputBorder.none),
-                          onChanged: onSearchTextChanged,
-                        ),
-                        trailing: IconButton(
-                          icon: const Icon(Icons.cancel),
-                          onPressed: () {
-                            controller.clear();
-                            onSearchTextChanged('');
-                          },
-                        ),
-                      ),
-                    ),
+        body: SafeArea(
+          child: FutureBuilder(
+            future: futureProdutos,
+            builder:
+                (context, AsyncSnapshot<List<Map<String, dynamic>>> snapshot) {
+              if (!snapshot.hasData) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else {
+                listaProdutos.clear();
+
+                for (var produto in snapshot.data!) {
+                  listaProdutos.add(MeusProdutos.fromJson(produto));
+                }
+
+                _searchResult.clear();
+                if (controller.text.trim().isNotEmpty) {
+                  for (var product in listaProdutos) {
+                    if (containsCaseInsensitive(
+                        product.nome, controller.text.trim())) {
+                      _searchResult.add(product);
+                    }
+                  }
+                }
+
+                return SizedBox(
+                  child: Stack(
+                    children: <Widget>[
+                      pageBody(),
+                    ],
                   ),
-                  Expanded(
-                    child: listaProdutos.isEmpty || (controller.text.isNotEmpty && _searchResult.isEmpty)
-                      ? Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                          Text(
-                            "Parece que não há nenhum produto por aqui...",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w200,
-                              fontStyle: FontStyle.italic,
-                            )
-                          )
-                        ],
-                      )
-                      : _searchResult.isNotEmpty || controller.text.isNotEmpty
-                        ? ListView.builder(
-                          itemCount: _searchResult.length,
-                          itemBuilder: (context, i) {
-                            return Card(
-                              child: ListTile(
-                                // leading:  CircleAvatar(backgroundImage:  NetworkImage(listaProdutos[index].profileUrl,),),
-                                title: Text(_searchResult[i].nome),
-                                trailing: Wrap(
-                                  spacing: 12,
-                                  children: [
-                                    IconButton(
-                                      icon: const Icon(Icons.visibility),
-                                      onPressed: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                              DetalhesProdutoPage(
-                                                produto: _searchResult[i],
-                                              )
-                                          )
-                                        ).then((value) {
-                                          setState(() {
-                                            buscaProdutos();
-                                            onSearchTextChanged(controller.text);
-                                          });
-                                        });
-                                      },
-                                    )
-                                  ],
-                                ),
-                              ),
-                              margin: const EdgeInsets.all(0.0),
-                            );
-                          },
-                        )
-                        : ListView.builder(
-                          itemCount: listaProdutos.length,
-                          itemBuilder: (context, i) {
-                            return Card(
-                              child: ListTile(
-                                // leading:  CircleAvatar(backgroundImage:  NetworkImage(listaProdutos[index].profileUrl,),),
-                                title: Text(listaProdutos[i].nome),
-                                trailing: Wrap(
-                                  spacing: 12,
-                                  children: [
-                                    IconButton(
-                                      icon: const Icon(Icons.visibility),
-                                      onPressed: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                              DetalhesProdutoPage(
-                                                produto: listaProdutos[i],
-                                              )
-                                          )
-                                        ).then((value) {
-                                          setState(() {
-                                            buscaProdutos();
-                                          });
-                                        });
-                                      },
-                                    )
-                                  ],
-                                ),
-                              ),
-                              margin: const EdgeInsets.all(0.0),
-                            );
-                          },
-                        ),
-                  ),
-                ],
-              ),
-            ],
+                );
+              }
+            },
           ),
         ));
   }
 
-  onSearchTextChanged(String text) async {
-    _searchResult.clear();
-
-    if (text.isEmpty) {
-      setState(() {});
-      return;
-    }
-
-    for (var userDetail in listaProdutos) {
-      if (userDetail.nome.contains(text)) _searchResult.add(userDetail);
-    }
-
-    setState(() {});
-  }
-
-  verificaDeletarProduto(int? id) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text("Excluir Produto"),
-          content: const Text("Tem certeza que deseja excluir este produto?"),
-          actions: <Widget>[
-            TextButton(
-              child: const Text("Sim"),
-              onPressed: () {
-                deletarProduto(id);
-                Navigator.of(context).pop();
-              },
+  Widget pageBody() {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Card(
+            child: ListTile(
+              leading: const Icon(Icons.search),
+              title: TextField(
+                controller: controller,
+                decoration: const InputDecoration(
+                    hintText: 'Buscar Produtos', border: InputBorder.none),
+                onChanged: (v) {
+                  setState(() {});
+                },
+              ),
+              trailing: IconButton(
+                icon: const Icon(Icons.cancel),
+                onPressed: () {
+                  controller.clear();
+                  setState(() {});
+                },
+              ),
             ),
-            TextButton(
-              child: const Text("Cancelar"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
+          ),
+        ),
+        Expanded(
+          child: listaProdutos.isEmpty ||
+                  (controller.text.isNotEmpty && _searchResult.isEmpty)
+              ? Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: const [
+                    Text("Parece que não há nenhum produto por aqui...",
+                        style: TextStyle(
+                          fontWeight: FontWeight.w200,
+                          fontStyle: FontStyle.italic,
+                        ))
+                  ],
+                )
+              : _searchResult.isNotEmpty || controller.text.isNotEmpty
+                  ? ListView.builder(
+                      itemCount: _searchResult.length,
+                      itemBuilder: (context, i) {
+                        return Card(
+                          child: ListTile(
+                            // leading:  CircleAvatar(backgroundImage:  NetworkImage(listaProdutos[index].profileUrl,),),
+                            title: Text(_searchResult[i].nome),
+                            trailing: Wrap(
+                              spacing: 12,
+                              children: [
+                                IconButton(
+                                  icon: const Icon(Icons.visibility),
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                DetalhesProdutoPage(
+                                                  idProduto:
+                                                      _searchResult[i].id,
+                                                ))).then((value) async {
+                                      futureProdutos = buscaProdutos();
+
+                                      for (var p in await futureProdutos) {
+                                        listaProdutos
+                                            .add(MeusProdutos.fromJson(p));
+                                      }
+
+                                      setState(() {});
+                                    });
+                                  },
+                                )
+                              ],
+                            ),
+                          ),
+                          margin: const EdgeInsets.all(0.0),
+                        );
+                      },
+                    )
+                  : ListView.builder(
+                      itemCount: listaProdutos.length,
+                      itemBuilder: (context, i) {
+                        return Card(
+                          child: ListTile(
+                            // leading:  CircleAvatar(backgroundImage:  NetworkImage(listaProdutos[index].profileUrl,),),
+                            title: Text(listaProdutos[i].nome),
+                            trailing: Wrap(
+                              spacing: 12,
+                              children: [
+                                IconButton(
+                                  icon: const Icon(Icons.visibility),
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                DetalhesProdutoPage(
+                                                  idProduto:
+                                                      listaProdutos[i].id,
+                                                ))).then((value) async {
+                                      futureProdutos = buscaProdutos();
+
+                                      for (var p in await futureProdutos) {
+                                        listaProdutos
+                                            .add(MeusProdutos.fromJson(p));
+                                      }
+
+                                      setState(() {});
+                                    });
+                                  },
+                                )
+                              ],
+                            ),
+                          ),
+                          margin: const EdgeInsets.all(0.0),
+                        );
+                      },
+                    ),
+        ),
+      ],
     );
-  }
-
-  void deletarProduto(id) async {
-    var api = api_product();
-    var ret = await api.delete(id);
-
-    if (ret.statusCode == 200) {
-      setState(() {
-        listaProdutos.clear();
-        buscaProdutos();
-      });
-      customMessageModal(
-          context, "Sucesso!", "Produto excluido com sucesso", "OK");
-    } else {
-      customMessageModal(context, "Falha ao cadastrar produto: ",
-          jsonDecode(ret.body)["msg"], "Fechar");
-    }
   }
 }

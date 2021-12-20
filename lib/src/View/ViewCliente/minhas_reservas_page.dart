@@ -13,166 +13,161 @@ class MinhasReservasPage extends StatefulWidget {
 }
 
 class _ListaProdutosPageState extends State<MinhasReservasPage> {
-  List<Reservas> reservas = [];
+  late List<Reservas> reservas = [];
+  late Future<List<Map<String, dynamic>>> futureReservas;
+  bool _loading = false;
 
-  void buscaReservas() {
+  Future<List<Map<String, dynamic>>> buscaReservas() {
     var api = ApiReservations();
-    reservas.clear();
 
-    api.getByCustomer(userData.idCliente!).then((response) {
-      for (var reserva in response) {
-        setState(() {
-          reservas.add(Reservas.fromJson(reserva));
-        });
-      }
-    }, onError: (error) async {
-      setState(() {});
-    });
-
-    if (mounted) {
-      setState(() {
-        reservas = reservas;
-      });
-    }
+    return api.getByCustomer(userData.idCliente!);
   }
 
   @override
   void initState() {
     super.initState();
 
-    buscaReservas();
+    futureReservas = buscaReservas();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SizedBox(
-      child: Stack(
-        children: <Widget>[
-          Column(
-            children: [
-              Expanded(
-                  child: reservas.isNotEmpty
-                      ? ListView.builder(
-                          itemCount: reservas.length,
-                          itemBuilder: (context, i) {
-                            return Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 5),
-                              child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    reservas[i].produto.imagem == null
-                                        ? Image.asset(
-                                            "assets/product-icon.png",
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.25,
-                                            fit: BoxFit.scaleDown,
-                                          )
-                                        : Image.memory(
-                                            reservas[i].produto.imagem!,
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.25,
-                                            fit: BoxFit.scaleDown),
-                                    SizedBox(
-                                      child: Column(
-                                        children: [
-                                          Row(
-                                              children: [
-                                                Flexible(
-                                                  child: Text(
-                                                    reservas[i].produto.nome +
-                                                        " x " +
-                                                        reservas[i]
-                                                            .quantidadeDesejada
-                                                            .toString(),
-                                                    textAlign: TextAlign.center,
-                                                  ),
-                                                ),
-                                              ],
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center),
-                                          Row(
-                                              children: [
-                                                Flexible(
-                                                  child: Text(
-                                                    "Criada em " +
-                                                        reservas[i]
-                                                            .dataCriacao
-                                                            .day
-                                                            .toString()
-                                                            .padLeft(2, '0') +
-                                                        "/" +
-                                                        reservas[i]
-                                                            .dataCriacao
-                                                            .month
-                                                            .toString()
-                                                            .padLeft(2, '0') +
-                                                        "/" +
-                                                        reservas[i]
-                                                            .dataCriacao
-                                                            .year
-                                                            .toString() +
-                                                        ", " +
-                                                        reservas[i]
-                                                            .dataCriacao
-                                                            .hour
-                                                            .toString()
-                                                            .padLeft(2, '0') +
-                                                        ":" +
-                                                        reservas[i]
-                                                            .dataCriacao
-                                                            .minute
-                                                            .toString()
-                                                            .padLeft(2, '0'),
-                                                    textAlign: TextAlign.center,
-                                                  ),
-                                                )
-                                              ],
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.end),
-                                          Row(
-                                            children: [
-                                              Text(
-                                                reservas[i].status,
-                                              ),
-                                            ],
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                          )
-                                        ],
-                                      ),
-                                      width: MediaQuery.of(context).size.width *
-                                          0.45,
-                                    ),
-                                    reservas[i].status == "PENDENTE"
-                                        ? Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 5),
-                                            child: ElevatedButton(
-                                                onPressed: () {
-                                                  confirmCancelReservation(
-                                                      reservas[i].id);
-                                                },
-                                                child: const Text("Cancelar")))
-                                        : Row()
-                                  ]),
-                            );
-                          })
-                      : const Center(
-                          child: Text(
-                          "Você ainda não fez nenhuma reserva.",
-                          style: TextStyle(fontSize: 16),
-                        ))),
-            ],
-          ),
-        ],
+      body: FutureBuilder(
+        future: futureReservas,
+        builder: (context, AsyncSnapshot<List<Map<String, dynamic>>> snapshot) {
+          reservas.clear();
+
+          if (snapshot.hasData && !_loading) {
+            for (var r in snapshot.data!) {
+              reservas.add(Reservas.fromJson(r));
+            }
+
+            return SizedBox(
+                child: Stack(
+              children: [
+                Column(children: [
+                  reservasPageBody(),
+                ])
+              ],
+            ));
+          }
+          else {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+        },
       ),
-    ));
+    );
+  }
+
+  Widget reservasPageBody() {
+    return Expanded(
+        child: reservas.isNotEmpty
+            ? ListView.builder(
+                itemCount: reservas.length,
+                itemBuilder: (context, i) {
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 15),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          reservas[i].produto.imagem == null
+                              ? Image.asset(
+                                  "assets/product-icon.png",
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.25,
+                                  height: 80,
+                                  fit: BoxFit.fitWidth,
+                                )
+                              : Image.memory(reservas[i].produto.imagem!,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.25,
+                                  height: 80,
+                                  fit: BoxFit.fitWidth),
+                          SizedBox(
+                            child: Column(
+                              children: [
+                                Row(children: [
+                                  Flexible(
+                                    child: Text(
+                                      reservas[i].produto.nome +
+                                          " x " +
+                                          reservas[i]
+                                              .quantidadeDesejada
+                                              .toString(),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                ], mainAxisAlignment: MainAxisAlignment.center),
+                                Row(children: [
+                                  Flexible(
+                                    child: Text(
+                                      "Criada em " +
+                                          reservas[i]
+                                              .dataCriacao
+                                              .day
+                                              .toString()
+                                              .padLeft(2, '0') +
+                                          "/" +
+                                          reservas[i]
+                                              .dataCriacao
+                                              .month
+                                              .toString()
+                                              .padLeft(2, '0') +
+                                          "/" +
+                                          reservas[i]
+                                              .dataCriacao
+                                              .year
+                                              .toString() +
+                                          ", " +
+                                          reservas[i]
+                                              .dataCriacao
+                                              .hour
+                                              .toString()
+                                              .padLeft(2, '0') +
+                                          ":" +
+                                          reservas[i]
+                                              .dataCriacao
+                                              .minute
+                                              .toString()
+                                              .padLeft(2, '0'),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  )
+                                ], mainAxisAlignment: MainAxisAlignment.end),
+                                Row(
+                                  children: [
+                                    Text(
+                                      reservas[i].status,
+                                    ),
+                                  ],
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                )
+                              ],
+                            ),
+                            width: MediaQuery.of(context).size.width * 0.45,
+                          ),
+                          reservas[i].status == "PENDENTE"
+                              ? Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 5),
+                                  child: ElevatedButton(
+                                      onPressed: () {
+                                        confirmCancelReservation(
+                                            reservas[i].id);
+                                      },
+                                      child: const Text("Cancelar")))
+                              : Row()
+                        ]),
+                  );
+                })
+            : const Center(
+                child: Text(
+                "Você ainda não fez nenhuma reserva.",
+                style: TextStyle(fontSize: 16),
+              )));
   }
 
   void confirmCancelReservation(int id) {
@@ -186,6 +181,7 @@ class _ListaProdutosPageState extends State<MinhasReservasPage> {
               TextButton(
                 onPressed: () {
                   cancelReservation(id);
+                  setState(() => _loading = true );
                 },
                 child: const Text('Sim'),
               ),
@@ -202,14 +198,21 @@ class _ListaProdutosPageState extends State<MinhasReservasPage> {
 
   void cancelReservation(int id) {
     final api = ApiReservations();
-    api.cancelReservation(id).then((response) {
+    Navigator.of(context).pop();
+
+    api.cancelReservation(id).then((response) async {
       if (response.statusCode == 200) {
-        buscaReservas();
+        futureReservas = buscaReservas();
 
-        Navigator.of(context).pop();
+        for (var r in await futureReservas) {
+          reservas.add(Reservas.fromJson(r));
+        }
 
-        customMessageModal(
-            context, '', 'Reserva cancelada com sucesso.', 'Fechar');
+        setState(() {
+          _loading = false;
+          customMessageModal(
+              context, '', 'Reserva cancelada com sucesso.', 'Fechar');
+        });
       } else {
         Navigator.of(context).pop();
         customMessageModal(

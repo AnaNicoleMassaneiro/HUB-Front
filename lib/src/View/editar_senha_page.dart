@@ -57,7 +57,6 @@ class _EditarSenhaPageState extends State<EditarSenhaPage> {
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 15),
                                 alignment: Alignment.center,
-                                color: const Color(0xFFFBC02D),
                                 child: const Text(
                                   "Salvar",
                                   style: TextStyle(

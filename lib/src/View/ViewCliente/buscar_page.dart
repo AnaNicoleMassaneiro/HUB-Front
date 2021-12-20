@@ -20,32 +20,34 @@ class _BuscarPageState extends State<BuscarPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
+    return ListView(shrinkWrap: true, children: [
       GestureDetector(
           onTap: () => {
                 Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const ListaProdutosPage()
-                  )
-                ),
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const ListaProdutosPage())),
               },
           child: Card(
+              elevation: 3,
               child: Container(
-            height: 300,
-            width: double.infinity,
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage("assets/icone-busca-produto.png"),
-                fit: BoxFit.fitWidth,
-                alignment: Alignment.topCenter,
-              ),
-            ),
-            child: const Padding(
-              padding: EdgeInsets.all(10.0),
-              child: Text('Buscar Produtos'),
-            ),
-          ))),
+                height: 300,
+                width: double.infinity,
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage("assets/icone-busca-produto.png"),
+                    fit: BoxFit.fitWidth,
+                    alignment: Alignment.topCenter,
+                  ),
+                ),
+                child: const Padding(
+                  padding: EdgeInsets.all(10.0),
+                  child: Text(
+                    'Buscar Produtos',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  ),
+                ),
+              ))),
       GestureDetector(
           onTap: () => {
                 Navigator.push(
@@ -54,6 +56,7 @@ class _BuscarPageState extends State<BuscarPage> {
                         builder: (context) => const ListaVendedoresPage())),
               },
           child: Card(
+            elevation: 3,
             child: Container(
               height: 300,
               width: double.infinity,
@@ -61,10 +64,14 @@ class _BuscarPageState extends State<BuscarPage> {
                   borderRadius: BorderRadius.circular(15.0),
                   image: const DecorationImage(
                       fit: BoxFit.cover,
+                      alignment: Alignment.topCenter,
                       image: AssetImage('assets/icone-busca-vendedor.png'))),
               child: const Padding(
                 padding: EdgeInsets.all(10.0),
-                child: Text('Buscar Vendedores'),
+                child: Text(
+                  'Buscar Vendedores',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                ),
               ),
             ),
           ))

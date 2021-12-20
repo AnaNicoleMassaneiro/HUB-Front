@@ -50,7 +50,7 @@ class _ClientePageState extends State<ClientePage> {
             child: ListView(
               children: [
                 ListTile(
-                  title: const Text('Perfil'),
+                  title: const Text('Minha conta'),
                   onTap: () {
                     const page = PerfilPage();
                     Navigator.push(context,
@@ -106,7 +106,7 @@ class _ClientePageState extends State<ClientePage> {
                     Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const WelcomePage(title: '')),
+                            builder: (context) => const WelcomePage()),
                         (route) => false);
                   },
                 ),

@@ -6,9 +6,7 @@ import 'package:hub/src/util/hub_colors.dart';
 import 'Components/buttons.dart';
 
 class WelcomePage extends StatefulWidget {
-  const WelcomePage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
+  const WelcomePage({Key? key}) : super(key: key);
 
   @override
   _WelcomePageState createState() => _WelcomePageState();

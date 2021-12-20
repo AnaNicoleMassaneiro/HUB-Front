@@ -50,15 +50,15 @@ class _DetalhesVendedorPageState extends State<DetalhesVendedorPage> {
   @override
   void initState() {
     super.initState();
-  }
 
-  @override
-  Widget build(BuildContext context) {
     futureProducts = searchSellerProducts();
     futureSeller = getSeller();
     futureIsFavorite = isSellerFavorite();
     futurePayment = getPaymentModes();
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
             title: const Text('Detalhes do Vendedor'),
@@ -249,7 +249,7 @@ class _DetalhesVendedorPageState extends State<DetalhesVendedorPage> {
                 ),
               )),
           ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 addOrRemoveFromFavorites();
               },
               child: Container(
@@ -298,8 +298,19 @@ class _DetalhesVendedorPageState extends State<DetalhesVendedorPage> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => DetalhesProdutoPage(
-                                          produto: produtos[i]))).then(
+                                          idProduto: produtos[i].id))).then(
                                   (v) async {
+                                futureSeller = getSeller();
+                                futureIsFavorite = isSellerFavorite();
+
+                                futurePayment = getPaymentModes();
+                                for (var p in await futurePayment){
+                                  payment.add(FormaDePagamento.fromJson(p));
+                                }
+
+                                vendedor = Vendedores.fromJson(await futureSeller);
+                                isFavorite = await futureIsFavorite;
+
                                 setState(() {});
                               });
                             },
@@ -322,12 +333,12 @@ class _DetalhesVendedorPageState extends State<DetalhesVendedorPage> {
     return api.searchById(widget.idVendedor);
   }
 
-  void insertRating() {
+  void insertRating() async {
     var api = ApiRating();
     api
         .insertRating(0, userData.idCliente!, vendedor.id, ratingValue,
             ratingTitle.text, ratingDescription.text, 2)
-        .then((response) {
+        .then((response) async {
       ratingDescription.text = "";
       ratingTitle.text = "";
       ratingValue = 0;
@@ -336,12 +347,15 @@ class _DetalhesVendedorPageState extends State<DetalhesVendedorPage> {
         Navigator.of(context).pop();
         customMessageModal(context, "Erro", response.body, "Fechar");
       } else {
-        Navigator.of(context).pop();
-        customMessageModal(
+       Navigator.of(context).pop();
+       customMessageModal(
             context,
             "Avaliação enviada!",
             "Sua avaliação foi enviada com sucesso. Agradecemos seu feedback!",
             "Fechar");
+
+       futureSeller = getSeller();
+       vendedor = Vendedores.fromJson(await futureSeller);
       }
     });
   }
@@ -455,9 +469,9 @@ class _DetalhesVendedorPageState extends State<DetalhesVendedorPage> {
     }
 
     if (response.statusCode == 200) {
-      setState(() {
-        isFavorite = !isFavorite;
-      });
+      futureIsFavorite = isSellerFavorite();
+      isFavorite = await futureIsFavorite;
+      setState(() {});
 
       customMessageModal(
           context,

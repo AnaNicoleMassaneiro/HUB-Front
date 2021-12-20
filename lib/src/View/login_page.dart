@@ -90,16 +90,6 @@ class _LoginPageState extends State<LoginPage> {
                   const SizedBox(height: 40),
                   Form(key: _loginFormKey, child: (_userPasswordWidget())),
                   _submitButton(),
-                  const SizedBox(height: 20),
-                  Container(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    alignment: Alignment.centerRight,
-                    child: Text('Esqueceu a senha?',
-                        style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: hubColors.dark)),
-                  ),
                   linkedLabel(
                       this.context,
                       "Não tem uma conta?",

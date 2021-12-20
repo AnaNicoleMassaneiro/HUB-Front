@@ -159,7 +159,7 @@ class ApiVendedores {
 
   Future<http.Response> updateSellerStatus(
       int idVendedor, bool isAtivo, bool isOpen) async {
-    return await http.patch(
+    return http.patch(
       Uri.parse(Endpoints.atualizarStatusVendedor),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',

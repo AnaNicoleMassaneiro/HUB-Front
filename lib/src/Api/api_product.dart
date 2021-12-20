@@ -131,4 +131,23 @@ class api_product {
 
     return response;
   }
+
+  Future<Map<String, dynamic>> getById(int idProduto) async {
+    final response = await http.get(
+      Uri.parse(Endpoints.searchProductById + idProduto.toString()),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': userData.token!
+      }
+    );
+
+    if (response.statusCode == 200) {
+      return Map<String, dynamic>.from(
+          json.decode(response.body)["produto"]);
+    } else if (response.statusCode == 404) {
+      return <String, dynamic>{};
+    } else {
+      throw Exception('Houve um erro ao buscar os produtos do vendedor.');
+    }
+  }
 }

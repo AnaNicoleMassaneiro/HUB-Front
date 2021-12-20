@@ -1,3 +1,7 @@
+import 'package:hub/src/Api/api_location.dart';
+import 'package:hub/src/SQLite/user_data_sqlite.dart';
+import 'package:location/location.dart';
+
 class UserData {
   static final UserData _userData = UserData._internal();
 
@@ -35,6 +39,25 @@ class UserData {
     curLocationLon = null;
     curLocationLon = null;
     token = null;
+  }
+
+  void atualizarLocalizacao(LocationData l) async {
+    var api = ApiLocation();
+
+    userData.curLocationLat = l.latitude;
+    userData.curLocationLon = l.longitude;
+
+    userDataSqlite.updateUserData(userData.toMap());
+    api
+        .updateCurrentLocation(l.latitude, l.longitude, userData.idUser!)
+        .then((response) {
+      if (response == null) {
+        throw Exception("Houve um erro ao atualizar a localização!");
+      } else if (response.statusCode != 200) {
+        throw Exception(
+            "Houve um erro ao atualizar a localização: " + response.body);
+      }
+    });
   }
 
   UserData._internal();
