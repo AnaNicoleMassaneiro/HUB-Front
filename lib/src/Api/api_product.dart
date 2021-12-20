@@ -72,7 +72,7 @@ class api_product {
 
     request.fields['nome'] = nome;
     request.fields['isAtivo'] = "true";
-    request.fields['preco'] = preco.toString().replaceAll(".", ",");
+    request.fields['preco'] = preco.toString();
     request.fields['descricao'] = descricao;
     request.fields['quantidadeDisponivel'] = qtdDisponivel.toString();
     request.fields['idVendedor'] = idVendedor.toString();
@@ -103,7 +103,7 @@ class api_product {
 
     request.fields['nome'] = nome;
     request.fields['isAtivo'] = "true";
-    request.fields['preco'] = preco.toString().replaceAll(".", ",");
+    request.fields['preco'] = preco.toString();
     request.fields['descricao'] = descricao;
     request.fields['quantidadeDisponivel'] = qtdDisponivel.toString();
     request.fields['isAtivo'] = isAtivo.toString();

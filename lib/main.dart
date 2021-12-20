@@ -11,41 +11,49 @@ import 'package:location/location.dart';
 import 'src/View/welcome_page.dart';
 import 'src/SQLite/user_data_sqlite.dart';
 
-void main() {
+void main() async {
   runApp(const MyApp());
 
   const minute = Duration(seconds: 60);
 
   Timer.periodic(minute, (Timer t1) async {
-    if (userData.idUser != null) {
+    if (userData.idUser != null && userData.idUser! > 0) {
       var l = await Location().getLocation();
       userData.atualizarLocalizacao(l);
     }
   });
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   void initUserData() async {
     var ret = await userDataSqlite.getUserData();
 
     if (ret["idUser"] != null) {
-      userData.idUser = ret["idUser"];
-      userData.idVendedor = ret["idVendedor"];
-      userData.idCliente = ret["idCliente"];
-      userData.isVendedor = ret["isVendedor"] == "true" ? true : false;
-      userData.isVendedorProfileActive = userData.isVendedor;
-      userData.curLocationLat = ret["locationLat"];
-      userData.curLocationLon = ret["locationLon"];
-      userData.token = ret["token"];
+      setState(() {
+        userData.idUser = ret["idUser"];
+        userData.idVendedor = ret["idVendedor"];
+        userData.idCliente = ret["idCliente"];
+        userData.isVendedor = ret["isVendedor"] == "true" ? true : false;
+        userData.isVendedorProfileActive = userData.isVendedor;
+        userData.curLocationLat = ret["locationLat"];
+        userData.curLocationLon = ret["locationLon"];
+        userData.token = ret["token"];
+      });
     }
     else{
-      userData.idUser = -1;
+      setState(() {
+        userData.idUser = -1;
+      });
     }
   }
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;

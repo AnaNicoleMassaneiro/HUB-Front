@@ -92,7 +92,7 @@ class _MinhasFormasDePagamentoPageState
     return const Padding(
       padding: EdgeInsets.all(20),
       child: Text(
-        "Aqui você selecionar quais formas de pagamento você aceita."
+        "Aqui você pode selecionar quais formas de pagamento você aceita."
         " Os clientes podem vê-las no seu perfil.",
         textAlign: TextAlign.center,
         style: TextStyle(

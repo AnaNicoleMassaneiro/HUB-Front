@@ -41,7 +41,7 @@ class UserData {
     token = null;
   }
 
-  void atualizarLocalizacao(LocationData l) async {
+  Future<void> atualizarLocalizacao(LocationData l) async {
     var api = ApiLocation();
 
     userData.curLocationLat = l.latitude;

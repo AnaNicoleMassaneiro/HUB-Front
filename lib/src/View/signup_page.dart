@@ -189,12 +189,13 @@ class _SignUpPageState extends State<SignUpPage> {
         await api.create(nome, isChecked, senha, confirmaSenha, grr, email);
 
     if (ret.statusCode == 200) {
-      Navigator.push(
+      Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
               builder: (context) => const LoginPage(
                     title: '',
-                  )));
+                  )),
+          (x) => x.isFirst ? true : false);
 
       customMessageModal(
           context,

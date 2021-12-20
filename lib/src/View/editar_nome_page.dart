@@ -89,7 +89,6 @@ class _EditarNomePageState extends State<EditarNomePage> {
                       width: MediaQuery.of(context).size.width,
                       padding: const EdgeInsets.symmetric(vertical: 15),
                       alignment: Alignment.center,
-                      color: const Color(0xFFFBC02D),
                       child: const Text(
                         "Salvar",
                         style: TextStyle(fontSize: 20, color: Colors.black),

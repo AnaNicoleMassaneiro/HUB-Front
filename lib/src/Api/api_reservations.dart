@@ -34,6 +34,8 @@ class ApiReservations {
 
     if (res.statusCode == 200) {
       return List<Map<String, dynamic>>.from(json.decode(res.body)["reservas"]);
+    } if (res.statusCode == 404) {
+      return <Map<String, dynamic>>[];
     } else {
       throw Exception('Houve um erro ao buscar as Reservas!');
     }
@@ -49,6 +51,8 @@ class ApiReservations {
 
     if (res.statusCode == 200) {
       return List<Map<String, dynamic>>.from(json.decode(res.body)["reservas"]);
+    } else if (res.statusCode == 404) {
+      return <Map<String, dynamic>>[];
     } else {
       throw Exception('Houve um erro ao buscar as Reservas!');
     }

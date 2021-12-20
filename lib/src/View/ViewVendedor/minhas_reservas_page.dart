@@ -18,8 +18,6 @@ class _ListaProdutosPageState extends State<MinhasReservasPage> {
   bool _isLoading = false;
 
   Future<List<Map<String, dynamic>>> buscaReservas() {
-    reservas.clear();
-
     var api = ApiReservations();
     return api.getBySeller(userData.idVendedor!);
   }
@@ -37,8 +35,9 @@ class _ListaProdutosPageState extends State<MinhasReservasPage> {
         body: FutureBuilder(
       future: futureReservas,
       builder: (context, AsyncSnapshot<List<Map<String, dynamic>>> snapshot) {
+        reservas.clear();
+
         if (snapshot.hasData && !_isLoading) {
-          reservas.clear();
           for (var r in snapshot.data!) {
             reservas.add(Reservas.fromJson(r));
           }

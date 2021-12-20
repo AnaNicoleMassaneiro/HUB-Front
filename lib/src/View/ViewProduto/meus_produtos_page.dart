@@ -159,9 +159,15 @@ class _MeusProdutosPageState extends State<MeusProdutosPage> {
                                                 builder: (context) =>
                                                     EditarProdutoPage(
                                                       produto: _searchResult[i],
-                                                    ))).then((value) {
-                                          buscaProdutos();
-                                          setState(() {});
+                                                    ))).then((value) async {
+                                          setState(() => _isLoading = true);
+                                          futureProdutos = buscaProdutos();
+
+                                          for (var p in await futureProdutos) {
+                                            listaProdutos.add(MeusProdutos.fromJson(p));
+                                          }
+
+                                          setState(() => _isLoading = false);
                                         });
                                       },
                                     ),
@@ -199,8 +205,15 @@ class _MeusProdutosPageState extends State<MeusProdutosPage> {
                                                 builder: (context) =>
                                                     EditarProdutoPage(
                                                         produto: listaProdutos[
-                                                            i]))).then((value) {
-                                          buscaProdutos();
+                                                            i]))).then((value) async {
+                                          setState(() => _isLoading = true);
+                                          futureProdutos = buscaProdutos();
+
+                                          for (var p in await futureProdutos) {
+                                            listaProdutos.add(MeusProdutos.fromJson(p));
+                                          }
+
+                                          setState(() => _isLoading = false);
                                         });
                                       },
                                     ),

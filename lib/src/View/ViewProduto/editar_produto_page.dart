@@ -40,7 +40,7 @@ class _EditarProdutoPageState extends State<EditarProdutoPage> {
 
     setState(() => {
           nomeText.text = widget.produto.nome,
-          precoText.text = widget.produto.preco.toString(),
+          precoText.text = widget.produto.preco.toStringAsFixed(2),
           descricaoText.text = widget.produto.descricao,
           qtdDisponivelText.text =
               widget.produto.quantidadeDisponivel.toString(),
@@ -132,7 +132,7 @@ class _EditarProdutoPageState extends State<EditarProdutoPage> {
                       isEditing = false,
                       selectedImage = null,
                       nomeText.text = widget.produto.nome,
-                      precoText.text = widget.produto.preco.toString(),
+                      precoText.text = widget.produto.preco.toStringAsFixed(2),
                       descricaoText.text = widget.produto.descricao,
                       qtdDisponivelText.text =
                           widget.produto.quantidadeDisponivel.toString(),

@@ -53,9 +53,21 @@ String? validateUsername(String username){
   }
 }
 
-String? validateNumber(String name){
-  if (name.trim().isEmpty) {
+String? validateNumber(String num){
+  if (num.trim().isEmpty) {
     return "Preencha o valor do produto.";
+  } else if (double.tryParse(num) == null) {
+    return "Você deve informar um número válido.";
+  } else {
+    return null;
+  }
+}
+
+String? validateAmount(String name){
+  if (name.trim().isEmpty) {
+    return "Preencha a quantidade disponível do produto.";
+  } else if (int.tryParse(name) == null) {
+    return "Você deve informar um número inteiro.";
   } else {
     return null;
   }

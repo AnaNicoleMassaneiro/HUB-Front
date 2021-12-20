@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:hub/src/SQLite/user_data_sqlite.dart';
 import 'package:hub/src/util/hub_colors.dart';
+import 'package:location/location.dart';
 
 import './Class/user_data.dart';
 import '../Api/api_login.dart';
@@ -110,44 +111,45 @@ class _LoginPageState extends State<LoginPage> {
   void _authenticate(user, senha) {
     var api = apiLogin();
 
-    api.login(user, senha).then((response) {
-      setState(() {
-        if (response.statusCode == 200) {
-          final user = jsonDecode(response.body).cast<String, dynamic>();
+    api.login(user, senha).then((response) async {
+     if (response.statusCode == 200) {
+        var l = await Location().getLocation();
+        final user = jsonDecode(response.body).cast<String, dynamic>();
 
-          userData.idUser = user["user"]["id"];
-          userData.idCliente = user["idCliente"];
-          userData.isVendedor = user["user"]["isVendedor"];
-          userData.token = user["token"];
+        userData.idUser = user["user"]["id"];
+        userData.token = user["token"];
+        await userData.atualizarLocalizacao(l);
 
-          if (userData.isVendedor!) {
-            userData.idVendedor = user["idVendedor"];
-            userData.isVendedorProfileActive = true;
+        userData.idCliente = user["idCliente"];
+        userData.isVendedor = user["user"]["isVendedor"];
 
-            userDataSqlite.insertUserData(userData.toMap());
+        if (userData.isVendedor!) {
+          userData.idVendedor = user["idVendedor"];
+          userData.isVendedorProfileActive = true;
 
-            Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) => VendedorPage()),
-                (r) => false);
-          } else {
-            userData.isVendedorProfileActive = false;
-            userDataSqlite.insertUserData(userData.toMap());
+          userDataSqlite.insertUserData(userData.toMap());
 
-            Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) => ClientePage()),
-                (r) => false);
-          }
-        } else {
-          _loading = false;
-          customMessageModal(
+          Navigator.pushAndRemoveUntil(
               context,
-              "Falha ao autenticar: ",
-              "Usuário e/ou senha incorretos. Por favor, tente novamente.",
-              "Fechar");
+              MaterialPageRoute(builder: (context) => VendedorPage()),
+              (r) => false);
+        } else {
+          userData.isVendedorProfileActive = false;
+          userDataSqlite.insertUserData(userData.toMap());
+
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => ClientePage()),
+              (r) => false);
         }
-      });
+      } else {
+        _loading = false;
+        customMessageModal(
+            context,
+            "Falha ao autenticar: ",
+            "Usuário e/ou senha incorretos. Por favor, tente novamente.",
+            "Fechar");
+      }
     }, onError: (error) async {
       _loading = false;
 

@@ -69,10 +69,10 @@ class _CadastrarProdutoPageState extends State<CadastrarProdutoPage> {
         entryFieldValidation("Nome", nome, validateName, placeholder: ''),
         entryFieldValidation("Preço", preco, validateNumber,
             placeholder: '', keyboard: TextInputType.number),
-        entryFieldValidation("Descrição", descricao, validateName,
+        entryFieldValidation("Descrição", descricao, validateDescription,
             placeholder: ''),
         entryFieldValidation(
-            "Quantidade Disponível", qtdDisponivel, validateName,
+            "Quantidade Disponível", qtdDisponivel, validateAmount,
             placeholder: '', keyboard: TextInputType.number),
       ],
     );
@@ -172,12 +172,16 @@ class _CadastrarProdutoPageState extends State<CadastrarProdutoPage> {
         widget.idVendedor, preco, nome, descricao, qtdDisponivel, upload);
 
     if (ret.statusCode == 200) {
-      _loading = true;
+      setState(() {
+        _loading = false;
+      });
       Navigator.pop(context);
       customMessageModal(
           context, "Sucesso!", "Produto cadastrado com sucesso", "OK");
     } else {
-      _loading = false;
+      setState(() {
+        _loading = false;
+      });
       customMessageModal(context, "Falha ao cadastrar produto: ",
           jsonDecode(await ret.stream.bytesToString())["msg"], "Fechar");
     }
@@ -186,9 +190,14 @@ class _CadastrarProdutoPageState extends State<CadastrarProdutoPage> {
   Image _showImage(PickedFile? pf) {
     if (pf != null) {
       return Image.file(File(pf.path),
-          height: 250, width: 250, fit: BoxFit.cover);
+          height: 250, width: 250, fit: BoxFit.fitWidth);
     } else {
-      return Image.asset("assets/upload-icon.png", width: 200, height: 200);
+      return Image.asset(
+        "assets/upload-icon.png",
+        width: 200,
+        height: 200,
+        fit: BoxFit.fitWidth,
+      );
     }
   }
 }
